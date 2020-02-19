@@ -5,12 +5,14 @@ using UnityEngine.UI;
 
 public class Target : MonoBehaviour
 {
-    const string TARGET_HUD = "TargetHUD";
+    public float RangeDistance;
     GameObject TargetHUD;
     Enemy currentTarget;
     // Animator TargetSelectedAnim;
     RaycastHit lastHit;
     public LayerMask TargetableLayers;
+    public GameObject player;
+    public bool targetInRange;
 
 
     #region Singleton
@@ -18,15 +20,17 @@ public class Target : MonoBehaviour
 
     private void Awake()
     {
-        if(instance!=null)
+        if (instance != null)
         {
             Debug.LogError("You have MORE than ONE TARGET instances!");
             return;
         }
         instance = this;
 
+       // player = GameObject.FindGameObjectWithTag(SelectCharacter.SelectedGameObject);
+        player = GameObject.FindGameObjectWithTag("Warrior");
 
-        TargetHUD = GameObject.Find(TARGET_HUD);
+        TargetHUD = GameObject.Find(Constants.TARGET_HUD);
     }
     #endregion
 
@@ -34,9 +38,9 @@ public class Target : MonoBehaviour
     {
         RaycastHit hit;
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        if (Input.GetMouseButtonDown(0) && Physics.Raycast(ray, out hit))  //,Mathf.Infinity,1<<LayerMask.NameToLayer("Player")
+        if (Input.GetMouseButtonDown(0) && Physics.Raycast(ray, out hit)) 
         {
-            if (hit.collider.gameObject.layer == (hit.collider.gameObject.layer | 1 << TargetableLayers.value))
+            if (0 != (1 << hit.collider.gameObject.layer & TargetableLayers.value))
             {
                 currentTarget = hit.collider.gameObject.GetComponent<Enemy>();
 
@@ -50,9 +54,37 @@ public class Target : MonoBehaviour
         if (currentTarget)
         {
             ShowHUD();
-            currentTarget.UpdateBar(currentTarget.Health);
+            currentTarget.UpdateBar(currentTarget.defaultStats.Health);
         }
         else HideHUD();
+    }
+
+    private void FixedUpdate()
+    {
+        if (currentTarget && player)
+        {
+            RaycastHit secondHit;
+            targetInRange = Physics.Linecast(currentTarget.gameObject.transform.position, player.transform.position, out secondHit);
+            if (Vector3.Distance(currentTarget.transform.position, player.transform.position) <= RangeDistance)
+                targetInRange = true;
+            else
+            {
+                targetInRange = false;
+            }
+
+        }
+        else targetInRange = false;
+    }
+
+    public Enemy getCurrEnemy()
+    {
+        if (currentTarget)
+            return currentTarget;
+        else
+        {
+            Debug.LogError("Target Not Been Selected!");
+            return null;
+        }
     }
 
     public void ShowHUD()
@@ -66,17 +98,12 @@ public class Target : MonoBehaviour
         TargetHUD.GetComponent<CanvasGroup>().alpha = 0;
     }
 
-    //private void SearchInChildren(ref GameObject obj)
-    //{
-    //    for (int i = 0; i < transform.childCount; i++)
-    //    {
-    //        if (transform.GetChild(i).name.Equals(TARGET_SELECTED_GO))
-    //        {
-    //            obj = transform.GetChild(i).gameObject;
-    //            break;
-    //        }
-    //    }
-    //}
+    public GameObject getCurrTarget()
+    {
+        if (currentTarget)
+            return currentTarget.gameObject;
+        else return null;
+    }
 
 
 }
