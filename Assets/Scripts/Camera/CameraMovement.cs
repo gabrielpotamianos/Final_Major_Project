@@ -14,7 +14,7 @@ public class CameraMovement : MonoBehaviour
     public float CameraSensitivity = 150f;
     public float ClampX = 70f;
     public Vector3 offsetCameraBase;
-
+    Vector3 mousePos;
     public Vector3 velocity = Vector3.zero;
     [Range(0, 1)]
     public float CameraSpeed = 120;
@@ -24,7 +24,7 @@ public class CameraMovement : MonoBehaviour
     private void Awake()
     {
         SelectCharacter.SelectedGameObject = "Rogue";
-
+        mousePos = Input.mousePosition;
     }
 
     // Start is called before the first frame update
@@ -47,9 +47,7 @@ public class CameraMovement : MonoBehaviour
         if (Input.GetMouseButton(1))
         {
 
-            Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
-
 
             mouseX = Input.GetAxis("Mouse X");
             mouseY = Input.GetAxis("Mouse Y");
@@ -64,11 +62,9 @@ public class CameraMovement : MonoBehaviour
             transform.rotation = rotation;
 
         }
-        else
+        else if(Input.GetMouseButtonUp(1))
         {
-            Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
-
         }
         #endregion
     }
