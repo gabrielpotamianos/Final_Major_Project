@@ -2,7 +2,7 @@
 //using UnityEditor;
 public static class Constants 
 {
-    public const string TARGET_HUD = "TargetHUD";
+    public const string TARGET_HUD = "TargetInfoPanel";
     public const string OUT_OF_RANGE = "You are out of range";
     public const string NO_TARGET_SELECTED = "Pick a target";
 

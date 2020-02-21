@@ -30,15 +30,15 @@ public class Enemy : CharacterStats
     }
     private void Start()
     {
-        agent.SetDestination(PatrolPoint);
+        // agent.SetDestination(PatrolPoint);
 
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(defaultStats.Health>0)
-             FSMMachine.UpdateFSM();
+        if (defaultStats.Health > 0)
+            FSMMachine.UpdateFSM();
         anim.SetFloat("Health", defaultStats.Health);
     }
 
@@ -75,7 +75,7 @@ public class Enemy : CharacterStats
 
     public void DealDamage()
     {
-        if(player)
+        if (player)
             player.GetComponent<PlayerData>().TakeDamage(AttackPower);
     }
 
@@ -150,13 +150,13 @@ sealed class GoTo : State
         enemy.RandomPatrolPoint(enemy.CentrePatrolPointPatrol.transform.position, enemy.rangeSphere, out randomPoint);
         enemy.agent.SetDestination(randomPoint);
         enemy.anim.SetFloat("Speed", enemy.agent.velocity.magnitude);
-        
+
 
     }
 
     public override void Execute(Enemy enemy)
     {
-        if (Vector3.Distance(enemy.player.transform.position, enemy.transform.position) <= enemy.rangeSphere)
+        if (Vector3.Distance(enemy.player.transform.position, enemy.transform.position) <= enemy.rangeSphere && enemy.defaultStats.Hostile)
         {
             randomPoint = enemy.player.transform.position;
             if (enemy.agent.remainingDistance <= enemy.agent.stoppingDistance)
@@ -175,14 +175,11 @@ sealed class GoTo : State
         enemy.anim.SetFloat("Speed", 0);
     }
 
-
 }
 
 
 sealed class AttackState : State
 {
-    
-    IEnumerator attackDamage;
     static readonly AttackState instance = new AttackState();
     public static AttackState Instance
     {
@@ -194,7 +191,7 @@ sealed class AttackState : State
     public override void Begin(Enemy enemy)
     {
         name = "Attack";
-        enemy.anim.SetBool("Attack",true);
+        enemy.anim.SetBool("Attack", true);
     }
 
 
@@ -205,27 +202,7 @@ sealed class AttackState : State
 
     public override void Execute(Enemy enemy)
     {
-        
-
-        enemy.agent.SetDestination(enemy.player.transform.position);
-
-        if (enemy.agent.remainingDistance > enemy.agent.stoppingDistance)
+        if (Vector3.Distance(enemy.player.transform.position, enemy.transform.position) > enemy.agent.stoppingDistance)
             enemy.FSMMachine.ChangeState(GoTo.Instance);
-
-
-        if(enemy.anim.GetCurrentAnimatorStateInfo(0).normalizedTime%1==0)
-            enemy.player.GetComponent<PlayerData>().TakeDamage(enemy.AttackPower);
-
-       // StartCoroutine(DealDamage(enemy));
-    }
-
-
-    private IEnumerator DealDamage(Enemy enemy)
-    {
-        while (true)
-        {
-
-            yield return new WaitForSeconds(enemy.anim.GetCurrentAnimatorStateInfo(0).length);
-        }
     }
 }

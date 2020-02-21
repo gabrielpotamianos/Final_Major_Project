@@ -71,7 +71,7 @@ public class Attack : MonoBehaviour
             else if (!AnimHasStarted && !HasDmgBeenDealt)
             {
                 anim.SetTrigger("BasicAttack");
-                Target.instance.getCurrEnemy().TakeDamage(GetComponent<PlayerData>().AttackPower);
+                //Target.instance.getCurrEnemy().TakeDamage(GetComponent<PlayerData>().AttackPower);
                 HasDmgBeenDealt = true;
             }
 
@@ -98,6 +98,16 @@ public class Attack : MonoBehaviour
         yield return new WaitForSeconds(2);
         message.text = "";
         MessagePanel.SetActive(false);
+    }
+
+    public void DealDamageToTarget()
+    {
+        if (Target.instance.getCurrEnemy())
+        {
+            Target.instance.getCurrEnemy().defaultStats.Hostile = true;
+            Target.instance.getCurrEnemy().TakeDamage(GetComponent<PlayerData>().AttackPower);
+        }
+
     }
 
 
