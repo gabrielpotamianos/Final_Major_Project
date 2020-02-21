@@ -10,7 +10,7 @@ public class CharacterStatsEditor : Editor
         serializedObject.Update();
         
         //Properties to be excluded from drawing
-        string[] propertiesInBaseClass = new string[] { "defaultStats", "AttackPower", "Armour", "maxHealth" };
+        string[] propertiesInBaseClass = new string[] { "defaultStats", "AttackPower", "Armour", "maxHealth"};
         
         //get an instance of the target
         CharacterStats instance = (CharacterStats)target;
@@ -33,6 +33,7 @@ public class CharacterStatsEditor : Editor
             EditorGUILayout.PropertyField(Armour, true);
             var maxHealth = serializedObject.FindProperty("maxHealth");
             EditorGUILayout.PropertyField(maxHealth, true);
+
         }
 
         //Save Changes

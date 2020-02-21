@@ -12,7 +12,7 @@ public class Attack : MonoBehaviour
     public int costAbility3;
     public int costAbility4;
 
-    Animator anim;
+    PlayerData playerData;
     Text message;
     GameObject MessagePanel;
 
@@ -23,11 +23,11 @@ public class Attack : MonoBehaviour
 
     private void Awake()
     {
-        anim = GetComponent<Animator>();
         message = GameObject.Find("MessagePanel").transform.GetChild(0).GetComponent<Text>();
         MessagePanel = GameObject.Find("MessagePanel").gameObject;
         MessageClearer = ClearMessage();
         MessagePanel.SetActive(false);
+        playerData = GetComponent<PlayerData>();
     }
 
 
@@ -35,6 +35,8 @@ public class Attack : MonoBehaviour
     void Update()
     {
 
+        if (Input.GetKeyDown(KeyCode.L))
+            playerData.anim.SetBool("Looting", !playerData.anim.GetBool("Looting"));
 
 
     }
@@ -43,9 +45,9 @@ public class Attack : MonoBehaviour
     private void FixedUpdate()
     {
         //WHEN OTHER ANIMATIONS ARE PLAYED THIS GETS FALSE AND THE ATTACK HAPPENS
-        if (anim.GetCurrentAnimatorStateInfo(0).IsName("Attack") && !anim.IsInTransition(0) && !AnimHasStarted)
+        if (playerData.anim.GetCurrentAnimatorStateInfo(0).IsName("Attack") && !playerData.anim.IsInTransition(0) && !AnimHasStarted)
             AnimHasStarted = true;
-        else if (!anim.GetCurrentAnimatorStateInfo(0).IsName("Attack") && !anim.IsInTransition(0) && AnimHasStarted)
+        else if (!playerData.anim.GetCurrentAnimatorStateInfo(0).IsName("Attack") && !playerData.anim.IsInTransition(0) && AnimHasStarted)
         {
             AnimHasStarted = false;
             HasDmgBeenDealt = false;
@@ -70,8 +72,8 @@ public class Attack : MonoBehaviour
             }
             else if (!AnimHasStarted && !HasDmgBeenDealt)
             {
-                anim.SetTrigger("BasicAttack");
-                //Target.instance.getCurrEnemy().TakeDamage(GetComponent<PlayerData>().AttackPower);
+                playerData.anim.SetTrigger("BasicAttack");
+                //Target.instance.getCurrEnemy().TakeDamage(playerData.AttackPower);
                 HasDmgBeenDealt = true;
             }
 
@@ -82,13 +84,13 @@ public class Attack : MonoBehaviour
 
         if (AnimHasStarted)
         {
-            anim.applyRootMotion = true;
+            playerData.anim.applyRootMotion = true;
             GetComponent<PlayerMovement>().enabled = false;
         }
         else
         {
             GetComponent<PlayerMovement>().enabled = true;
-            anim.applyRootMotion = false;
+            playerData.anim.applyRootMotion = false;
         }
 
     }
@@ -105,7 +107,7 @@ public class Attack : MonoBehaviour
         if (Target.instance.getCurrEnemy())
         {
             Target.instance.getCurrEnemy().defaultStats.Hostile = true;
-            Target.instance.getCurrEnemy().TakeDamage(GetComponent<PlayerData>().AttackPower);
+            Target.instance.getCurrEnemy().TakeDamage(playerData.AttackPower);
         }
 
     }

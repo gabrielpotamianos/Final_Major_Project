@@ -16,28 +16,26 @@ public class Enemy : CharacterStats
 
     public NavMeshAgent agent;
     public FiniteStateMachine FSMMachine;
-    public Animator anim;
     Vector3 PatrolPoint;
 
 
-    private void Awake()
+    public override void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
-        anim = GetComponent<Animator>();
         // player = GameObject.FindGameObjectWithTag(SelectCharacter.SelectedGameObject);
         player = GameObject.FindGameObjectWithTag("Warrior");
+        base.Awake();
+        if (anim)
+            print("YES");
         FSMMachine = new FiniteStateMachine(this, new GoTo());
-    }
-    private void Start()
-    {
-        // agent.SetDestination(PatrolPoint);
 
     }
 
     // Update is called once per frame
-    void Update()
+    public override void Update()
     {
-        if (defaultStats.Health > 0)
+        base.Update();
+        if(defaultStats.Alive)
             FSMMachine.UpdateFSM();
         anim.SetFloat("Health", defaultStats.Health);
     }

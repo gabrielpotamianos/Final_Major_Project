@@ -15,6 +15,7 @@ public class CharacterStats : MonoBehaviour
 
         [SerializeField]
         public float Health;
+        public bool Alive;
     }
 
     [Space(10)]
@@ -33,9 +34,20 @@ public class CharacterStats : MonoBehaviour
     public float maxHealth;
 
 
-    private void Update()
+    public Animator anim;
+    public virtual void Awake()
     {
-        defaultStats.Health = Mathf.Clamp(defaultStats.Health, 0, maxHealth);
+        if (GetComponent<Animator>())
+            anim = GetComponent<Animator>();
+    }
+
+
+    public virtual void Update()
+    {
+        print(gameObject.name);
+
+        defaultStats.Alive = defaultStats.Health > 0;
+       // defaultStats.Health = Mathf.Clamp(defaultStats.Health, 0, maxHealth);
     }
 
 }

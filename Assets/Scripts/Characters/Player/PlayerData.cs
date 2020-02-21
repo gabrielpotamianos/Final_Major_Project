@@ -22,17 +22,18 @@ public class PlayerData : CharacterStats
     private IEnumerator HealthRegenCoroutine;
     private IEnumerator InCombatCoroutine;
 
-    private void Awake()
+    public override void Awake()
     {
         HealthRegenCoroutine = RegenHealth();
         InCombatCoroutine = CombatCooldown(5);
+        base.Awake();
     }
 
 
     // Update is called once per frame
-    void Update()
+    public override void Update()
     {
-
+        base.Update();
         if (IsRegenAR)
             StartCoroutine(RegenAR());
 

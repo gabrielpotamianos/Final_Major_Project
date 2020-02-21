@@ -26,7 +26,7 @@ public class PlayerMovement : MonoBehaviour
     bool grounded;
     Rigidbody rigid;
     Vector3 direction;
-    Animator anim;
+    PlayerData playerData;
     Quaternion lastRotation;
     #endregion
 
@@ -36,7 +36,7 @@ public class PlayerMovement : MonoBehaviour
         //if (!gameObject.tag.Equals(SelectCharacter.SelectedGameObject))
         //    gameObject.SetActive(false);
         rigid = GetComponent<Rigidbody>();
-        anim = GetComponent<Animator>();
+        playerData = GetComponent<PlayerData>();
     }
 
 
@@ -86,7 +86,7 @@ public class PlayerMovement : MonoBehaviour
         else rigid.velocity = new Vector3(0, rigid.velocity.y, 0);
 
         axisInput = axisInput.normalized;
-        anim.SetFloat("SpeedMovement", axisInput.magnitude);
+        playerData.anim.SetFloat("SpeedMovement", axisInput.magnitude);
 
     }
 

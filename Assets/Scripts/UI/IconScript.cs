@@ -5,7 +5,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 
-public class IconScript : MonoBehaviour, IDragHandler, IEndDragHandler
+public class IconScript : MonoBehaviour,IBeginDragHandler, IDragHandler, IEndDragHandler
 {
     //Parent Slot as this object is an Icon
     Slot ParentSlot;
@@ -16,7 +16,10 @@ public class IconScript : MonoBehaviour, IDragHandler, IEndDragHandler
     }
 
 
-
+    public void OnBeginDrag(PointerEventData eventData)
+    {
+        GetComponent<Canvas>().sortingOrder += 1;
+    }
 
 
     public void OnDrag(PointerEventData eventData)
@@ -86,6 +89,9 @@ public class IconScript : MonoBehaviour, IDragHandler, IEndDragHandler
 
         // Else just snap it to the slot position
         transform.localPosition = Vector3.zero;
+
+        GetComponent<Canvas>().sortingOrder -= 1;
+
 
     }
 
