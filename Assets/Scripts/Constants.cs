@@ -5,6 +5,8 @@ public static class Constants
     public const string TARGET_HUD = "TargetInfoPanel";
     public const string OUT_OF_RANGE = "You are out of range";
     public const string NO_TARGET_SELECTED = "Pick a target";
+    public const string LOOT_INVENTORY = "Loot Inventory";
+    public const string MESSAGE_PANEL = "MessagePanel";
 
     //public static void ClearLog()
     //{

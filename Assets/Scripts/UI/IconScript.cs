@@ -5,7 +5,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 
-public class IconScript : MonoBehaviour,IBeginDragHandler, IDragHandler, IEndDragHandler
+public class IconScript : MonoBehaviour,IBeginDragHandler, IDragHandler, IEndDragHandler,IPointerClickHandler
 {
     //Parent Slot as this object is an Icon
     Slot ParentSlot;
@@ -27,7 +27,6 @@ public class IconScript : MonoBehaviour,IBeginDragHandler, IDragHandler, IEndDra
         //Update Position on dragging the Icon
         transform.position = Input.mousePosition;
     }
-
 
 
     public void OnEndDrag(PointerEventData eventData)
@@ -95,4 +94,18 @@ public class IconScript : MonoBehaviour,IBeginDragHandler, IDragHandler, IEndDra
 
     }
 
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        if (eventData.button == PointerEventData.InputButton.Right)
+            if (gameObject.transform.parent.transform.parent.name.Equals(Constants.LOOT_INVENTORY))
+            {
+                if (ParentSlot.item)
+                {
+                    Inventory.instance.AddInSlot(ParentSlot.item);
+                    Looting.instance.RemoveItem(ParentSlot);
+                }
+
+            }
+
+    }
 }

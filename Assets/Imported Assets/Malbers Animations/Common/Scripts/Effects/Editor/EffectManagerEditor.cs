@@ -227,8 +227,7 @@ namespace MalbersAnimations.Utilities
             serializedObject.ApplyModifiedProperties();
         }
 
-
-
+        [System.Obsolete]
         bool IsPrefab(GameObject gameObject)
         {
             bool isPrefabInstance = PrefabUtility.GetPrefabParent(gameObject) != null && PrefabUtility.GetPrefabObject(gameObject.transform) != null;

@@ -55,9 +55,12 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
-        Rotate();
-        // if (grounded)
-        Move();
+        if (playerData.defaultStats.Alive)
+        {
+            Rotate();
+            // if (grounded)
+            Move();
+        }
     }
 
     private void Move()

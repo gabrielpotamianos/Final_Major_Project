@@ -25,8 +25,6 @@ public class Enemy : CharacterStats
         // player = GameObject.FindGameObjectWithTag(SelectCharacter.SelectedGameObject);
         player = GameObject.FindGameObjectWithTag("Warrior");
         base.Awake();
-        if (anim)
-            print("YES");
         FSMMachine = new FiniteStateMachine(this, new GoTo());
 
     }
@@ -35,8 +33,9 @@ public class Enemy : CharacterStats
     public override void Update()
     {
         base.Update();
-        if(defaultStats.Alive)
+        if (defaultStats.Alive)
             FSMMachine.UpdateFSM();
+        else agent.isStopped = true;
         anim.SetFloat("Health", defaultStats.Health);
     }
 
@@ -67,7 +66,7 @@ public class Enemy : CharacterStats
 
     public void TakeDamage(float dmg)
     {
-        defaultStats.Health -= dmg;
+        defaultStats.Health -= defaultStats.Health - dmg >= 0 ? dmg : defaultStats.Health;
         UpdateBar(defaultStats.Health);
     }
 
@@ -99,7 +98,6 @@ public class FiniteStateMachine
     public void UpdateFSM()
     {
         if (currState != null) currState.Execute(enemy);
-        //Debug.Log(currState.name);
     }
 
     public void ChangeState(State newState)
@@ -154,10 +152,11 @@ sealed class GoTo : State
 
     public override void Execute(Enemy enemy)
     {
-        if (Vector3.Distance(enemy.player.transform.position, enemy.transform.position) <= enemy.rangeSphere && enemy.defaultStats.Hostile)
+
+        if (Vector3.Distance(enemy.player.transform.position, enemy.transform.position) <= enemy.rangeSphere && enemy.defaultStats.Hostile && enemy.player.GetComponent<PlayerData>().defaultStats.Alive)
         {
             randomPoint = enemy.player.transform.position;
-            if (enemy.agent.remainingDistance <= enemy.agent.stoppingDistance)
+            if (enemy.agent.remainingDistance <= enemy.agent.stoppingDistance )
                 enemy.FSMMachine.ChangeState(AttackState.Instance);
         }
         else if (enemy.agent.remainingDistance <= enemy.agent.stoppingDistance)
@@ -200,7 +199,7 @@ sealed class AttackState : State
 
     public override void Execute(Enemy enemy)
     {
-        if (Vector3.Distance(enemy.player.transform.position, enemy.transform.position) > enemy.agent.stoppingDistance)
+        if (Vector3.Distance(enemy.player.transform.position, enemy.transform.position) > enemy.agent.stoppingDistance || !enemy.player.GetComponent<PlayerData>().defaultStats.Alive)
             enemy.FSMMachine.ChangeState(GoTo.Instance);
     }
 }

@@ -12,21 +12,14 @@ public class Attack : MonoBehaviour
     public int costAbility3;
     public int costAbility4;
 
+    [HideInInspector]
+    public bool AbleToLoot;
     PlayerData playerData;
-    Text message;
-    GameObject MessagePanel;
-
-    IEnumerator MessageClearer;
 
     bool AnimHasStarted = false;
-    bool HasDmgBeenDealt = false;
 
     private void Awake()
     {
-        message = GameObject.Find("MessagePanel").transform.GetChild(0).GetComponent<Text>();
-        MessagePanel = GameObject.Find("MessagePanel").gameObject;
-        MessageClearer = ClearMessage();
-        MessagePanel.SetActive(false);
         playerData = GetComponent<PlayerData>();
     }
 
@@ -34,72 +27,43 @@ public class Attack : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
-        if (Input.GetKeyDown(KeyCode.L))
-            playerData.anim.SetBool("Looting", !playerData.anim.GetBool("Looting"));
-
-
-    }
-
-
-    private void FixedUpdate()
-    {
-        //WHEN OTHER ANIMATIONS ARE PLAYED THIS GETS FALSE AND THE ATTACK HAPPENS
-        if (playerData.anim.GetCurrentAnimatorStateInfo(0).IsName("Attack") && !playerData.anim.IsInTransition(0) && !AnimHasStarted)
-            AnimHasStarted = true;
-        else if (!playerData.anim.GetCurrentAnimatorStateInfo(0).IsName("Attack") && !playerData.anim.IsInTransition(0) && AnimHasStarted)
+        //NOT CONSISTENT CODE
+        if (Input.GetKeyDown(KeyCode.L) && AbleToLoot)
         {
-            AnimHasStarted = false;
-            HasDmgBeenDealt = false;
+            playerData.anim.SetBool("Looting", !playerData.anim.GetBool("Looting"));
+            GetComponent<PlayerMovement>().enabled = !GetComponent<PlayerMovement>().enabled;
+            GetComponent<Rigidbody>().velocity = Vector3.zero;
+            Inventory.instance.inventory.SetActive(!Inventory.instance.inventory.activeSelf);
         }
+
+
+
     }
+
+
 
     private void LateUpdate()
     {
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            StopCoroutine(MessageClearer);
-
             if (Target.instance.getCurrTarget() == null)
-            {
-                MessagePanel.SetActive(true);
-                message.text = Constants.NO_TARGET_SELECTED;
-            }
+                MessageManager.instance.DisplayMessage(Constants.NO_TARGET_SELECTED);
             else if (!Target.instance.targetInRange)
-            {
-                MessagePanel.SetActive(true);
-                message.text = Constants.OUT_OF_RANGE;
-            }
-            else if (!AnimHasStarted && !HasDmgBeenDealt)
-            {
+                MessageManager.instance.DisplayMessage(Constants.OUT_OF_RANGE);
+            else
                 playerData.anim.SetTrigger("BasicAttack");
-                //Target.instance.getCurrEnemy().TakeDamage(playerData.AttackPower);
-                HasDmgBeenDealt = true;
-            }
-
-            MessageClearer = ClearMessage();
-            StartCoroutine(MessageClearer);
-
         }
-
-        if (AnimHasStarted)
-        {
-            playerData.anim.applyRootMotion = true;
-            GetComponent<PlayerMovement>().enabled = false;
-        }
-        else
-        {
-            GetComponent<PlayerMovement>().enabled = true;
-            playerData.anim.applyRootMotion = false;
-        }
-
     }
 
-    IEnumerator ClearMessage()
+    IEnumerator StopRootMotion(float length)
     {
-        yield return new WaitForSeconds(2);
-        message.text = "";
-        MessagePanel.SetActive(false);
+        GetComponent<PlayerMovement>().enabled = false;
+        playerData.anim.applyRootMotion = true;
+
+        yield return new WaitForSeconds(length);
+
+        playerData.anim.applyRootMotion = false;
+        GetComponent<PlayerMovement>().enabled = true;
     }
 
     public void DealDamageToTarget()

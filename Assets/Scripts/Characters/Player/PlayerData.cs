@@ -34,22 +34,27 @@ public class PlayerData : CharacterStats
     public override void Update()
     {
         base.Update();
-        if (IsRegenAR)
-            StartCoroutine(RegenAR());
-
-        if (InCombat)
+        if (defaultStats.Alive)
         {
-            InCombatCoroutine = CombatCooldown(5);
-            StartCoroutine(InCombatCoroutine);
-        }
-        else if (IsRegenHealth)
-        {
-            HealthRegenCoroutine = RegenHealth();
-            StartCoroutine(HealthRegenCoroutine);
-        }
+            if (IsRegenAR)
+                StartCoroutine(RegenAR());
 
+            if (InCombat)
+            {
+                InCombatCoroutine = CombatCooldown(5);
+                StartCoroutine(InCombatCoroutine);
+            }
+            else if (IsRegenHealth)
+            {
+                HealthRegenCoroutine = RegenHealth();
+                StartCoroutine(HealthRegenCoroutine);
+            }
+
+        }
         UpdateBar(AbilityResourceBar, currAR / 100.0f);
         UpdateBar(HealthBar, defaultStats.Health / 100.0f);
+        anim.SetFloat("Health", defaultStats.Health);
+
     }
 
 

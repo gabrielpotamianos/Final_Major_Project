@@ -11,7 +11,6 @@ public class Inventory : MonoBehaviour
 {
     [SerializeField]
     public GameObject inventory;
-    private GameObject player;
 
     [SerializeField]
     public List<Slot> slots;
@@ -19,7 +18,7 @@ public class Inventory : MonoBehaviour
     #region Singleton
     public static Inventory instance;
 
-    private void Awake()
+    public virtual void Awake()
     {
         inventory.SetActive(false);
         if (instance != null)
@@ -31,15 +30,14 @@ public class Inventory : MonoBehaviour
     }
     #endregion
 
-    private void Start()
+    public virtual void Start()
     {
-        player = GameObject.FindGameObjectWithTag(SelectCharacter.SelectedGameObject);
         slots = new List<Slot>();
         slots.AddRange(inventory.transform.GetComponentsInChildren<Slot>().ToList());
         inventory.SetActive(false);
     }
 
-    private void Update()
+    public virtual void Update()
     {
         if (Input.GetKeyDown(KeyCode.I))
             inventory.SetActive(!inventory.activeSelf);
@@ -55,7 +53,6 @@ public class Inventory : MonoBehaviour
 
     public void RemoveItem(Slot slot)
     {
-        // Instantiate(item, player.transform.position + player.transform.forward,Space.World);
         slot.EmptySlot();
     }
 

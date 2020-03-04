@@ -23,7 +23,7 @@ namespace MalbersAnimations
             {
                 transform.DetachChildren();
             }
-            DestroyObject(gameObject);
+            Destroy(gameObject);
         }
     }
 }
