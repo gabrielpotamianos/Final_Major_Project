@@ -11,7 +11,7 @@ public class Enemy : CharacterStats
 
     public GameObject HealthBar;
     public GameObject CentrePatrolPointPatrol;
-    public GameObject player;
+    public PlayerData player;
     public float rangeSphere = 10.0f;
 
     public NavMeshAgent agent;
@@ -23,7 +23,7 @@ public class Enemy : CharacterStats
     {
         agent = GetComponent<NavMeshAgent>();
         // player = GameObject.FindGameObjectWithTag(SelectCharacter.SelectedGameObject);
-        player = GameObject.FindGameObjectWithTag("Warrior");
+        player = GameObject.FindGameObjectWithTag("Warrior").GetComponent<PlayerData>();
         base.Awake();
         FSMMachine = new FiniteStateMachine(this, new GoTo());
 
@@ -73,7 +73,7 @@ public class Enemy : CharacterStats
     public void DealDamage()
     {
         if (player)
-            player.GetComponent<PlayerData>().TakeDamage(AttackPower);
+            player.TakeDamage(AttackPower);
     }
 
     public void UpdateBar(float health)
@@ -153,7 +153,7 @@ sealed class GoTo : State
     public override void Execute(Enemy enemy)
     {
 
-        if (Vector3.Distance(enemy.player.transform.position, enemy.transform.position) <= enemy.rangeSphere && enemy.defaultStats.Hostile && enemy.player.GetComponent<PlayerData>().defaultStats.Alive)
+        if (Vector3.Distance(enemy.player.transform.position, enemy.transform.position) <= enemy.rangeSphere && enemy.defaultStats.Hostile && enemy.player.defaultStats.Alive)
         {
             randomPoint = enemy.player.transform.position;
             if (enemy.agent.remainingDistance <= enemy.agent.stoppingDistance )
@@ -199,7 +199,7 @@ sealed class AttackState : State
 
     public override void Execute(Enemy enemy)
     {
-        if (Vector3.Distance(enemy.player.transform.position, enemy.transform.position) > enemy.agent.stoppingDistance || !enemy.player.GetComponent<PlayerData>().defaultStats.Alive)
+        if (Vector3.Distance(enemy.player.transform.position, enemy.transform.position) > enemy.agent.stoppingDistance || !enemy.player.defaultStats.Alive)
             enemy.FSMMachine.ChangeState(GoTo.Instance);
     }
 }
