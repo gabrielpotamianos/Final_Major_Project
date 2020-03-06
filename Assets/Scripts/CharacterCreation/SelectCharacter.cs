@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class SelectCharacter : MonoBehaviour 
+public class SelectCharacter : BaseClassCharacterCreation
 {
     static public string SelectedGameObject;
     bool rotateLeft = false;
     bool rotateRight = false;
-    public float RotationSpeed=2;
+    public float RotationSpeed = 2;
+
 
     void Update()
     {
