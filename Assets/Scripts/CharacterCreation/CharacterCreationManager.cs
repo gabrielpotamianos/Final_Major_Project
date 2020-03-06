@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CharacterCreationManager : BaseClassCharacterCreation
+public class CharacterCreationManager : MonoBehaviour
 {
-    public SelectCharacter[] characters;
+    public CharacterInSelection[] characters;
 
-    public Race currRace = Race.Male;
-    public Class currCharacterClass=Class.Mage;
-    SelectCharacter currCharacter;
+    public CharacterInSelection.Race currRace = CharacterInSelection.Race.Male;
+    public CharacterInSelection.Class currCharacterClass = CharacterInSelection.Class.Mage;
+    CharacterInSelection currCharacter;
 
     #region Singleton
     public static CharacterCreationManager characterCreationManager;
@@ -25,7 +25,7 @@ public class CharacterCreationManager : BaseClassCharacterCreation
 
     public void ChooseCharacter()
     {
-        foreach(SelectCharacter sl in characters)
+        foreach (CharacterInSelection sl in characters)
         {
             if (sl.race == currRace && currCharacterClass == sl.CharacterClass)
             {
@@ -52,12 +52,12 @@ public class CharacterCreationManager : BaseClassCharacterCreation
 
     public void SetClass(int CLASS)
     {
-        currCharacterClass = (Class)CLASS;
+        currCharacterClass = (CharacterInSelection.Class)CLASS;
     }
 
     public void SetRace(int RACE)
     {
-        currRace = (Race)RACE;
+        currRace = (CharacterInSelection.Race)RACE;
 
     }
 }

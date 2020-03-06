@@ -23,7 +23,7 @@ public class CameraMovement : MonoBehaviour
 
     private void Awake()
     {
-        SelectCharacter.SelectedGameObject = "Rogue";
+        CharacterInSelection.SelectedGameObject = "Rogue";
         mousePos = Input.mousePosition;
     }
 

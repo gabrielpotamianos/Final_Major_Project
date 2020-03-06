@@ -6,6 +6,18 @@ using System.Runtime.Serialization.Formatters.Binary;
 
 public static class SaveSystem
 {
+    static string path = Application.persistentDataPath + "/data.xoc";
+
+    public static void SaveNewCharacterCreated(CharacterInSelection.Race race, CharacterInSelection.Class Class)
+    {
+        BinaryFormatter formatter = new BinaryFormatter();
+        FileStream stream = new FileStream(path, FileMode.Create);
+        CharacterInSelection.Race RACE = race;
+        CharacterInSelection.Class CLASS = Class;
+        formatter.Serialize(stream, RACE);
+        formatter.Serialize(stream, CLASS);
+        stream.Close();
+    }
 
     //public static void SavePlayerData(PlayerData data)
     //{
