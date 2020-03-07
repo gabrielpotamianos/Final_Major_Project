@@ -6,18 +6,71 @@ using System.Runtime.Serialization.Formatters.Binary;
 
 public static class SaveSystem
 {
-    static string path = Application.persistentDataPath + "/data.xoc";
+    static string path = Application.persistentDataPath + "/data.txt";
 
-    public static void SaveNewCharacterCreated(CharacterInSelection.Race race, CharacterInSelection.Class Class)
+    public static void SaveNewCharacterCreated(CharacterInfo characterInfo)
     {
         BinaryFormatter formatter = new BinaryFormatter();
-        FileStream stream = new FileStream(path, FileMode.Create);
-        CharacterInSelection.Race RACE = race;
-        CharacterInSelection.Class CLASS = Class;
-        formatter.Serialize(stream, RACE);
-        formatter.Serialize(stream, CLASS);
+        FileStream stream = new FileStream(path, FileMode.Append);
+        CharacterInfo info=characterInfo;
+        
+        formatter.Serialize(stream, info);
         stream.Close();
     }
+
+    public static CharacterInfo LoadNewCharacter()
+    {
+        if (File.Exists(path))
+        {
+            BinaryFormatter formatter = new BinaryFormatter();
+            FileStream stream = new FileStream(path, FileMode.Open);
+
+            CharacterInfo deserializeInfo = (CharacterInfo)formatter.Deserialize(stream);
+
+            CharacterInfo info = new CharacterInfo(deserializeInfo.race, deserializeInfo.breed);
+            stream.Close();
+            return info;
+        }
+        else
+        {
+            CharacterInfo info = new CharacterInfo();
+            return info ;
+            throw new System.NullReferenceException("LOAD FILE DO NOT EXIST");
+
+        }
+
+
+    }
+    public static List<CharacterInfo> LoadAllCharacters()
+    {
+        List<CharacterInfo> InfoArray = new List<CharacterInfo>();
+        if (File.Exists(path))
+        {
+            BinaryFormatter formatter = new BinaryFormatter();
+            FileStream stream = new FileStream(path, FileMode.Open);
+            while(stream.Length>stream.Position)
+            {
+                CharacterInfo deserializeInfo = (CharacterInfo)formatter.Deserialize(stream);
+
+                CharacterInfo temporary = new CharacterInfo(deserializeInfo.race, deserializeInfo.breed);
+
+                InfoArray.Add(temporary);
+
+            }
+            stream.Close();
+            return InfoArray;
+        }
+        else
+        {
+            return InfoArray;
+            throw new System.NullReferenceException("LOAD FILE DO NOT EXIST");
+
+        }
+
+
+    }
+
+
 
     //public static void SavePlayerData(PlayerData data)
     //{

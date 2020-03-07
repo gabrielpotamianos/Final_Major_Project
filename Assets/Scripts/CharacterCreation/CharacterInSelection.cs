@@ -10,10 +10,9 @@ public class CharacterInSelection : MonoBehaviour
     bool rotateRight = false;
     public float RotationSpeed = 2;
 
-    public enum Race { Female, Male };
-    public enum Class { Mage, Rogue, Warrior };
-    public Race race;
-    public Class CharacterClass;
+    public CharacterInfo info;
+
+
 
     void Update()
     {

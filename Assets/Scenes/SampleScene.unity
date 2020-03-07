@@ -9037,6 +9037,10 @@ PrefabInstance:
       propertyPath: AbilityResourceBar
       value: 
       objectReference: {fileID: 1481166095}
+    - target: {fileID: 1824868976, guid: 4864f1c4e6402af48908b47ce22bb19b, type: 3}
+      propertyPath: AttackPower
+      value: 41.6
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4864f1c4e6402af48908b47ce22bb19b, type: 3}
 --- !u!1001 &170194183

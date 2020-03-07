@@ -804,8 +804,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54573f9833bf3f146b5784b312a4bc4b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  race: 0
-  CharacterClass: 0
   characters:
   - {fileID: 1195861143}
   - {fileID: 206089415}
@@ -813,8 +811,9 @@ MonoBehaviour:
   - {fileID: 958573467}
   - {fileID: 281713877}
   - {fileID: 978913159}
-  currRace: 1
-  currCharacterClass: 0
+  currCharacterInfo:
+    race: 0
+    breed: 0
 --- !u!4 &101806067
 Transform:
   m_ObjectHideFlags: 0
@@ -3086,6 +3085,17 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
+      - m_Target: {fileID: 101806066}
+        m_MethodName: SaveCharacteR
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: SampleScene
+          m_BoolArgument: 0
+        m_CallState: 2
       - m_Target: {fileID: 580948089}
         m_MethodName: LoadScene
         m_Mode: 5
@@ -3094,7 +3104,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: SampleScene
+          m_StringArgument: CharacterSelection
           m_BoolArgument: 0
         m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
@@ -7406,6 +7416,26 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8156603174330167148, guid: 9427077831ef6e44685c701688af847a,
+        type: 3}
+      propertyPath: FemaleVersion
+      value: 
+      objectReference: {fileID: 958573466}
+    - target: {fileID: 8156603174330167148, guid: 9427077831ef6e44685c701688af847a,
+        type: 3}
+      propertyPath: MaleVersion
+      value: 
+      objectReference: {fileID: 5103374632016298153}
+    - target: {fileID: 8156603174330167148, guid: 9427077831ef6e44685c701688af847a,
+        type: 3}
+      propertyPath: CharacterClass
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8156603174330167148, guid: 9427077831ef6e44685c701688af847a,
+        type: 3}
+      propertyPath: info.breed
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 124867926694264571, guid: 9427077831ef6e44685c701688af847a,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -7460,21 +7490,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8156603174330167148, guid: 9427077831ef6e44685c701688af847a,
-        type: 3}
-      propertyPath: FemaleVersion
-      value: 
-      objectReference: {fileID: 958573466}
-    - target: {fileID: 8156603174330167148, guid: 9427077831ef6e44685c701688af847a,
-        type: 3}
-      propertyPath: MaleVersion
-      value: 
-      objectReference: {fileID: 5103374632016298153}
-    - target: {fileID: 8156603174330167148, guid: 9427077831ef6e44685c701688af847a,
-        type: 3}
-      propertyPath: CharacterClass
-      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8152387227281695049, guid: 9427077831ef6e44685c701688af847a,
         type: 3}
@@ -9422,6 +9437,16 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7508754065587070903, guid: 7509e904ccb5a6948ad53542f00f33d4,
+        type: 3}
+      propertyPath: FemaleVersion
+      value: 
+      objectReference: {fileID: 206089414}
+    - target: {fileID: 7508754065587070903, guid: 7509e904ccb5a6948ad53542f00f33d4,
+        type: 3}
+      propertyPath: MaleVersion
+      value: 
+      objectReference: {fileID: 1368871849}
     - target: {fileID: 7508754065967437727, guid: 7509e904ccb5a6948ad53542f00f33d4,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -9477,16 +9502,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7508754065587070903, guid: 7509e904ccb5a6948ad53542f00f33d4,
-        type: 3}
-      propertyPath: FemaleVersion
-      value: 
-      objectReference: {fileID: 206089414}
-    - target: {fileID: 7508754065587070903, guid: 7509e904ccb5a6948ad53542f00f33d4,
-        type: 3}
-      propertyPath: MaleVersion
-      value: 
-      objectReference: {fileID: 1368871849}
     - target: {fileID: 7508754065967634143, guid: 7509e904ccb5a6948ad53542f00f33d4,
         type: 3}
       propertyPath: m_IsActive
@@ -10047,6 +10062,26 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 659601109081982830, guid: d4fe048552ac2e84a81b0b9ba03a41e0,
+        type: 3}
+      propertyPath: FemaleVersion
+      value: 
+      objectReference: {fileID: 978913158}
+    - target: {fileID: 659601109081982830, guid: d4fe048552ac2e84a81b0b9ba03a41e0,
+        type: 3}
+      propertyPath: MaleVersion
+      value: 
+      objectReference: {fileID: 5103374631058596353}
+    - target: {fileID: 659601109081982830, guid: d4fe048552ac2e84a81b0b9ba03a41e0,
+        type: 3}
+      propertyPath: CharacterClass
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 659601109081982830, guid: d4fe048552ac2e84a81b0b9ba03a41e0,
+        type: 3}
+      propertyPath: info.breed
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8768176825989434281, guid: d4fe048552ac2e84a81b0b9ba03a41e0,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -10101,21 +10136,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 659601109081982830, guid: d4fe048552ac2e84a81b0b9ba03a41e0,
-        type: 3}
-      propertyPath: FemaleVersion
-      value: 
-      objectReference: {fileID: 978913158}
-    - target: {fileID: 659601109081982830, guid: d4fe048552ac2e84a81b0b9ba03a41e0,
-        type: 3}
-      propertyPath: MaleVersion
-      value: 
-      objectReference: {fileID: 5103374631058596353}
-    - target: {fileID: 659601109081982830, guid: d4fe048552ac2e84a81b0b9ba03a41e0,
-        type: 3}
-      propertyPath: CharacterClass
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1766334684370101645, guid: d4fe048552ac2e84a81b0b9ba03a41e0,
         type: 3}
@@ -12218,6 +12238,36 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 659601109081982830, guid: d4fe048552ac2e84a81b0b9ba03a41e0,
+        type: 3}
+      propertyPath: MaleVersion
+      value: 
+      objectReference: {fileID: 5103374631058596353}
+    - target: {fileID: 659601109081982830, guid: d4fe048552ac2e84a81b0b9ba03a41e0,
+        type: 3}
+      propertyPath: FemaleVersion
+      value: 
+      objectReference: {fileID: 978913158}
+    - target: {fileID: 659601109081982830, guid: d4fe048552ac2e84a81b0b9ba03a41e0,
+        type: 3}
+      propertyPath: race
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 659601109081982830, guid: d4fe048552ac2e84a81b0b9ba03a41e0,
+        type: 3}
+      propertyPath: CharacterClass
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 659601109081982830, guid: d4fe048552ac2e84a81b0b9ba03a41e0,
+        type: 3}
+      propertyPath: info.race
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 659601109081982830, guid: d4fe048552ac2e84a81b0b9ba03a41e0,
+        type: 3}
+      propertyPath: info.breed
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8768176825989434281, guid: d4fe048552ac2e84a81b0b9ba03a41e0,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -12272,26 +12322,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 659601109081982830, guid: d4fe048552ac2e84a81b0b9ba03a41e0,
-        type: 3}
-      propertyPath: MaleVersion
-      value: 
-      objectReference: {fileID: 5103374631058596353}
-    - target: {fileID: 659601109081982830, guid: d4fe048552ac2e84a81b0b9ba03a41e0,
-        type: 3}
-      propertyPath: FemaleVersion
-      value: 
-      objectReference: {fileID: 978913158}
-    - target: {fileID: 659601109081982830, guid: d4fe048552ac2e84a81b0b9ba03a41e0,
-        type: 3}
-      propertyPath: race
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 659601109081982830, guid: d4fe048552ac2e84a81b0b9ba03a41e0,
-        type: 3}
-      propertyPath: CharacterClass
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d4fe048552ac2e84a81b0b9ba03a41e0, type: 3}
@@ -13161,6 +13191,26 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7508754065587070903, guid: 7509e904ccb5a6948ad53542f00f33d4,
+        type: 3}
+      propertyPath: MaleVersion
+      value: 
+      objectReference: {fileID: 1368871849}
+    - target: {fileID: 7508754065587070903, guid: 7509e904ccb5a6948ad53542f00f33d4,
+        type: 3}
+      propertyPath: FemaleVersion
+      value: 
+      objectReference: {fileID: 206089414}
+    - target: {fileID: 7508754065587070903, guid: 7509e904ccb5a6948ad53542f00f33d4,
+        type: 3}
+      propertyPath: race
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7508754065587070903, guid: 7509e904ccb5a6948ad53542f00f33d4,
+        type: 3}
+      propertyPath: info.race
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7508754065967437727, guid: 7509e904ccb5a6948ad53542f00f33d4,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -13216,21 +13266,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7508754065587070903, guid: 7509e904ccb5a6948ad53542f00f33d4,
-        type: 3}
-      propertyPath: MaleVersion
-      value: 
-      objectReference: {fileID: 1368871849}
-    - target: {fileID: 7508754065587070903, guid: 7509e904ccb5a6948ad53542f00f33d4,
-        type: 3}
-      propertyPath: FemaleVersion
-      value: 
-      objectReference: {fileID: 206089414}
-    - target: {fileID: 7508754065587070903, guid: 7509e904ccb5a6948ad53542f00f33d4,
-        type: 3}
-      propertyPath: race
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 7508754065967634143, guid: 7509e904ccb5a6948ad53542f00f33d4,
         type: 3}
       propertyPath: m_IsActive
@@ -13269,6 +13304,36 @@ PrefabInstance:
         type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8156603174330167148, guid: 9427077831ef6e44685c701688af847a,
+        type: 3}
+      propertyPath: MaleVersion
+      value: 
+      objectReference: {fileID: 5103374632016298153}
+    - target: {fileID: 8156603174330167148, guid: 9427077831ef6e44685c701688af847a,
+        type: 3}
+      propertyPath: FemaleVersion
+      value: 
+      objectReference: {fileID: 958573466}
+    - target: {fileID: 8156603174330167148, guid: 9427077831ef6e44685c701688af847a,
+        type: 3}
+      propertyPath: race
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8156603174330167148, guid: 9427077831ef6e44685c701688af847a,
+        type: 3}
+      propertyPath: CharacterClass
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8156603174330167148, guid: 9427077831ef6e44685c701688af847a,
+        type: 3}
+      propertyPath: info.race
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8156603174330167148, guid: 9427077831ef6e44685c701688af847a,
+        type: 3}
+      propertyPath: info.breed
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 124867926694264571, guid: 9427077831ef6e44685c701688af847a,
         type: 3}
@@ -13325,25 +13390,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8156603174330167148, guid: 9427077831ef6e44685c701688af847a,
+    - target: {fileID: 2873584522046406647, guid: 9427077831ef6e44685c701688af847a,
         type: 3}
-      propertyPath: MaleVersion
-      value: 
-      objectReference: {fileID: 5103374632016298153}
-    - target: {fileID: 8156603174330167148, guid: 9427077831ef6e44685c701688af847a,
-        type: 3}
-      propertyPath: FemaleVersion
-      value: 
-      objectReference: {fileID: 958573466}
-    - target: {fileID: 8156603174330167148, guid: 9427077831ef6e44685c701688af847a,
-        type: 3}
-      propertyPath: race
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8156603174330167148, guid: 9427077831ef6e44685c701688af847a,
-        type: 3}
-      propertyPath: CharacterClass
-      value: 2
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1867860959211302146, guid: 9427077831ef6e44685c701688af847a,
         type: 3}
@@ -13364,11 +13414,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_IsActive
       value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2873584522046406647, guid: 9427077831ef6e44685c701688af847a,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7087488591599001286, guid: 9427077831ef6e44685c701688af847a,
         type: 3}

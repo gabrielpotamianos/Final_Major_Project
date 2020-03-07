@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class CharacterCreationManager : MonoBehaviour
 {
+
     public CharacterInSelection[] characters;
 
-    public CharacterInSelection.Race currRace = CharacterInSelection.Race.Male;
-    public CharacterInSelection.Class currCharacterClass = CharacterInSelection.Class.Mage;
+    public CharacterInfo currCharacterInfo;
     CharacterInSelection currCharacter;
 
     #region Singleton
@@ -27,7 +27,7 @@ public class CharacterCreationManager : MonoBehaviour
     {
         foreach (CharacterInSelection sl in characters)
         {
-            if (sl.race == currRace && currCharacterClass == sl.CharacterClass)
+            if (sl.info.race == currCharacterInfo.race && sl.info.breed == currCharacterInfo.breed)
             {
                 sl.ResetRotation();
                 sl.gameObject.SetActive(true);
@@ -50,14 +50,19 @@ public class CharacterCreationManager : MonoBehaviour
         currCharacter.DoNotRotate();
     }
 
-    public void SetClass(int CLASS)
+    public void SetClass(int BREED)
     {
-        currCharacterClass = (CharacterInSelection.Class)CLASS;
+        currCharacterInfo.breed = (CharacterInfo.Breed)BREED;
     }
 
     public void SetRace(int RACE)
     {
-        currRace = (CharacterInSelection.Race)RACE;
+        currCharacterInfo.race = (CharacterInfo.Race)RACE;
 
+    }
+    
+    public void SaveCharacteR()
+    {
+        SaveSystem.SaveNewCharacterCreated(currCharacterInfo);
     }
 }
