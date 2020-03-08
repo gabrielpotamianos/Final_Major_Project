@@ -42,8 +42,6 @@ public class PlayerMovement : MonoBehaviour
     private void Start()
     {
         camera = Camera.main.gameObject;
-       // GetComponent<PlayerData>().enabled = true;
-       // GetComponent<Attack>().enabled = true;
     }
 
 
