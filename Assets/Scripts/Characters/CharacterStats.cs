@@ -47,6 +47,12 @@ public class CharacterStats : MonoBehaviour
     public virtual void Update()
     {
         defaultStats.Alive = defaultStats.Health > 0;
+
+        if(!defaultStats.Alive)
+        {
+            GetComponent<Rigidbody>().useGravity = false;
+            GetComponent<Collider>().isTrigger = true;
+        }
     }
 
 }

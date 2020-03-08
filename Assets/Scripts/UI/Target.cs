@@ -39,6 +39,7 @@ public class Target : MonoBehaviour
 
         player.GetComponent<PlayerMovement>().enabled = true;
         player.GetComponent<Attack>().enabled = true;
+        player.GetComponent<PlayerData>().enabled = true;
 
     }
 

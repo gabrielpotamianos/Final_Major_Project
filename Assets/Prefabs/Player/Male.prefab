@@ -1421,7 +1421,7 @@ MonoBehaviour:
     Icon: {fileID: 0}
     Health: 100
     Alive: 0
-  AttackPower: 101
+  AttackPower: 76.09
   Armour: 0
   maxHealth: 100
   anim: {fileID: 0}
