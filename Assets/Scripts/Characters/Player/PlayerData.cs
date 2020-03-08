@@ -29,6 +29,13 @@ public class PlayerData : CharacterStats
         base.Awake();
     }
 
+    private void Start()
+    {
+        HealthBar = GameObject.Find("PlayerHealthSlider");
+        AbilityResourceBar = GameObject.Find("PlayerAbilitySlider");
+
+    }
+
 
     // Update is called once per frame
     public override void Update()

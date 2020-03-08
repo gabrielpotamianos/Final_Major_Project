@@ -501,6 +501,26 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 536241788}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &127972699 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 155188, guid: 277c7d167d4d0af4aac55cdde94e2ff6,
+    type: 3}
+  m_PrefabInstance: {fileID: 1982343349}
+  m_PrefabAsset: {fileID: 0}
+--- !u!64 &127972702
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 127972699}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Convex: 0
+  m_CookingOptions: 14
+  m_Mesh: {fileID: 4300000, guid: 58f63c1744f88d449b4c49afc8923550, type: 3}
 --- !u!4 &128129923 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 467142, guid: b1906e04b9f548148b786a8582d5a1f3,
@@ -1175,7 +1195,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25f714070c1e1454bb86fcca11c6fa7d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  FadeInSpeed: 0.069
+  FadeInSpeed: 0.223
   FadeInPanel: {fileID: 1990413662}
   slider: {fileID: 1571765703}
 --- !u!1001 &288387354
@@ -10160,6 +10180,17 @@ MonoBehaviour:
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: SampleScene
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 249844012}
+        m_MethodName: DoNotDestroy
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class CameraMovement : MonoBehaviour
 {
-    Transform target;
+    public Transform target;
 
     float mouseX;
     float mouseY;
@@ -37,11 +37,13 @@ public class CameraMovement : MonoBehaviour
 
         //target = GameObject.FindGameObjectWithTag(SelectCharacter.SelectedGameObject).transform;
         target = GameObject.FindGameObjectWithTag("Warrior").transform;
-
+        
 
     }
     private void Update()
     {
+        target = GameObject.FindGameObjectWithTag("Warrior").transform;
+
         #region Camera Rotation
 
         if (Input.GetMouseButton(1))

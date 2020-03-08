@@ -70,16 +70,19 @@ public class CharacterHolder : MonoBehaviour
 
     private void Update()
     {
-        if(allCharacters.Count<=0)
+        if (allCharacters.Count <= 0)
         {
             CreateCharacterButton.transform.parent.gameObject.SetActive(true);
             DeleteCharacterButton.transform.parent.gameObject.SetActive(false);
         }
-        else if(allCharacters.Count>=Constants.MAXIMUM_CHARACTERS)
+        else if (allCharacters.Count >= Constants.MAXIMUM_CHARACTERS)
         {
             CreateCharacterButton.transform.parent.gameObject.SetActive(false);
             DeleteCharacterButton.transform.parent.gameObject.SetActive(true);
         }
+
+        CurrCharInfo.Character.tag = CurrCharInfo.breed.ToString();
+        CurrCharInfo.Character.layer = LayerMask.NameToLayer("Player");
     }
 
     private void DisplayCharacterInfo(GameObject character, CharacterInfo info)
@@ -109,6 +112,12 @@ public class CharacterHolder : MonoBehaviour
 
         SelectCharacter();
         SaveSystem.SaveAllCharactersOverwrite(allCharacters);
+    }
+
+
+    public void DoNotDestroy()
+    {
+        DontDestroyOnLoad(CurrCharInfo.Character);
     }
 
 }

@@ -34,6 +34,14 @@ public class Target : MonoBehaviour
     }
     #endregion
 
+    private void Start()
+    {
+
+        player.GetComponent<PlayerMovement>().enabled = true;
+        player.GetComponent<Attack>().enabled = true;
+
+    }
+
     private void Update()
     {
         RaycastHit hit;

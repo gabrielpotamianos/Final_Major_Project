@@ -29,6 +29,12 @@ public class Enemy : CharacterStats
 
     }
 
+    public void Start()
+    {
+        player = GameObject.FindGameObjectWithTag("Warrior").GetComponent<PlayerData>();
+
+    }
+
     // Update is called once per frame
     public override void Update()
     {

@@ -39,9 +39,18 @@ public class PlayerMovement : MonoBehaviour
         playerData = GetComponent<PlayerData>();
     }
 
+    private void Start()
+    {
+        camera = Camera.main.gameObject;
+       // GetComponent<PlayerData>().enabled = true;
+       // GetComponent<Attack>().enabled = true;
+    }
+
 
     private void Update()
     {
+        if(camera==null)
+            camera = Camera.main.gameObject;
 
         RaycastHit hit;
         grounded = Physics.Raycast(transform.position + new Vector3(0, 0.1f, 0), new Vector3(0, -rayLength, 0), out hit, 1);
