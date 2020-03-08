@@ -7,15 +7,20 @@ using System.Runtime.Serialization.Formatters.Binary;
 public static class SaveSystem
 {
     static string path = Application.persistentDataPath + "/data.txt";
+    static int currCharacters = 0;
 
     public static void SaveNewCharacterCreated(CharacterInfo characterInfo)
     {
-        BinaryFormatter formatter = new BinaryFormatter();
-        FileStream stream = new FileStream(path, FileMode.Append);
-        CharacterInfo info=characterInfo;
-        
-        formatter.Serialize(stream, info);
-        stream.Close();
+        if (currCharacters < Constants.MAXIMUM_CHARACTERS)
+        {
+            BinaryFormatter formatter = new BinaryFormatter();
+            FileStream stream = new FileStream(path, FileMode.Append);
+            CharacterInfo info = characterInfo;
+
+            formatter.Serialize(stream, info);
+            stream.Close();
+            currCharacters++;
+        }
     }
 
     public static CharacterInfo LoadNewCharacter()

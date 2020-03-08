@@ -1062,7 +1062,11 @@ MonoBehaviour:
   FemalePrefab: {fileID: 6684951976304351678, guid: c6e97259d37350247a5cdc8fbf3df10f,
     type: 3}
   allCharacters: []
-  CharactersUI: []
+  CharactersUI:
+  - {fileID: 1179392498}
+  - {fileID: 1083312663}
+  - {fileID: 962321673}
+  - {fileID: 1390519238}
 --- !u!4 &249844013
 Transform:
   m_ObjectHideFlags: 0

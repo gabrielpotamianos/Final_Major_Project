@@ -8,7 +8,7 @@ public class CharacterInfo
     public enum Breed { Mage, Rogue, Warrior };
 
     public Race race;
-    public Breed breed ;
+    public Breed breed;
 
     //[HideInInspector]
     [System.NonSerialized]     

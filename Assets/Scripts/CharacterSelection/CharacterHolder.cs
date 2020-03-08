@@ -12,62 +12,50 @@ public class CharacterHolder : MonoBehaviour
     public Vector3 Position;
     public GameObject MalePrefab;
     public GameObject FemalePrefab;
-    CharacterInfo CurrCharInfo;
     public List<CharacterInfo> allCharacters;
 
     public GameObject[] CharactersUI;
 
+    CharacterInfo CurrCharInfo;
 
     private void Awake()
     {
         allCharacters = SaveSystem.LoadAllCharacters();
 
-        for (int i = 0; i < allCharacters.Count; i++)
+        for (int i = 0; i < CharactersUI.Length; i++)
         {
             switch (allCharacters[i].race)
             {
-
                 case CharacterInfo.Race.Female:
-                    {
                         allCharacters[i].Character = Instantiate(FemalePrefab, Position, Quaternion.identity);
                         break;
-                    }
                 case CharacterInfo.Race.Male:
-                    {
                         allCharacters[i].Character = Instantiate(MalePrefab, Position, Quaternion.identity);
                         break;
-                    }
                 default:
                     break;
             }
             DisplayCharacterInfo(CharactersUI[i], allCharacters[i]);
-            CurrCharInfo = allCharacters[0];
 
+            if(CurrCharInfo==null)
+                CurrCharInfo = allCharacters[0];
         }
-        ChooseCharacter();
+        SelectCharacter();
 
     }
 
-    public void ChooseCharacter()
+    public void SelectCharacter()
     {
-        foreach (CharacterInfo charInfo in allCharacters)
-        {
-            charInfo.Character.SetActive(charInfo == CurrCharInfo);
-            print(CurrCharInfo.Character.name);
-        }
+        for(int i=0;i< CharactersUI.Length; i++)
+            allCharacters[i].Character.SetActive(allCharacters[i] == CurrCharInfo);
     }
 
     public void UpdateCurrentSelectedCharacter(GameObject go)
     {
-        foreach (CharacterInfo CharInfo in allCharacters)
-        {
-            if (CharInfo.Character == go)
-            {
-                CurrCharInfo = CharInfo;
-                break;
-            }
-        }
-        ChooseCharacter();
+        for (int i = 0; i < CharactersUI.Length; i++)
+            if (CharactersUI[i] == go)
+                CurrCharInfo = allCharacters[i];
+        SelectCharacter();
 
     }
 
@@ -86,51 +74,3 @@ public class CharacterHolder : MonoBehaviour
 
     }
 }
-
-
-//using System.Collections;
-//using System.Collections.Generic;
-//using UnityEngine;
-//using UnityEngine.SceneManagement;
-//using UnityEditor.SceneManagement;
-
-//public class CharacterHolder : MonoBehaviour
-//{
-//    public Vector3 Position;
-//    public GameObject MalePrefab;
-//    public GameObject FemalePrefab;
-//    // CharacterInSelection.Race currRace;
-//    private void Awake()
-//    {
-//        // currRace= SaveSystem.LoadNewCharacter();
-//        List<CharacterInSelection.Race> races = SaveSystem.LoadAllCharacters();
-//        for (int i = 0; i < races.Count; i++)
-//        {
-//            switch (races[i])
-//            {
-//                case CharacterInSelection.Race.Female:
-//                    Instantiate(FemalePrefab, Position + new Vector3(i, 0, 0), Quaternion.identity);
-//                    break;
-//                case CharacterInSelection.Race.Male:
-//                    Instantiate(MalePrefab, Position + new Vector3(i, 0, 0), Quaternion.identity);
-//                    break;
-//                default:
-//                    break;
-//            }
-//        }
-//    }
-
-
-//    // Start is called before the first frame update
-//    void Start()
-//    {
-//    }
-
-//    // Update is called once per frame
-//    void Update()
-//    {
-
-//        if (Input.GetKeyDown(KeyCode.R))
-//            SceneManager.LoadScene("CharacterCreation");
-//    }
-//}
