@@ -7,6 +7,7 @@ public static class Constants
     public const string NO_TARGET_SELECTED = "Pick a target";
     public const string LOOT_INVENTORY = "Loot Inventory";
     public const string MESSAGE_PANEL = "MessagePanel";
+    public const string MAXIMUM_CHARACTERS_MESSAGE = "Character cannot be created! \nPlease delete a character before creating a new one!\n Character will not be saved!";
 
     public const int MAXIMUM_CHARACTERS = 4;
 

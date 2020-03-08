@@ -43,4 +43,9 @@ public class SceneManagement : MonoBehaviour
             yield return null;
         }
     }
+
+    public void ExitApplication()
+    {
+        Application.Quit();
+    }
 }

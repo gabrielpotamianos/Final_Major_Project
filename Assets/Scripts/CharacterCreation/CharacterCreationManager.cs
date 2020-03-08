@@ -23,6 +23,15 @@ public class CharacterCreationManager : MonoBehaviour
     }
     #endregion
 
+
+    private void Start()
+    {
+        if (SaveSystem.MaximumCharactersReached())
+            MessageManager.instance.DisplayMessage(Constants.MAXIMUM_CHARACTERS_MESSAGE, 10);
+
+    }
+
+
     public void ChooseCharacter()
     {
         foreach (CharacterInSelection sl in characters)
@@ -37,6 +46,7 @@ public class CharacterCreationManager : MonoBehaviour
 
         }
     }
+
 
     public void Rotate(bool LeftSide)
     {

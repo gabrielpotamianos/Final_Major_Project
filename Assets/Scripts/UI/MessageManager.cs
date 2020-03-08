@@ -34,11 +34,7 @@ public class MessageManager : MonoBehaviour
     }
     #endregion
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.P))
-            KillMessage();
-    }
+
     public void DisplayMessage(string Message)
     {
         StopCoroutine(MessageClearer);
