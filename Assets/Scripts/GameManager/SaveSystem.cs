@@ -6,7 +6,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 
 public static class SaveSystem
 {
-    static string path = Application.persistentDataPath + "/data.txt";
+    static string path = Application.persistentDataPath + "/data.zocc";
     static int currCharacters = 0;
 
 
@@ -66,6 +66,7 @@ public static class SaveSystem
 
 
     }
+
     public static List<CharacterInfo> LoadAllCharacters()
     {
         List<CharacterInfo> InfoArray = new List<CharacterInfo>();

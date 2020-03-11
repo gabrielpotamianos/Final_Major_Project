@@ -5,10 +5,10 @@ using UnityEngine;
 public class CharacterCreationManager : MonoBehaviour
 {
 
-    public CharacterInSelection[] characters;
+    public CharacterToCreate[] characters;
 
     public CharacterInfo currCharacterInfo;
-    CharacterInSelection currCharacter;
+    CharacterToCreate currCharacter;
 
     #region Singleton
     public static CharacterCreationManager characterCreationManager;
@@ -34,7 +34,7 @@ public class CharacterCreationManager : MonoBehaviour
 
     public void ChooseCharacter()
     {
-        foreach (CharacterInSelection sl in characters)
+        foreach (CharacterToCreate sl in characters)
         {
             if (sl.info.race == currCharacterInfo.race && sl.info.breed == currCharacterInfo.breed)
             {

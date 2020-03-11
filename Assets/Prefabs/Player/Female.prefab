@@ -46942,6 +46942,11 @@ GameObject:
   m_Component:
   - component: {fileID: 7682826227475573677}
   - component: {fileID: 294108907312826071}
+  - component: {fileID: -6053710328897525762}
+  - component: {fileID: -124957762487667661}
+  - component: {fileID: 489703816789552669}
+  - component: {fileID: -5748849949123492868}
+  - component: {fileID: 6668527054470794872}
   m_Layer: 0
   m_Name: Female
   m_TagString: Untagged
@@ -46984,6 +46989,98 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!54 &-6053710328897525762
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6684951976304351678}
+  serializedVersion: 2
+  m_Mass: 0.2
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 1
+  m_Constraints: 112
+  m_CollisionDetection: 2
+--- !u!136 &-124957762487667661
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6684951976304351678}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.35
+  m_Height: 2
+  m_Direction: 1
+  m_Center: {x: 0, y: 1, z: 0}
+--- !u!114 &489703816789552669
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6684951976304351678}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 421b5f28b93659f459d9626236867658, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  projectile: {fileID: 6329840251403505414, guid: fa72f6c7b8485564b953ec8020aa54cd,
+    type: 3}
+  costAbility1: 5
+  costAbility2: 0
+  costAbility3: 0
+  costAbility4: 0
+  AbleToLoot: 0
+--- !u!114 &-5748849949123492868
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6684951976304351678}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0a7203b65dc5cf64193e5c3211bbb87f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  camera: {fileID: 0}
+  rayLength: 0.001
+  speed: 300
+--- !u!114 &6668527054470794872
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6684951976304351678}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c8e96ac9d86d1c4a983fb46b77783c9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  defaultStats:
+    Name: 
+    Hostile: 1
+    Icon: {fileID: 0}
+    Health: 100
+    Alive: 0
+  AttackPower: 76.09
+  Armour: 0
+  maxHealth: 100
+  anim: {fileID: 0}
+  HealthBar: {fileID: 0}
+  AbilityResourceBar: {fileID: 0}
+  currAR: 100
+  RegenRateAR: 1.75
+  RegenDelayAR: 1
+  RegenDelayHealth: 2
 --- !u!1 &6694948323419073241
 GameObject:
   m_ObjectHideFlags: 0

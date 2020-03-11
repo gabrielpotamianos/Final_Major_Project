@@ -7,7 +7,6 @@ public class MessageManager : MonoBehaviour
 {
     Text message;
     GameObject MessagePanel;
-
     IEnumerator MessageClearer;
 
 

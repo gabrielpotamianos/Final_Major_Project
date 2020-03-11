@@ -46,19 +46,23 @@ public class Looting : Inventory
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.GetComponent<Attack>())
+        if (other.GetComponent<PlayerCombat>())
         {
             looting = true;
-            other.GetComponent<Attack>().AbleToLoot = looting;
+            other.GetComponent<PlayerCombat>().AbleToLoot = looting;
             MessageManager.instance.DisplayMessage("Press L to Loot",5);
         }
     }
+    //
+    //Player dies looting becomes available 
+    //
+    //
     private void OnTriggerExit(Collider other)
     {
-        if (other.GetComponent<Attack>())
+        if (other.GetComponent<PlayerCombat>())
         {
             looting = false;
-            other.GetComponent<Attack>().AbleToLoot = looting;
+            other.GetComponent<PlayerCombat>().AbleToLoot = looting;
             MessageManager.instance.KillMessage();
         }
     }

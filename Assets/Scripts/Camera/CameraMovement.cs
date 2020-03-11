@@ -23,7 +23,6 @@ public class CameraMovement : MonoBehaviour
 
     private void Awake()
     {
-        CharacterInSelection.SelectedGameObject = "Rogue";
         mousePos = Input.mousePosition;
     }
 
@@ -35,14 +34,12 @@ public class CameraMovement : MonoBehaviour
         rotY = rotation.y;
 
 
-        //target = GameObject.FindGameObjectWithTag(SelectCharacter.SelectedGameObject).transform;
-        target = GameObject.FindGameObjectWithTag("Warrior").transform;
-        
+        target = GameObject.FindGameObjectWithTag(CharacterSelection.ChosenCharacter.breed.ToString()).transform;
+
 
     }
     private void Update()
     {
-        target = GameObject.FindGameObjectWithTag("Warrior").transform;
 
         #region Camera Rotation
 
@@ -54,8 +51,8 @@ public class CameraMovement : MonoBehaviour
             mouseX = Input.GetAxis("Mouse X");
             mouseY = Input.GetAxis("Mouse Y");
 
-            rotY += mouseX * CameraSensitivity * Time.smoothDeltaTime;
-            rotX += mouseY * CameraSensitivity * Time.smoothDeltaTime;
+            rotY += mouseX * CameraSensitivity * Time.deltaTime;
+            rotX += mouseY * CameraSensitivity * Time.deltaTime;
 
             rotX = Mathf.Clamp(rotX, -ClampX, ClampX);
 
@@ -80,7 +77,7 @@ public class CameraMovement : MonoBehaviour
 
     void cameraUpdate()
     {
-        Vector3 lerp = Vector3.SmoothDamp(transform.position, target.position + offsetCameraBase, ref velocity, CameraSpeed);
+        Vector3 lerp = Vector3.SmoothDamp(transform.position, target.position + offsetCameraBase, ref velocity, CameraSpeed*Time.deltaTime);
         transform.position = lerp;
 
        

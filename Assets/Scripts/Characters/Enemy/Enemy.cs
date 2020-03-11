@@ -22,16 +22,15 @@ public class Enemy : CharacterStats
     public override void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
-        // player = GameObject.FindGameObjectWithTag(SelectCharacter.SelectedGameObject);
-        player = GameObject.FindGameObjectWithTag("Warrior").GetComponent<PlayerData>();
         base.Awake();
-        FSMMachine = new FiniteStateMachine(this, new GoTo());
 
     }
 
-    public void Start()
+    public override void Start()
     {
-        player = GameObject.FindGameObjectWithTag("Warrior").GetComponent<PlayerData>();
+
+        player = GameObject.FindGameObjectWithTag(CharacterSelection.ChosenCharacter.breed.ToString()).GetComponent<PlayerData>();
+        FSMMachine = new FiniteStateMachine(this, new GoTo());
 
     }
 

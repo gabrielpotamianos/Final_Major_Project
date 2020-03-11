@@ -2477,9 +2477,9 @@ RectTransform:
   m_Father: {fileID: 1504646483}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 15, y: -15}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 15, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &491024544
@@ -7899,6 +7899,11 @@ PrefabInstance:
       propertyPath: info.breed
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 8156603174330167148, guid: 9427077831ef6e44685c701688af847a,
+        type: 3}
+      propertyPath: RotationSpeed
+      value: 100
+      objectReference: {fileID: 0}
     - target: {fileID: 124867926694264571, guid: 9427077831ef6e44685c701688af847a,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -9910,6 +9915,11 @@ PrefabInstance:
       propertyPath: MaleVersion
       value: 
       objectReference: {fileID: 1368871849}
+    - target: {fileID: 7508754065587070903, guid: 7509e904ccb5a6948ad53542f00f33d4,
+        type: 3}
+      propertyPath: RotationSpeed
+      value: 100
+      objectReference: {fileID: 0}
     - target: {fileID: 7508754065967437727, guid: 7509e904ccb5a6948ad53542f00f33d4,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -10544,6 +10554,11 @@ PrefabInstance:
         type: 3}
       propertyPath: info.breed
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 659601109081982830, guid: d4fe048552ac2e84a81b0b9ba03a41e0,
+        type: 3}
+      propertyPath: RotationSpeed
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 8768176825989434281, guid: d4fe048552ac2e84a81b0b9ba03a41e0,
         type: 3}
@@ -12731,6 +12746,11 @@ PrefabInstance:
       propertyPath: info.breed
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 659601109081982830, guid: d4fe048552ac2e84a81b0b9ba03a41e0,
+        type: 3}
+      propertyPath: RotationSpeed
+      value: 100
+      objectReference: {fileID: 0}
     - target: {fileID: 8768176825989434281, guid: d4fe048552ac2e84a81b0b9ba03a41e0,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -13674,6 +13694,11 @@ PrefabInstance:
       propertyPath: info.race
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 7508754065587070903, guid: 7509e904ccb5a6948ad53542f00f33d4,
+        type: 3}
+      propertyPath: RotationSpeed
+      value: 100
+      objectReference: {fileID: 0}
     - target: {fileID: 7508754065967437727, guid: 7509e904ccb5a6948ad53542f00f33d4,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -13797,6 +13822,11 @@ PrefabInstance:
         type: 3}
       propertyPath: info.breed
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8156603174330167148, guid: 9427077831ef6e44685c701688af847a,
+        type: 3}
+      propertyPath: RotationSpeed
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 124867926694264571, guid: 9427077831ef6e44685c701688af847a,
         type: 3}

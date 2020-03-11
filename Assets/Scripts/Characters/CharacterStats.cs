@@ -43,6 +43,11 @@ public class CharacterStats : MonoBehaviour
             anim = GetComponent<Animator>();
     }
 
+    public virtual void Start()
+    {
+        print("It has started" + gameObject.name);
+    }
+
 
     public virtual void Update()
     {

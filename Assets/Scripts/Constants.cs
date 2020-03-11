@@ -11,7 +11,8 @@ public static class Constants
 
     public const int MAXIMUM_CHARACTERS = 4;
 
-
+    public const float WARRIOR_DISCHARGE_RATE = 1.25f;
+    public const float WARRIOR_MAX_RAGE = 100;
     //public static void ClearLog()
     //{
     //    var assembly = Assembly.GetAssembly(typeof(UnityEditor.Editor));

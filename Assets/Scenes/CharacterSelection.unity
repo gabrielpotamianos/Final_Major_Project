@@ -1163,12 +1163,11 @@ MonoBehaviour:
   FemalePrefab: {fileID: 6684951976304351678, guid: c6e97259d37350247a5cdc8fbf3df10f,
     type: 3}
   allCharacters: []
-  CharactersUI:
+  CharacterInfoUIButtons:
   - {fileID: 1179392498}
   - {fileID: 1083312663}
   - {fileID: 962321673}
   - {fileID: 1390519238}
-  minLength: 0
 --- !u!4 &249844013
 Transform:
   m_ObjectHideFlags: 0
@@ -4384,7 +4383,7 @@ PrefabInstance:
     - target: {fileID: 1303858813534350881, guid: 598545c92d4604947844d68dc09f8686,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: UpdateCurrentSelectedCharacter
+      value: UpdateSelectedCharacter
       objectReference: {fileID: 0}
     - target: {fileID: 1303858813534350881, guid: 598545c92d4604947844d68dc09f8686,
         type: 3}
@@ -4967,7 +4966,7 @@ PrefabInstance:
     - target: {fileID: 1303858813534350881, guid: 598545c92d4604947844d68dc09f8686,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: UpdateCurrentSelectedCharacter
+      value: UpdateSelectedCharacter
       objectReference: {fileID: 0}
     - target: {fileID: 1303858813534350881, guid: 598545c92d4604947844d68dc09f8686,
         type: 3}
@@ -6429,7 +6428,7 @@ PrefabInstance:
     - target: {fileID: 1303858813534350881, guid: 598545c92d4604947844d68dc09f8686,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: UpdateCurrentSelectedCharacter
+      value: UpdateSelectedCharacter
       objectReference: {fileID: 0}
     - target: {fileID: 1303858813534350881, guid: 598545c92d4604947844d68dc09f8686,
         type: 3}
@@ -9948,7 +9947,7 @@ PrefabInstance:
     - target: {fileID: 1303858813534350881, guid: 598545c92d4604947844d68dc09f8686,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: UpdateCurrentSelectedCharacter
+      value: UpdateSelectedCharacter
       objectReference: {fileID: 0}
     - target: {fileID: 1303858813534350881, guid: 598545c92d4604947844d68dc09f8686,
         type: 3}

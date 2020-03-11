@@ -664,7 +664,7 @@ GameObject:
   - component: {fileID: 753543654}
   - component: {fileID: 753543653}
   m_Layer: 5
-  m_Name: NewGame
+  m_Name: Create New Character
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1105,9 +1105,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'New Game
-
-'
+  m_Text: Create New Character
 --- !u!222 &1559852591
 CanvasRenderer:
   m_ObjectHideFlags: 0

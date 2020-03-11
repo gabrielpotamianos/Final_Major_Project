@@ -65992,6 +65992,20 @@ AnimationClip:
     floatParameter: 1.7
     intParameter: 0
     messageOptions: 0
+  - time: 0.7
+    functionName: ConsumeAR
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 25
+    intParameter: 0
+    messageOptions: 0
+  - time: 0.73333335
+    functionName: AddAR
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 30
+    intParameter: 0
+    messageOptions: 0
   - time: 0.73333335
     functionName: DealDamageToTarget
     data: 

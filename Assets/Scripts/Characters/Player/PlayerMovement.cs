@@ -88,7 +88,7 @@ public class PlayerMovement : MonoBehaviour
 
             //Apply velocity
             direction = (Input.GetAxis("Horizontal") * rightDir + Input.GetAxis("Vertical") * forwardDir).normalized;
-            Vector3 temp = direction * Time.fixedDeltaTime * speed;
+            Vector3 temp = direction * Time.deltaTime * speed;
             rigid.velocity = new Vector3(temp.x, rigid.velocity.y, temp.z);
             // print(rigid.velocity);
 
@@ -107,6 +107,7 @@ public class PlayerMovement : MonoBehaviour
         {
             direction = (Input.GetAxisRaw("Horizontal") * camera.transform.right + Input.GetAxisRaw("Vertical") * camera.transform.forward).normalized;
             Vector3 newDirection = new Vector3(direction.x, 0.0f, direction.z);
+            newDirection *= Time.deltaTime;
             transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(newDirection), 0.2f);
             lastRotation = transform.rotation;
         }
