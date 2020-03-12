@@ -10,6 +10,8 @@ public class PlayerCombat : MonoBehaviour
 
     public GameObject projectile;
     public int costAbility1;
+    public float Ability1Time;
+    public float customRange;
     public int costAbility2;
     public int costAbility3;
     public int costAbility4;
@@ -31,7 +33,7 @@ public class PlayerCombat : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-       // CharacterSelection.ChosenCharacter.breed = (CharacterInfo.Breed)Enum.Parse(typeof(CharacterInfo.Breed), gameObject.tag);
+      //  CharacterSelection.ChosenCharacter.breed = (CharacterInfo.Breed)Enum.Parse(typeof(CharacterInfo.Breed), gameObject.tag);
 
         //NOT CONSISTENT CODE
         if (Input.GetKeyDown(KeyCode.L) && AbleToLoot)
@@ -45,7 +47,10 @@ public class PlayerCombat : MonoBehaviour
 
 
     }
-
+    private void OnDrawGizmos()
+    {
+        Gizmos.DrawWireSphere(transform.position, customRange);
+    }
 
 
     private void LateUpdate()
@@ -59,17 +64,79 @@ public class PlayerCombat : MonoBehaviour
             else
                 playerData.anim.SetTrigger("BasicAttack");
         }
+        else if(Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            if (Target.instance.getCurrTarget() == null)
+                MessageManager.instance.DisplayMessage(Constants.NO_TARGET_SELECTED);
+            //else if (!Target.instance.targetInRange)
+            //    MessageManager.instance.DisplayMessage(Constants.OUT_OF_RANGE);
+            else if(Vector3.Distance(gameObject.transform.position, Target.instance.getCurrEnemy().gameObject.transform.position) <customRange )
+            {
+                playerData.anim.SetBool("Ability 1", true);
+                StartCoroutine(Charge());
+            }
+
+        }
     }
 
-    IEnumerator StopRootMotion(float length)
+    #region Warrior Abilities
+
+    IEnumerator Charge()
+    {
+        while(Vector3.Distance(gameObject.transform.position, Target.instance.getCurrEnemy().gameObject.transform.position)>Target.instance.RangeDistance)
+        {
+            GetComponent<Rigidbody>().position = Vector3.MoveTowards(transform.position, Target.instance.getCurrEnemy().gameObject.transform.position, Time.deltaTime * Ability1Time);
+            gameObject.transform.LookAt(Target.instance.getCurrEnemy().transform, transform.up);
+            yield return null;
+
+        }
+        GameObject.Find("PlasmaMissileRed").GetComponent<ParticleSystem>().Play();
+        playerData.anim.SetBool("Ability 1 Condition", true);
+        yield return null;
+
+        
+    }
+
+    public void EndAbility1()
+    {
+        playerData.anim.SetBool("Ability 1", false);
+        playerData.anim.SetBool("Ability 1 Condition", false);
+        GameObject.Find("PlasmaMissileRed").GetComponent<ParticleSystem>().Stop();
+
+
+    }
+
+
+
+
+
+    #endregion
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    public void ApplyRootMotion()
     {
         GetComponent<PlayerMovement>().enabled = false;
         playerData.anim.applyRootMotion = true;
+    }
 
-        yield return new WaitForSeconds(length);
-
+    public void StopRootMotion()
+    {
         playerData.anim.applyRootMotion = false;
         GetComponent<PlayerMovement>().enabled = true;
+
     }
 
     public void DealDamageToTarget()

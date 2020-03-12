@@ -2572,7 +2572,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &7508754065967437727
 Transform:
   m_ObjectHideFlags: 0
@@ -2632,6 +2632,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RotationSpeed: 5
+  info:
+    race: 0
+    breed: 0
 --- !u!1 &7508754065967698167
 GameObject:
   m_ObjectHideFlags: 0

@@ -46,8 +46,8 @@ public class Enemy : CharacterStats
 
     private void OnDrawGizmos()
     {
-        Gizmos.DrawWireSphere(CentrePatrolPointPatrol.transform.position, rangeSphere);
-        Gizmos.DrawWireSphere(transform.position + transform.forward * rangeSphere, rangeSphere);
+        //Gizmos.DrawWireSphere(CentrePatrolPointPatrol.transform.position, rangeSphere);
+       // Gizmos.DrawWireSphere(transform.position + transform.forward * rangeSphere, rangeSphere);
     }
 
     public void RandomPatrolPoint(Vector3 center, float range, out Vector3 result)

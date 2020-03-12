@@ -68,6 +68,7 @@ public class Target : MonoBehaviour
         else HideHUD();
     }
 
+
     private void FixedUpdate()
     {
         if (currentTarget && player)

@@ -35,7 +35,7 @@ public class Looting : Inventory
         if (!creature.defaultStats.Alive)
             GetComponent<Collider>().isTrigger = true;
 
-        print(creature.defaultStats.Alive);
+       // print(creature.defaultStats.Alive);
 
 
         if (Input.GetKeyDown(KeyCode.L) && !creature.defaultStats.Alive && looting)

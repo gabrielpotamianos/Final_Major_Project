@@ -100,9 +100,9 @@ public class PlayerData : CharacterStats
         defaultStats.Health -= defaultStats.Health - dmg >= 0 ? dmg : defaultStats.Health;
     }
 
-    public void ConsumeAR(float cost)
+    public void ConsumeAR( float cost)
     {
-        currAR -= currAR - cost >= 0 ? cost : currAR;
+            currAR -= currAR - cost >= 0 ? cost : currAR;
     }
 
     public void AddAR(float Rage)
