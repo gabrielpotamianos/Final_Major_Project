@@ -27,12 +27,21 @@ public class Target : MonoBehaviour
         }
         instance = this;
 
-       // player = GameObject.FindGameObjectWithTag(SelectCharacter.SelectedGameObject);
-        player = GameObject.FindGameObjectWithTag("Warrior");
+       // player = GameObject.FindGameObjectWithTag("Warrior");
 
-        TargetHUD = GameObject.Find(Constants.TARGET_HUD);
     }
     #endregion
+
+    private void Start()
+    {
+        player = GameObject.FindGameObjectWithTag(CharacterSelection.ChosenCharacter.breed.ToString());
+
+        player.GetComponent<PlayerMovement>().enabled = true;
+        player.GetComponent<PlayerCombat>().enabled = true;
+        player.GetComponent<PlayerData>().enabled = true;
+        TargetHUD = GameObject.Find(Constants.TARGET_HUD);
+
+    }
 
     private void Update()
     {
@@ -51,13 +60,14 @@ public class Target : MonoBehaviour
                 currentTarget = null;
         }
 
-        if (currentTarget)
+        if (currentTarget && currentTarget.GetComponent<Enemy>().defaultStats.Alive)
         {
             ShowHUD();
             currentTarget.UpdateBar(currentTarget.defaultStats.Health);
         }
         else HideHUD();
     }
+
 
     private void FixedUpdate()
     {

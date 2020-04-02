@@ -9,13 +9,13 @@ public class PlayerData : CharacterStats
     public GameObject AbilityResourceBar;
 
     //A.R. - Ability Resource
-    public float currAR=100;
+    public float currAR = 100;
     public float RegenRateAR = 1.75f;
     public float RegenDelayAR = 1;
     public float RegenDelayHealth = 2;
     float MaxAR = 100;
 
-    bool IsRegenAR=true;
+    bool IsRegenAR = true;
     bool IsRegenHealth = false;
     bool InCombat = false;
 
@@ -29,15 +29,40 @@ public class PlayerData : CharacterStats
         base.Awake();
     }
 
+    public override void Start()
+    {
+        base.Start();
+        HealthBar = GameObject.Find("PlayerHealthSlider");
+        AbilityResourceBar = GameObject.Find("PlayerAbilitySlider");
+
+        switch (CharacterSelection.ChosenCharacter.breed)
+        {
+            case CharacterInfo.Breed.Mage:
+                AbilityResourceBar.transform.GetChild(1).GetChild(0).GetComponent<Image>().color = Color.blue + new Color(0.4f, 0.4f, 0);
+                break;
+            case CharacterInfo.Breed.Rogue:
+                AbilityResourceBar.transform.GetChild(1).GetChild(0).GetComponent<Image>().color = Color.yellow;
+                break;
+            case CharacterInfo.Breed.Warrior:
+                AbilityResourceBar.transform.GetChild(1).GetChild(0).GetComponent<Image>().color = Color.red;
+                currAR = 0;
+                break;
+            default:
+                break;
+        }
+
+    }
+
 
     // Update is called once per frame
     public override void Update()
     {
+
+        base.Update();
         if (defaultStats.Alive)
         {
-            base.Update();
             if (IsRegenAR)
-                StartCoroutine(RegenAR());
+                StartCoroutine(RegenAR(CharacterSelection.ChosenCharacter.breed == CharacterInfo.Breed.Warrior));
 
             if (InCombat)
             {
@@ -50,6 +75,7 @@ public class PlayerData : CharacterStats
                 StartCoroutine(HealthRegenCoroutine);
             }
 
+
         }
         UpdateBar(AbilityResourceBar, currAR / 100.0f);
         UpdateBar(HealthBar, defaultStats.Health / 100.0f);
@@ -60,11 +86,12 @@ public class PlayerData : CharacterStats
 
 
 
+
     public void TakeDamage(float dmg)
     {
-        if(HealthRegenCoroutine!=null)
+        if (HealthRegenCoroutine != null)
             StopCoroutine(HealthRegenCoroutine);
-        if(InCombatCoroutine!=null)
+        if (InCombatCoroutine != null)
             StopCoroutine(InCombatCoroutine);
 
         //Activate combate mode if you take damage
@@ -74,26 +101,41 @@ public class PlayerData : CharacterStats
         defaultStats.Health -= defaultStats.Health - dmg >= 0 ? dmg : defaultStats.Health;
     }
 
-    public void ConsumeEnergy(float cost)
+    public void ConsumeAR( float cost)
     {
-        //Activate Regen energy if you consume energy
-        //IsRegenAR = true;
+            currAR -= currAR - cost >= 0 ? cost : currAR;
+    }
 
-        //update energy
-        currAR -= cost;
+    public void AddAR(float Rage)
+    {
+        if (gameObject.tag == CharacterInfo.Breed.Warrior.ToString())
+            currAR += currAR + Rage <= Constants.WARRIOR_MAX_RAGE ? Rage : Constants.WARRIOR_MAX_RAGE - currAR;
     }
 
 
-    IEnumerator RegenAR()
+    IEnumerator RegenAR(bool IsItWarrior)
     {
         IsRegenAR = false;
-        while (currAR < MaxAR)
+
+        if (!IsItWarrior)
         {
-            yield return new WaitForSeconds(RegenDelayAR);
-            AbilityResourceRecharge(RegenRateAR * 100 / 100);
+            while (currAR < MaxAR)
+            {
+                yield return new WaitForSeconds(RegenDelayAR);
+                AbilityResourceRecharge(RegenRateAR * 100 / 100);
+            }
+        }
+        else
+        {
+            while (currAR > 0)
+            {
+                yield return new WaitForSeconds(RegenDelayAR);
+                AbilityResourceDischarge(Constants.WARRIOR_DISCHARGE_RATE);
+            }
         }
         IsRegenAR = true;
     }
+
 
 
     IEnumerator RegenHealth()
@@ -103,7 +145,7 @@ public class PlayerData : CharacterStats
         while (defaultStats.Health < maxHealth)
         {
             yield return new WaitForSeconds(RegenDelayHealth);
-            HealthRecharge(maxHealth / 100 );
+            HealthRecharge(maxHealth / 100);
         }
     }
 
@@ -118,19 +160,24 @@ public class PlayerData : CharacterStats
     }
 
 
-    public void UpdateBar(GameObject bar,float value)
+    public void UpdateBar(GameObject bar, float value)
     {
         bar.GetComponent<Slider>().value = value;
     }
 
     public void AbilityResourceRecharge(float RechargeValue)
     {
-        currAR += currAR+RechargeValue<=100? RechargeValue : MaxAR-currAR;
+        currAR += currAR + RechargeValue <= 100 ? RechargeValue : MaxAR - currAR;
+    }
+
+    public void AbilityResourceDischarge(float DischargeValue)
+    {
+        currAR -= currAR - DischargeValue > 0 ? DischargeValue : currAR;
     }
 
     public void HealthRecharge(float RechargeValue)
     {
-        defaultStats.Health += defaultStats.Health + RechargeValue <= maxHealth ? RechargeValue : maxHealth-defaultStats.Health;
+        defaultStats.Health += defaultStats.Health + RechargeValue <= maxHealth ? RechargeValue : maxHealth - defaultStats.Health;
     }
 
 
@@ -148,7 +195,7 @@ public class PlayerData : CharacterStats
 
     public void ConsumeEnergy1(float energy)
     {
-        ConsumeEnergy(energy);
+        ConsumeAR(energy);
     }
 
 
@@ -188,8 +235,8 @@ public struct Statistics
     //Rage/Fury
     public float IncreaseRate;
 
-    public const float minValue= 0;
-    public const float maxValue= 100;
+    public const float minValue = 0;
+    public const float maxValue = 100;
 
     #endregion
 }

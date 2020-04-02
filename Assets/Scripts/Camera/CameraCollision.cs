@@ -11,6 +11,7 @@ public class CameraCollision : MonoBehaviour
     public float smooth = 10.0f;
     Vector3 direction;
     public float distance;
+    public LayerMask LayersToHit;
 
     public CameraMovement CameraMovement
     {
@@ -46,7 +47,7 @@ public class CameraCollision : MonoBehaviour
         Vector3 desiredCameraPos = transform.parent.TransformPoint(direction * maxDistance);
         RaycastHit hit;
 
-        if (Physics.Linecast(transform.parent.position, desiredCameraPos, out hit, ~(1 << LayerMask.NameToLayer("Player"))))
+        if (Physics.Linecast(transform.parent.position, desiredCameraPos, out hit, LayersToHit))
             distance = Mathf.Clamp(hit.distance * 0.85f, minDistance, maxDistance);
         else distance = maxDistance;
 

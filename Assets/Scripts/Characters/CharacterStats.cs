@@ -37,16 +37,30 @@ public class CharacterStats : MonoBehaviour
     public Animator anim;
     public virtual void Awake()
     {
+        defaultStats.Alive = defaultStats.Health > 0;
+
         if (GetComponent<Animator>())
             anim = GetComponent<Animator>();
         defaultStats.Alive = defaultStats.Health > 0;
 
     }
 
+    public virtual void Start()
+    {
+        print("It has started" + gameObject.name);
+    }
+
 
     public virtual void Update()
     {
         defaultStats.Alive = defaultStats.Health > 0;
+
+        if(!defaultStats.Alive)
+        {
+            GetComponent<Rigidbody>().useGravity = false;
+            GetComponent<Collider>().isTrigger = true;
+        }
+
     }
 
 }
