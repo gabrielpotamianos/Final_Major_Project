@@ -12,6 +12,7 @@ public class Inventory : MonoBehaviour
     [SerializeField]
     public GameObject inventory;
     private GameObject player;
+    private PlayerData playerData;
 
     [SerializeField]
     public List<Slot> slots;
@@ -34,6 +35,9 @@ public class Inventory : MonoBehaviour
     private void Start()
     {
         player = GameObject.FindGameObjectWithTag(SelectCharacter.SelectedGameObject);
+        player = GameObject.FindGameObjectWithTag("Warrior");
+        playerData = player.GetComponent<PlayerData>();
+
         slots = new List<Slot>();
         slots.AddRange(inventory.transform.GetComponentsInChildren<Slot>().ToList());
         inventory.SetActive(false);
@@ -41,7 +45,7 @@ public class Inventory : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.I))
+        if (Input.GetKeyDown(KeyCode.I) && playerData.defaultStats.Alive)
             inventory.SetActive(!inventory.activeSelf);
 
 
@@ -67,8 +71,8 @@ public class Inventory : MonoBehaviour
             //Crash on slot with many items (quantities)!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
             if (slots[i].IsSlotEmpty())
             {
-               slots[i].FillSlot(item);
-               break;
+                slots[i].FillSlot(item);
+                break;
             }
         }
     }

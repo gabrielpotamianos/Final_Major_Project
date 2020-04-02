@@ -5,7 +5,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 
-public class IconScript : MonoBehaviour,IBeginDragHandler, IDragHandler, IEndDragHandler
+public class IconScript :MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
     //Parent Slot as this object is an Icon
     Slot ParentSlot;

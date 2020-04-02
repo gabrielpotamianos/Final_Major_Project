@@ -19,7 +19,13 @@ public class CameraMovement : MonoBehaviour
     [Range(0, 1)]
     public float CameraSpeed = 120;
 
-
+    public CameraCollision CameraCollision
+    {
+        get => default;
+        set
+        {
+        }
+    }
 
     private void Awake()
     {

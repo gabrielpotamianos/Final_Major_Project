@@ -25,8 +25,7 @@ public class Enemy : CharacterStats
         // player = GameObject.FindGameObjectWithTag(SelectCharacter.SelectedGameObject);
         player = GameObject.FindGameObjectWithTag("Warrior");
         base.Awake();
-        if (anim)
-            print("YES");
+
         FSMMachine = new FiniteStateMachine(this, new GoTo());
 
     }
@@ -35,8 +34,10 @@ public class Enemy : CharacterStats
     public override void Update()
     {
         base.Update();
-        if(defaultStats.Alive)
+        if (defaultStats.Alive)
             FSMMachine.UpdateFSM();
+        else if (!GetComponent<BoxCollider>().isTrigger)
+            GetComponent<BoxCollider>().isTrigger = true;
         anim.SetFloat("Health", defaultStats.Health);
     }
 
@@ -69,7 +70,9 @@ public class Enemy : CharacterStats
     {
         defaultStats.Health -= dmg;
         UpdateBar(defaultStats.Health);
+
     }
+
 
     public void DealDamage()
     {
@@ -154,7 +157,7 @@ sealed class GoTo : State
 
     public override void Execute(Enemy enemy)
     {
-        if (Vector3.Distance(enemy.player.transform.position, enemy.transform.position) <= enemy.rangeSphere && enemy.defaultStats.Hostile)
+        if (Vector3.Distance(enemy.player.transform.position, enemy.transform.position) <= enemy.rangeSphere && enemy.defaultStats.Hostile && enemy.player.GetComponent<PlayerData>().defaultStats.Alive)
         {
             randomPoint = enemy.player.transform.position;
             if (enemy.agent.remainingDistance <= enemy.agent.stoppingDistance)
@@ -200,7 +203,7 @@ sealed class AttackState : State
 
     public override void Execute(Enemy enemy)
     {
-        if (Vector3.Distance(enemy.player.transform.position, enemy.transform.position) > enemy.agent.stoppingDistance)
+        if (Vector3.Distance(enemy.player.transform.position, enemy.transform.position) > enemy.agent.stoppingDistance || !enemy.player.GetComponent<PlayerData>().defaultStats.Alive)
             enemy.FSMMachine.ChangeState(GoTo.Instance);
     }
 }

@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -110,6 +109,38 @@ public class Attack : MonoBehaviour
             Target.instance.getCurrEnemy().TakeDamage(playerData.AttackPower);
         }
 
+    }
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.tag.Equals("Enemy"))
+        {
+            StopCoroutine(MessageClearer);
+            MessagePanel.SetActive(true);
+            message.text = "Press L to Loot";
+
+            MessageClearer = ClearMessage();
+            StartCoroutine(MessageClearer);
+
+        }
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.tag.Equals("Enemy"))
+        {
+
+            //Lag on input
+
+            print("Works");
+            if (Input.GetKeyDown(KeyCode.L))
+            {
+
+                playerData.anim.SetBool("Looting", !playerData.anim.GetBool("Looting"));
+                GetComponent<PlayerMovement>().enabled = !playerData.anim.GetBool("Looting");
+            }
+
+
+        }
     }
 
 

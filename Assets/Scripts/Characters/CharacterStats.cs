@@ -39,15 +39,14 @@ public class CharacterStats : MonoBehaviour
     {
         if (GetComponent<Animator>())
             anim = GetComponent<Animator>();
+        defaultStats.Alive = defaultStats.Health > 0;
+
     }
 
 
     public virtual void Update()
     {
-        print(gameObject.name);
-
         defaultStats.Alive = defaultStats.Health > 0;
-       // defaultStats.Health = Mathf.Clamp(defaultStats.Health, 0, maxHealth);
     }
 
 }

@@ -36904,15 +36904,16 @@ MonoBehaviour:
     Hostile: 0
     Icon: {fileID: 0}
     Health: 10
+    Alive: 0
   AttackPower: 10
   Armour: 0
   maxHealth: 0
+  anim: {fileID: 0}
   HealthBar: {fileID: 0}
   CentrePatrolPointPatrol: {fileID: 209790721954704124}
   player: {fileID: 0}
   rangeSphere: 10
   agent: {fileID: 0}
-  anim: {fileID: 0}
 --- !u!65 &724719158
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -111035,10 +111036,55 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 788220474060295328, guid: 36ae3a493080f104e9f79650e39affef,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3273732862903703967, guid: 36ae3a493080f104e9f79650e39affef,
         type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -43.680176
+      objectReference: {fileID: 0}
+    - target: {fileID: 5651637244589248691, guid: 36ae3a493080f104e9f79650e39affef,
+        type: 3}
+      propertyPath: m_Colors.m_SelectedColor.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5651637244589248691, guid: 36ae3a493080f104e9f79650e39affef,
+        type: 3}
+      propertyPath: m_Colors.m_SelectedColor.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5651637244589248691, guid: 36ae3a493080f104e9f79650e39affef,
+        type: 3}
+      propertyPath: m_Colors.m_SelectedColor.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5651637244589248691, guid: 36ae3a493080f104e9f79650e39affef,
+        type: 3}
+      propertyPath: m_Value
+      value: 0.38
+      objectReference: {fileID: 0}
+    - target: {fileID: 5651637244589248691, guid: 36ae3a493080f104e9f79650e39affef,
+        type: 3}
+      propertyPath: m_Colors.m_HighlightedColor.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5651637244589248691, guid: 36ae3a493080f104e9f79650e39affef,
+        type: 3}
+      propertyPath: m_Colors.m_HighlightedColor.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5651637244589248691, guid: 36ae3a493080f104e9f79650e39affef,
+        type: 3}
+      propertyPath: m_Colors.m_HighlightedColor.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5651637244589248691, guid: 36ae3a493080f104e9f79650e39affef,
+        type: 3}
+      propertyPath: m_Interactable
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 36ae3a493080f104e9f79650e39affef, type: 3}
@@ -111510,16 +111556,17 @@ MonoBehaviour:
     Name: 
     Hostile: 1
     Icon: {fileID: 0}
-    Health: 90
+    Health: 30
+    Alive: 0
   AttackPower: 10
   Armour: 0
   maxHealth: 0
+  anim: {fileID: 0}
   HealthBar: {fileID: 0}
   CentrePatrolPointPatrol: {fileID: 209790721954704124}
   player: {fileID: 0}
   rangeSphere: 10
   agent: {fileID: 0}
-  anim: {fileID: 0}
 --- !u!1 &4077215546607734606
 GameObject:
   m_ObjectHideFlags: 0
@@ -113312,7 +113359,7 @@ CanvasGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7773467036640392536}
   m_Enabled: 1
-  m_Alpha: 0
+  m_Alpha: 1
   m_Interactable: 1
   m_BlocksRaycasts: 0
   m_IgnoreParentGroups: 0

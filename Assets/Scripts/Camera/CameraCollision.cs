@@ -12,6 +12,14 @@ public class CameraCollision : MonoBehaviour
     Vector3 direction;
     public float distance;
 
+    public CameraMovement CameraMovement
+    {
+        get => default;
+        set
+        {
+        }
+    }
+
     #endregion
 
     // Start is called before the first frame update
