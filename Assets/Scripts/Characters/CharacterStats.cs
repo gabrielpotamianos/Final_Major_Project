@@ -42,6 +42,8 @@ public class CharacterStats : MonoBehaviour
 
         if (GetComponent<Animator>())
             anim = GetComponent<Animator>();
+        defaultStats.Alive = defaultStats.Health > 0;
+
     }
 
     public virtual void Start()
@@ -60,6 +62,7 @@ public class CharacterStats : MonoBehaviour
             GetComponent<Collider>().isTrigger = true;
             GetComponent<Rigidbody>().velocity = Vector3.zero;
         }
+
     }
 
 }

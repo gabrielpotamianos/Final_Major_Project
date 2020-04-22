@@ -39,7 +39,7 @@ public class Slot : MonoBehaviour
 
     public bool IsSlotEmpty()
     {
-        if (item)
+        if (item!=null)
             return false;
         else return true;
     }

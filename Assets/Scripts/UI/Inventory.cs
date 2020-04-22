@@ -39,7 +39,7 @@ public class Inventory : MonoBehaviour
 
     public virtual void Update()
     {
-        if (Input.GetKeyDown(KeyCode.I))
+        if (Input.GetKeyDown(KeyCode.I) && playerData.defaultStats.Alive)
             inventory.SetActive(!inventory.activeSelf);
 
 
@@ -64,8 +64,8 @@ public class Inventory : MonoBehaviour
             //Crash on slot with many items (quantities)!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
             if (slots[i].IsSlotEmpty())
             {
-               slots[i].FillSlot(item);
-               break;
+                slots[i].FillSlot(item);
+                break;
             }
         }
     }

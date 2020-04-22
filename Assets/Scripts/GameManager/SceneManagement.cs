@@ -11,6 +11,13 @@ public class SceneManagement : MonoBehaviour
     public GameObject FadeInPanel;
     public Slider slider;
 
+    public Target Target
+    {
+        get => default;
+        set
+        {
+        }
+    }
 
     public void LoadScene(string name)
     {

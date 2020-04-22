@@ -86,6 +86,7 @@ public class PlayerData : CharacterStats
     // Update is called once per frame
     public override void Update()
     {
+
         base.Update();
         if (defaultStats.Alive)
         {
@@ -103,8 +104,8 @@ public class PlayerData : CharacterStats
                 StartCoroutine(HealthRegenCoroutine);
             }
 
-        }
 
+        }
         UpdateBar(AbilityResourceBar, currAR / 100.0f);
         UpdateBar(HealthBar, defaultStats.Health / 100.0f);
         anim.SetFloat("Health", defaultStats.Health);

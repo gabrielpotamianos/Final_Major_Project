@@ -13,6 +13,14 @@ public class CameraCollision : MonoBehaviour
     public float distance;
     public LayerMask LayersToHit;
 
+    public CameraMovement CameraMovement
+    {
+        get => default;
+        set
+        {
+        }
+    }
+
     #endregion
 
     // Start is called before the first frame update
