@@ -46967,6 +46967,7 @@ Transform:
   m_Children:
   - {fileID: 3954354884021063604}
   - {fileID: 4851099069255380685}
+  - {fileID: 6590286109795057205}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 150, z: 0}
@@ -46983,7 +46984,7 @@ Animator:
   m_Controller: {fileID: 9100000, guid: f02891a8bd52e3e439ead17efa28b387, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
-  m_ApplyRootMotion: 1
+  m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
@@ -47012,7 +47013,7 @@ CapsuleCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6684951976304351678}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 1c2d3f10bebe51f42b068eae60b241e2, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   m_Radius: 0.35
@@ -47026,18 +47027,52 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6684951976304351678}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 421b5f28b93659f459d9626236867658, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  projectile: {fileID: 6329840251403505414, guid: fa72f6c7b8485564b953ec8020aa54cd,
+  m: {fileID: 2100000, guid: ea128b040f8b0af4c9d2de400aaff30a, type: 2}
+  ChargeSprite: {fileID: 21300000, guid: fd6ab744a13821741bae075ba578bce0, type: 3}
+  ChargeAbilityTime: 25
+  ChargeCooldownTime: 5
+  ChargeDamageMultiplier: 3
+  AddUpRage: 20
+  ChargeRange: 18.44
+  ChargeOnCooldown: 0
+  MortalStrikeSprite: {fileID: 21300000, guid: 4873aa989d5fcd546b28025805f15ee8, type: 3}
+  MortalStrikeCooldownTime: 5
+  MortalStrikeDamageMultiplier: 109
+  MortalStrikeAbilityCost: 20
+  MortalStrikeOnCooldown: 0
+  BladestormSprite: {fileID: 21300000, guid: 0c136515f7aa49e43ba0840df48c1f4d, type: 3}
+  BladestormCooldownTime: 7
+  BladestormAbilityTime: 3
+  BladestormDamageMultiplier: 4
+  BladestormAbilityCost: 0
+  BladestormOnCooldown: 0
+  BladestormRangeSphere: {fileID: 0}
+  FireballDamageMultiplier: 2
+  FireballManaCost: 10
+  FireballSprite: {fileID: 21300000, guid: 7140c686292792a4abfe218b90b2ae90, type: 3}
+  FireballPrefab: {fileID: 1815553834518870, guid: 7674f5091cc9ae049a2ad44f3eb88a4c,
     type: 3}
-  costAbility1: 5
-  costAbility2: 0
-  costAbility3: 0
-  costAbility4: 0
-  AbleToLoot: 0
+  FireballCooldownTime: 4
+  FireballRange: 20
+  FireballOnCooldown: 0
+  MaxComboPoints: 5
+  ComboPoints: 0
+  SinisterStrikeSprite: {fileID: 21300000, guid: 1d7e1548e7fc4c74faee93a7cfe2d397,
+    type: 3}
+  SinisterStrikeDamageMultiplier: 7
+  SinisterStrikeEnergyCost: 20
+  SinisterStrikeCooldownTime: 7
+  SinisterStrikeOnCooldown: 0
+  EviscerateSprite: {fileID: 21300000, guid: bfa491db9b4718849944980f21518f40, type: 3}
+  EviscerateDamageMultiplier: 10
+  EviscerateEnergyCost: 10
+  EviscerateCooldownTime: 3
+  EviscerateOnCooldown: 0
 --- !u!114 &-5748849949123492868
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -47071,16 +47106,20 @@ MonoBehaviour:
     Icon: {fileID: 0}
     Health: 100
     Alive: 0
-  AttackPower: 76.09
+  AttackPower: 5
   Armour: 0
   maxHealth: 100
   anim: {fileID: 0}
+  AbleToLoot: 0
   HealthBar: {fileID: 0}
   AbilityResourceBar: {fileID: 0}
   currAR: 100
   RegenRateAR: 1.75
   RegenDelayAR: 1
   RegenDelayHealth: 2
+  SpellBar: {fileID: 0}
+  SpellImages: []
+  SpellCooldownImages: []
 --- !u!1 &6694948323419073241
 GameObject:
   m_ObjectHideFlags: 0
@@ -65652,3 +65691,78 @@ SkinnedMeshRenderer:
     m_Center: {x: 21.66463, y: -5.310246, z: 0}
     m_Extent: {x: 29.653652, y: 17.266434, z: 23.150274}
   m_DirtyAABB: 0
+--- !u!1001 &2431494024205036280
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 7682826227475573677}
+    m_Modifications:
+    - target: {fileID: 8848166590777103564, guid: 5597173b88f966e43a6605e56e53fbc6,
+        type: 3}
+      propertyPath: m_Name
+      value: BladeStormTrigger
+      objectReference: {fileID: 0}
+    - target: {fileID: 8848166590777103565, guid: 5597173b88f966e43a6605e56e53fbc6,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8848166590777103565, guid: 5597173b88f966e43a6605e56e53fbc6,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8848166590777103565, guid: 5597173b88f966e43a6605e56e53fbc6,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8848166590777103565, guid: 5597173b88f966e43a6605e56e53fbc6,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8848166590777103565, guid: 5597173b88f966e43a6605e56e53fbc6,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8848166590777103565, guid: 5597173b88f966e43a6605e56e53fbc6,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8848166590777103565, guid: 5597173b88f966e43a6605e56e53fbc6,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8848166590777103565, guid: 5597173b88f966e43a6605e56e53fbc6,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8848166590777103565, guid: 5597173b88f966e43a6605e56e53fbc6,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8848166590777103565, guid: 5597173b88f966e43a6605e56e53fbc6,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8848166590777103565, guid: 5597173b88f966e43a6605e56e53fbc6,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 5597173b88f966e43a6605e56e53fbc6, type: 3}
+--- !u!4 &6590286109795057205 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8848166590777103565, guid: 5597173b88f966e43a6605e56e53fbc6,
+    type: 3}
+  m_PrefabInstance: {fileID: 2431494024205036280}
+  m_PrefabAsset: {fileID: 0}

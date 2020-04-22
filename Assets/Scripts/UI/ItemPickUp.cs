@@ -12,9 +12,10 @@ public class ItemPickUp : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.E))
             {
-               // print("YOU INTERACTED WITH " + transform.name);
+               // print("YOU INTERACTED WITH " + other.transform.name);
                 //Show some UI for Interacting or Picking up
 
+                //print("SHIT");
                 Inventory.instance.AddItem(this.item);
                 Destroy(gameObject);
             }

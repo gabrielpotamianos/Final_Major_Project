@@ -38,9 +38,12 @@ public class CameraMovement : MonoBehaviour
 
 
     }
-    private void Update()
-    {
 
+    /// <summary>
+    /// This function is called every fixed framerate frame, if the MonoBehaviour is enabled.
+    /// </summary>
+    void FixedUpdate()
+    {
         #region Camera Rotation
 
         if (Input.GetMouseButton(1))
@@ -61,14 +64,13 @@ public class CameraMovement : MonoBehaviour
             transform.rotation = rotation;
 
         }
-        else if(Input.GetMouseButtonUp(1))
+        else if (Input.GetMouseButtonUp(1))
         {
             Cursor.visible = true;
         }
         #endregion
+
     }
-
-
 
     void LateUpdate()
     {
@@ -77,9 +79,9 @@ public class CameraMovement : MonoBehaviour
 
     void cameraUpdate()
     {
-        Vector3 lerp = Vector3.SmoothDamp(transform.position, target.position + offsetCameraBase, ref velocity, CameraSpeed*Time.deltaTime);
+        Vector3 lerp = Vector3.SmoothDamp(transform.position, target.position + offsetCameraBase, ref velocity, CameraSpeed * Time.deltaTime);
         transform.position = lerp;
 
-       
+
     }
 }

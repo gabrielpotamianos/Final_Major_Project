@@ -4,6 +4,7 @@ Shader "SyntyStudios/CustomCharacter"
 {
 	Properties
 	{
+		_Transparency("Transparency",Range(0,1)) = 0.25
 		_Color_Primary("Color_Primary", Color) = (0.2431373,0.4196079,0.6196079,0)
 		_Color_Secondary("Color_Secondary", Color) = (0.8196079,0.6431373,0.2980392,0)
 		_Color_Leather_Primary("Color_Leather_Primary", Color) = (0.282353,0.2078432,0.1647059,0)
@@ -29,127 +30,140 @@ Shader "SyntyStudios/CustomCharacter"
 		[HideInInspector]_Texture_Skin("Texture_Skin", 2D) = "white" {}
 		[HideInInspector]_Texture_Stubble("Texture_Stubble", 2D) = "white" {}
 		[HideInInspector]_Texture_Scar("Texture_Scar", 2D) = "white" {}
-		_Smoothness("Smoothness", Range( 0 , 1)) = 0
-		_BodyArt_Amount("BodyArt_Amount", Range( 0 , 1)) = 0
-		[HideInInspector] _texcoord( "", 2D ) = "white" {}
-		[HideInInspector] __dirty( "", Int ) = 1
+		_Smoothness("Smoothness", Range(0 , 1)) = 0
+		_BodyArt_Amount("BodyArt_Amount", Range(0 , 1)) = 0
+		[HideInInspector] _texcoord("", 2D) = "white" {}
+		[HideInInspector] __dirty("", Int) = 1
+
+		[Enum(UnityEngine.Rendering.BlendMode)] _SrcBlend("SrcBlend", Float) = 1 //"One"
+		[Enum(UnityEngine.Rendering.BlendMode)] _DstBlend("DestBlend", Float) = 0 //"Zero"
+		[Enum(Off,0,On,1)] _ZWrite("ZWrite", Float) = 1.0 //"On"
 	}
 
-	SubShader
-	{
-		Tags{ "RenderType" = "Opaque"  "Queue" = "Geometry+0" }
-		Cull Back
-		CGPROGRAM
-		#pragma target 3.0
-		#pragma surface surf Standard keepalpha addshadow fullforwardshadows 
-		struct Input
+		SubShader
 		{
-			float2 uv_texcoord;
-		};
+			Tags{ "Queue" = "Transparent"
+			"RenderType" = "Transparent" }
 
-		uniform float4 _Color_BodyArt;
-		uniform sampler2D _Texture;
-		uniform float4 _Texture_ST;
-		uniform float4 _Color_Primary;
-		uniform sampler2D _Mask_Primary;
-		uniform float4 _Mask_Primary_ST;
-		uniform float4 _Color_Secondary;
-		uniform sampler2D _Mask_Secondary;
-		uniform float4 _Mask_Secondary_ST;
-		uniform float4 _Color_Leather_Primary;
-		uniform sampler2D _Texture_Base_Primary;
-		uniform float4 _Texture_Base_Primary_ST;
-		uniform float4 _Color_Leather_Secondary;
-		uniform sampler2D _Texture_Base_Secondary;
-		uniform float4 _Texture_Base_Secondary_ST;
-		uniform float4 _Color_Metal_Primary;
-		uniform sampler2D _Texture_Color_Metal_Primary;
-		uniform float4 _Texture_Color_Metal_Primary_ST;
-		uniform float4 _Color_Metal_Secondary;
-		uniform sampler2D _Texture_Metal_Secondary;
-		uniform float4 _Texture_Metal_Secondary_ST;
-		uniform float4 _Color_Metal_Dark;
-		uniform sampler2D _Texture_Color_Metal_Dark;
-		uniform float4 _Texture_Color_Metal_Dark_ST;
-		uniform float4 _Color_Hair;
-		uniform sampler2D _Texture_Hair;
-		uniform float4 _Texture_Hair_ST;
-		uniform float4 _Color_Skin;
-		uniform sampler2D _Texture_Skin;
-		uniform float4 _Texture_Skin_ST;
-		uniform float4 _Color_Stubble;
-		uniform sampler2D _Texture_Stubble;
-		uniform float4 _Texture_Stubble_ST;
-		uniform float4 _Color_Scar;
-		uniform sampler2D _Texture_Scar;
-		uniform float4 _Texture_Scar_ST;
-		uniform sampler2D _Texture_BodyArt;
-		uniform float4 _Texture_BodyArt_ST;
-		uniform float _BodyArt_Amount;
-		uniform float _Smoothness;
+			ZWrite[_ZWrite]
+			LOD 200
 
-		void surf( Input i , inout SurfaceOutputStandard o )
-		{
-			float2 uv_Texture = i.uv_texcoord * _Texture_ST.xy + _Texture_ST.zw;
-			float2 uv_Mask_Primary = i.uv_texcoord * _Mask_Primary_ST.xy + _Mask_Primary_ST.zw;
-			float temp_output_25_0_g2 = 0.5;
-			float temp_output_22_0_g2 = step( tex2D( _Mask_Primary, uv_Mask_Primary, float2( 0,0 ), float2( 0,0 ) ).r , temp_output_25_0_g2 );
-			float4 lerpResult35 = lerp( tex2D( _Texture, uv_Texture, float2( 0,0 ), float2( 0,0 ) ) , _Color_Primary , temp_output_22_0_g2);
-			float2 uv_Mask_Secondary = i.uv_texcoord * _Mask_Secondary_ST.xy + _Mask_Secondary_ST.zw;
-			float temp_output_25_0_g3 = 0.5;
-			float temp_output_22_0_g3 = step( tex2D( _Mask_Secondary, uv_Mask_Secondary, float2( 0,0 ), float2( 0,0 ) ).r , temp_output_25_0_g3 );
-			float4 lerpResult41 = lerp( lerpResult35 , _Color_Secondary , temp_output_22_0_g3);
-			float2 uv_Texture_Base_Primary = i.uv_texcoord * _Texture_Base_Primary_ST.xy + _Texture_Base_Primary_ST.zw;
-			float temp_output_25_0_g4 = 0.5;
-			float temp_output_22_0_g4 = step( tex2D( _Texture_Base_Primary, uv_Texture_Base_Primary, float2( 0,0 ), float2( 0,0 ) ).r , temp_output_25_0_g4 );
-			float4 lerpResult45 = lerp( lerpResult41 , _Color_Leather_Primary , temp_output_22_0_g4);
-			float2 uv_Texture_Base_Secondary = i.uv_texcoord * _Texture_Base_Secondary_ST.xy + _Texture_Base_Secondary_ST.zw;
-			float temp_output_25_0_g9 = 0.5;
-			float temp_output_22_0_g9 = step( tex2D( _Texture_Base_Secondary, uv_Texture_Base_Secondary, float2( 0,0 ), float2( 0,0 ) ).r , temp_output_25_0_g9 );
-			float4 lerpResult65 = lerp( lerpResult45 , _Color_Leather_Secondary , temp_output_22_0_g9);
-			float2 uv_Texture_Color_Metal_Primary = i.uv_texcoord * _Texture_Color_Metal_Primary_ST.xy + _Texture_Color_Metal_Primary_ST.zw;
-			float temp_output_25_0_g10 = 0.5;
-			float temp_output_22_0_g10 = step( tex2D( _Texture_Color_Metal_Primary, uv_Texture_Color_Metal_Primary, float2( 0,0 ), float2( 0,0 ) ).r , temp_output_25_0_g10 );
-			float4 lerpResult124 = lerp( lerpResult65 , _Color_Metal_Primary , temp_output_22_0_g10);
-			float2 uv_Texture_Metal_Secondary = i.uv_texcoord * _Texture_Metal_Secondary_ST.xy + _Texture_Metal_Secondary_ST.zw;
-			float temp_output_25_0_g11 = 0.5;
-			float temp_output_22_0_g11 = step( tex2D( _Texture_Metal_Secondary, uv_Texture_Metal_Secondary, float2( 0,0 ), float2( 0,0 ) ).r , temp_output_25_0_g11 );
-			float4 lerpResult132 = lerp( lerpResult124 , _Color_Metal_Secondary , temp_output_22_0_g11);
-			float2 uv_Texture_Color_Metal_Dark = i.uv_texcoord * _Texture_Color_Metal_Dark_ST.xy + _Texture_Color_Metal_Dark_ST.zw;
-			float temp_output_25_0_g12 = 0.5;
-			float temp_output_22_0_g12 = step( tex2D( _Texture_Color_Metal_Dark, uv_Texture_Color_Metal_Dark, float2( 0,0 ), float2( 0,0 ) ).r , temp_output_25_0_g12 );
-			float4 lerpResult140 = lerp( lerpResult132 , _Color_Metal_Dark , temp_output_22_0_g12);
-			float2 uv_Texture_Hair = i.uv_texcoord * _Texture_Hair_ST.xy + _Texture_Hair_ST.zw;
-			float temp_output_25_0_g14 = 0.5;
-			float temp_output_22_0_g14 = step( tex2D( _Texture_Hair, uv_Texture_Hair, float2( 0,0 ), float2( 0,0 ) ).r , temp_output_25_0_g14 );
-			float4 lerpResult49 = lerp( lerpResult140 , _Color_Hair , temp_output_22_0_g14);
-			float2 uv_Texture_Skin = i.uv_texcoord * _Texture_Skin_ST.xy + _Texture_Skin_ST.zw;
-			float temp_output_25_0_g15 = 0.5;
-			float temp_output_22_0_g15 = step( tex2D( _Texture_Skin, uv_Texture_Skin, float2( 0,0 ), float2( 0,0 ) ).r , temp_output_25_0_g15 );
-			float4 lerpResult53 = lerp( lerpResult49 , _Color_Skin , temp_output_22_0_g15);
-			float2 uv_Texture_Stubble = i.uv_texcoord * _Texture_Stubble_ST.xy + _Texture_Stubble_ST.zw;
-			float temp_output_25_0_g16 = 0.5;
-			float temp_output_22_0_g16 = step( tex2D( _Texture_Stubble, uv_Texture_Stubble, float2( 0,0 ), float2( 0,0 ) ).r , temp_output_25_0_g16 );
-			float4 lerpResult57 = lerp( lerpResult53 , _Color_Stubble , temp_output_22_0_g16);
-			float2 uv_Texture_Scar = i.uv_texcoord * _Texture_Scar_ST.xy + _Texture_Scar_ST.zw;
-			float temp_output_25_0_g18 = 0.5;
-			float temp_output_22_0_g18 = step( tex2D( _Texture_Scar, uv_Texture_Scar, float2( 0,0 ), float2( 0,0 ) ).r , temp_output_25_0_g18 );
-			float4 lerpResult61 = lerp( lerpResult57 , _Color_Scar , temp_output_22_0_g18);
-			float2 uv_Texture_BodyArt = i.uv_texcoord * _Texture_BodyArt_ST.xy + _Texture_BodyArt_ST.zw;
-			float4 color151 = IsGammaSpace() ? float4(1,1,1,0) : float4(1,1,1,0);
-			float4 lerpResult152 = lerp( tex2D( _Texture_BodyArt, uv_Texture_BodyArt, float2( 0,0 ), float2( 0,0 ) ) , color151 , _BodyArt_Amount);
-			float4 lerpResult69 = lerp( _Color_BodyArt , lerpResult61 , lerpResult152);
-			o.Albedo = lerpResult69.rgb;
-			float temp_output_154_0 = _Smoothness;
-			o.Metallic = temp_output_154_0;
-			o.Smoothness = temp_output_154_0;
-			o.Alpha = 1;
+			Blend[_SrcBlend][_DstBlend]
+
+			Cull Back
+			CGPROGRAM
+			#pragma target 3.0
+			#pragma surface surf Standard keepalpha addshadow fullforwardshadows alpha:transparent
+			struct Input
+			{
+				float2 uv_texcoord;
+			};
+
+			float _Transparency;
+
+			uniform float4 _Color_BodyArt;
+			uniform sampler2D _Texture;
+			uniform float4 _Texture_ST;
+			uniform float4 _Color_Primary;
+			uniform sampler2D _Mask_Primary;
+			uniform float4 _Mask_Primary_ST;
+			uniform float4 _Color_Secondary;
+			uniform sampler2D _Mask_Secondary;
+			uniform float4 _Mask_Secondary_ST;
+			uniform float4 _Color_Leather_Primary;
+			uniform sampler2D _Texture_Base_Primary;
+			uniform float4 _Texture_Base_Primary_ST;
+			uniform float4 _Color_Leather_Secondary;
+			uniform sampler2D _Texture_Base_Secondary;
+			uniform float4 _Texture_Base_Secondary_ST;
+			uniform float4 _Color_Metal_Primary;
+			uniform sampler2D _Texture_Color_Metal_Primary;
+			uniform float4 _Texture_Color_Metal_Primary_ST;
+			uniform float4 _Color_Metal_Secondary;
+			uniform sampler2D _Texture_Metal_Secondary;
+			uniform float4 _Texture_Metal_Secondary_ST;
+			uniform float4 _Color_Metal_Dark;
+			uniform sampler2D _Texture_Color_Metal_Dark;
+			uniform float4 _Texture_Color_Metal_Dark_ST;
+			uniform float4 _Color_Hair;
+			uniform sampler2D _Texture_Hair;
+			uniform float4 _Texture_Hair_ST;
+			uniform float4 _Color_Skin;
+			uniform sampler2D _Texture_Skin;
+			uniform float4 _Texture_Skin_ST;
+			uniform float4 _Color_Stubble;
+			uniform sampler2D _Texture_Stubble;
+			uniform float4 _Texture_Stubble_ST;
+			uniform float4 _Color_Scar;
+			uniform sampler2D _Texture_Scar;
+			uniform float4 _Texture_Scar_ST;
+			uniform sampler2D _Texture_BodyArt;
+			uniform float4 _Texture_BodyArt_ST;
+			uniform float _BodyArt_Amount;
+			uniform float _Smoothness;
+
+			void surf(Input i , inout SurfaceOutputStandard o)
+			{
+				float2 uv_Texture = i.uv_texcoord * _Texture_ST.xy + _Texture_ST.zw;
+				float2 uv_Mask_Primary = i.uv_texcoord * _Mask_Primary_ST.xy + _Mask_Primary_ST.zw;
+				float temp_output_25_0_g2 = 0.5;
+				float temp_output_22_0_g2 = step(tex2D(_Mask_Primary, uv_Mask_Primary, float2(0,0), float2(0,0)).r , temp_output_25_0_g2);
+				float4 lerpResult35 = lerp(tex2D(_Texture, uv_Texture, float2(0,0), float2(0,0)) , _Color_Primary , temp_output_22_0_g2);
+				float2 uv_Mask_Secondary = i.uv_texcoord * _Mask_Secondary_ST.xy + _Mask_Secondary_ST.zw;
+				float temp_output_25_0_g3 = 0.5;
+				float temp_output_22_0_g3 = step(tex2D(_Mask_Secondary, uv_Mask_Secondary, float2(0,0), float2(0,0)).r , temp_output_25_0_g3);
+				float4 lerpResult41 = lerp(lerpResult35 , _Color_Secondary , temp_output_22_0_g3);
+				float2 uv_Texture_Base_Primary = i.uv_texcoord * _Texture_Base_Primary_ST.xy + _Texture_Base_Primary_ST.zw;
+				float temp_output_25_0_g4 = 0.5;
+				float temp_output_22_0_g4 = step(tex2D(_Texture_Base_Primary, uv_Texture_Base_Primary, float2(0,0), float2(0,0)).r , temp_output_25_0_g4);
+				float4 lerpResult45 = lerp(lerpResult41 , _Color_Leather_Primary , temp_output_22_0_g4);
+				float2 uv_Texture_Base_Secondary = i.uv_texcoord * _Texture_Base_Secondary_ST.xy + _Texture_Base_Secondary_ST.zw;
+				float temp_output_25_0_g9 = 0.5;
+				float temp_output_22_0_g9 = step(tex2D(_Texture_Base_Secondary, uv_Texture_Base_Secondary, float2(0,0), float2(0,0)).r , temp_output_25_0_g9);
+				float4 lerpResult65 = lerp(lerpResult45 , _Color_Leather_Secondary , temp_output_22_0_g9);
+				float2 uv_Texture_Color_Metal_Primary = i.uv_texcoord * _Texture_Color_Metal_Primary_ST.xy + _Texture_Color_Metal_Primary_ST.zw;
+				float temp_output_25_0_g10 = 0.5;
+				float temp_output_22_0_g10 = step(tex2D(_Texture_Color_Metal_Primary, uv_Texture_Color_Metal_Primary, float2(0,0), float2(0,0)).r , temp_output_25_0_g10);
+				float4 lerpResult124 = lerp(lerpResult65 , _Color_Metal_Primary , temp_output_22_0_g10);
+				float2 uv_Texture_Metal_Secondary = i.uv_texcoord * _Texture_Metal_Secondary_ST.xy + _Texture_Metal_Secondary_ST.zw;
+				float temp_output_25_0_g11 = 0.5;
+				float temp_output_22_0_g11 = step(tex2D(_Texture_Metal_Secondary, uv_Texture_Metal_Secondary, float2(0,0), float2(0,0)).r , temp_output_25_0_g11);
+				float4 lerpResult132 = lerp(lerpResult124 , _Color_Metal_Secondary , temp_output_22_0_g11);
+				float2 uv_Texture_Color_Metal_Dark = i.uv_texcoord * _Texture_Color_Metal_Dark_ST.xy + _Texture_Color_Metal_Dark_ST.zw;
+				float temp_output_25_0_g12 = 0.5;
+				float temp_output_22_0_g12 = step(tex2D(_Texture_Color_Metal_Dark, uv_Texture_Color_Metal_Dark, float2(0,0), float2(0,0)).r , temp_output_25_0_g12);
+				float4 lerpResult140 = lerp(lerpResult132 , _Color_Metal_Dark , temp_output_22_0_g12);
+				float2 uv_Texture_Hair = i.uv_texcoord * _Texture_Hair_ST.xy + _Texture_Hair_ST.zw;
+				float temp_output_25_0_g14 = 0.5;
+				float temp_output_22_0_g14 = step(tex2D(_Texture_Hair, uv_Texture_Hair, float2(0,0), float2(0,0)).r , temp_output_25_0_g14);
+				float4 lerpResult49 = lerp(lerpResult140 , _Color_Hair , temp_output_22_0_g14);
+				float2 uv_Texture_Skin = i.uv_texcoord * _Texture_Skin_ST.xy + _Texture_Skin_ST.zw;
+				float temp_output_25_0_g15 = 0.5;
+				float temp_output_22_0_g15 = step(tex2D(_Texture_Skin, uv_Texture_Skin, float2(0,0), float2(0,0)).r , temp_output_25_0_g15);
+				float4 lerpResult53 = lerp(lerpResult49 , _Color_Skin , temp_output_22_0_g15);
+				float2 uv_Texture_Stubble = i.uv_texcoord * _Texture_Stubble_ST.xy + _Texture_Stubble_ST.zw;
+				float temp_output_25_0_g16 = 0.5;
+				float temp_output_22_0_g16 = step(tex2D(_Texture_Stubble, uv_Texture_Stubble, float2(0,0), float2(0,0)).r , temp_output_25_0_g16);
+				float4 lerpResult57 = lerp(lerpResult53 , _Color_Stubble , temp_output_22_0_g16);
+				float2 uv_Texture_Scar = i.uv_texcoord * _Texture_Scar_ST.xy + _Texture_Scar_ST.zw;
+				float temp_output_25_0_g18 = 0.5;
+				float temp_output_22_0_g18 = step(tex2D(_Texture_Scar, uv_Texture_Scar, float2(0,0), float2(0,0)).r , temp_output_25_0_g18);
+				float4 lerpResult61 = lerp(lerpResult57 , _Color_Scar , temp_output_22_0_g18);
+				float2 uv_Texture_BodyArt = i.uv_texcoord * _Texture_BodyArt_ST.xy + _Texture_BodyArt_ST.zw;
+				float4 color151 = IsGammaSpace() ? float4(1,1,1,0) : float4(1,1,1,0);
+				float4 lerpResult152 = lerp(tex2D(_Texture_BodyArt, uv_Texture_BodyArt, float2(0,0), float2(0,0)) , color151 , _BodyArt_Amount);
+				float4 lerpResult69 = lerp(_Color_BodyArt , lerpResult61 , lerpResult152);
+				o.Albedo = lerpResult69.rgb;
+				float temp_output_154_0 = _Smoothness;
+				o.Metallic = temp_output_154_0;
+				o.Smoothness = temp_output_154_0;
+				o.Alpha = _Transparency;
+			}
+
+			ENDCG
 		}
-
-		ENDCG
-	}
-	Fallback "Diffuse"
-	CustomEditor "ASEMaterialInspector"
+			Fallback "Diffuse"
+				CustomEditor "ASEMaterialInspector"
 }
 /*ASEBEGIN
 Version=16301

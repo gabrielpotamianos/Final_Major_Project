@@ -5,6 +5,9 @@ using UnityEngine.UI;
 
 public class PlayerData : CharacterStats
 {
+    [HideInInspector]
+    public bool AbleToLoot;
+
     public GameObject HealthBar;
     public GameObject AbilityResourceBar;
 
@@ -22,6 +25,30 @@ public class PlayerData : CharacterStats
     private IEnumerator HealthRegenCoroutine;
     private IEnumerator InCombatCoroutine;
 
+
+
+
+
+
+    //
+    // Combat Data
+    //
+    public GameObject SpellBar;
+    public List<Image> SpellImages;
+    public List<Image> SpellCooldownImages;
+
+
+
+
+
+
+
+
+
+
+
+
+
     public override void Awake()
     {
         HealthRegenCoroutine = RegenHealth();
@@ -34,7 +61,9 @@ public class PlayerData : CharacterStats
         base.Start();
         HealthBar = GameObject.Find("PlayerHealthSlider");
         AbilityResourceBar = GameObject.Find("PlayerAbilitySlider");
-
+        //SpellBar = GameObject.FindGameObjectWithTag("SpellBar");
+       // SpellImages.AddRange(SpellBar.GetComponentsInChildren<Image>());
+        //SpellCooldownImages.AddRange(SpellImages.)
         switch (CharacterSelection.ChosenCharacter.breed)
         {
             case CharacterInfo.Breed.Mage:
@@ -141,10 +170,10 @@ public class PlayerData : CharacterStats
     {
 
         IsRegenHealth = false;
-        while (defaultStats.Health < maxHealth)
+        while (defaultStats.Health < defaultStats.maxHealth)
         {
             yield return new WaitForSeconds(RegenDelayHealth);
-            HealthRecharge(maxHealth / 100);
+            HealthRecharge(defaultStats.maxHealth / 100);
         }
     }
 
@@ -176,12 +205,22 @@ public class PlayerData : CharacterStats
 
     public void HealthRecharge(float RechargeValue)
     {
-        defaultStats.Health += defaultStats.Health + RechargeValue <= maxHealth ? RechargeValue : maxHealth - defaultStats.Health;
+        defaultStats.Health += defaultStats.Health + RechargeValue <= defaultStats.maxHealth ? RechargeValue : defaultStats.maxHealth - defaultStats.Health;
     }
 
 
 
-
+    public void ToogleLoot()
+    {
+        if (AbleToLoot)
+        {
+            anim.SetBool("Looting", !anim.GetBool("Looting"));
+            GetComponent<PlayerMovement>().enabled = !anim.GetBool("Looting");
+            Target.instance.enabled= !anim.GetBool("Looting");
+            GetComponent<Rigidbody>().velocity = Vector3.zero;
+            Inventory.instance.inventory.SetActive(anim.GetBool("Looting"));
+        }
+    }
 
 
 

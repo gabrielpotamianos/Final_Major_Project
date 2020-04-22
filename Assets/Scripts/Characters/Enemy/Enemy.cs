@@ -1,8 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
+﻿using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UI;
 
 
 [System.Serializable]
@@ -18,9 +16,14 @@ public class Enemy : CharacterStats
     public FiniteStateMachine FSMMachine;
     Vector3 PatrolPoint;
 
+    public bool BladeStormHit = false;
+
+    [HideInInspector]
+    public Looting LootInventory;
 
     public override void Awake()
     {
+        LootInventory = GetComponent<Looting>();
         agent = GetComponent<NavMeshAgent>();
         base.Awake();
 
@@ -42,12 +45,19 @@ public class Enemy : CharacterStats
             FSMMachine.UpdateFSM();
         else agent.isStopped = true;
         anim.SetFloat("Health", defaultStats.Health);
+
+        //var newPos=Camera.main.WorldToScreenPoint(this.transform.position);
+        //newPos.Set(-newPos.x, newPos.y, newPos.z);
+
+        //if (HealthBar && HealthBar.GetComponent<Slider>().value!=defaultStats.Health)
+        //    UpdateBar(defaultStats.Health);
+
     }
 
     private void OnDrawGizmos()
     {
-        //Gizmos.DrawWireSphere(CentrePatrolPointPatrol.transform.position, rangeSphere);
-       // Gizmos.DrawWireSphere(transform.position + transform.forward * rangeSphere, rangeSphere);
+     //  Gizmos.DrawWireSphere(CentrePatrolPointPatrol.transform.position, rangeSphere);
+     //  Gizmos.DrawWireSphere(transform.position + transform.forward * rangeSphere, rangeSphere);
     }
 
     public void RandomPatrolPoint(Vector3 center, float range, out Vector3 result)
@@ -69,10 +79,17 @@ public class Enemy : CharacterStats
     }
 
 
+
     public void TakeDamage(float dmg)
     {
         defaultStats.Health -= defaultStats.Health - dmg >= 0 ? dmg : defaultStats.Health;
-        UpdateBar(defaultStats.Health);
+        defaultStats.Hostile = true;
+        if (FSMMachine != null && FSMMachine.GetCurrState()!=GoTo.Instance)
+        {
+            transform.LookAt(player.gameObject.transform);
+            FSMMachine.ChangeState(GoTo.Instance);
+        }
+
     }
 
     public void DealDamage()
@@ -83,7 +100,7 @@ public class Enemy : CharacterStats
 
     public void UpdateBar(float health)
     {
-        HealthBar.GetComponent<Slider>().value = health / 100.0f;
+        HealthBar.GetComponent<Slider>().value = health / defaultStats.maxHealth;
 
     }
 }
@@ -115,6 +132,11 @@ public class FiniteStateMachine
         currState = newState;
 
         if (currState != null) currState.Begin(enemy);
+    }
+
+    public State GetCurrState()
+    {
+        return currState;
     }
 }
 
@@ -158,7 +180,7 @@ sealed class GoTo : State
     public override void Execute(Enemy enemy)
     {
 
-        if (Vector3.Distance(enemy.player.transform.position, enemy.transform.position) <= enemy.rangeSphere && enemy.defaultStats.Hostile && enemy.player.defaultStats.Alive)
+        if (Vector3.Distance(enemy.player.transform.position, enemy.transform.position + enemy.transform.forward * enemy.rangeSphere) <= enemy.rangeSphere && enemy.defaultStats.Hostile && enemy.player.defaultStats.Alive)
         {
             randomPoint = enemy.player.transform.position;
             if (enemy.agent.remainingDistance <= enemy.agent.stoppingDistance )

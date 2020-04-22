@@ -1,0 +1,508 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+
+public class MageCombatSystem : PlayerCombat
+{
+    public static bool InteruptCast = false;
+    public delegate void SpellToCast();
+    private delegate IEnumerator IEnumeratorDelegate();
+
+
+
+
+
+    [Space(20)]
+    [Header("Mage")]
+
+    public Slider CastBar;
+    public CanvasGroup CastBarCanvasGroup;
+
+    [Space(10)]
+    public Sprite FireballSprite;
+    public GameObject FireballPrefab;
+    public float FireballDamageMultiplier;
+    public int FireballManaCost;
+    public float FireballCooldownTime;
+    public float FireballRange;
+    public float FireballCastTime;
+    public bool FireballOnCooldown = false;
+    GameObject FireballGameObjectRef;
+
+
+
+
+
+    [Space(15)]
+    public Color SpellIndicatorForbiddenColor;
+    public Color SpellIndicatorColor;
+    [Space(7)]
+    public Texture ForbiddenTexture;
+    public Texture SpellIndicatorTexture;
+    public GameObject SpellIndicator;
+    public GameObject IceMissle;
+    public float NumberOfMissiles;
+    public LayerMask IgnoreSpellIndicator;
+    public Sprite BlizzardSprite;
+    public float BlizzardCastTime;
+    public float BlizzardCastRange;
+    public float BlizzardAreaAffected;
+    public float BlizzardDamageMultiplier;
+    public float BlizzardManaCost;
+    public float BlizzardCooldownTime;
+    public bool BlizzardOnCooldown = false;
+
+
+    Projector BlizzardProjector;
+    IEnumerator BlizzardCoroutine;
+    GameObject SpellIndicatorGameObject;
+    public static float activeMissiles;
+
+    List<GameObject> BlizzardMissiles;
+
+
+
+
+
+
+    [Space(15)]
+
+    public Sprite DeathsBreathSprite;
+    public GameObject DeathsBreathPrefab;
+
+    public float DeathsBreathDamageMultiplier;
+
+    public float DeathsBreathDuration;
+    public float DeathsBreathHeight;
+
+    public float DeathsBreathFlameRadius;
+    public float DeathsBreathMaxDistance;
+    public LayerMask DeathsBreathLayers;
+
+    public float DeathsBreathCooldownTime;
+    public bool DeathsBreathOnCooldown;
+
+    GameObject DeathsBreathGameObject;
+
+
+    // Start is called before the first frame update
+    public override void Start()
+    {
+        CastBar = GameObject.Find("CastBar").gameObject.GetComponent<Slider>();
+        CastBarCanvasGroup = CastBar.GetComponent<CanvasGroup>();
+        CastBarCanvasGroup.alpha = 1;
+        BlizzardMissiles = new List<GameObject>();
+
+
+        base.Start();
+        SetSpellsUI(FireballSprite, BlizzardSprite, DeathsBreathSprite);
+    }
+
+    // Update is called once per frame
+    public override void Update()
+    {
+        GetInput(Fireball, Blizzard, DeathsBreath);
+        base.Update();
+    }
+
+
+
+
+
+    #region Abilities Checks
+
+    void Fireball()
+    {
+        if (PlayerUtilities.CheckSpell(Target.instance.getCurrEnemy(), playerData, FireballRange, FireballOnCooldown, FireballManaCost))
+        {
+            Missiles.CurrTarger = Target.instance.getCurrEnemy();
+            StartCoroutine(CastSpell(FireballStart, FireballStop, FireballCastTime, CastBar, "Fireball"));
+        }
+    }
+
+    void Blizzard()
+    {
+        if (PlayerUtilities.CheckSpell(playerData, BlizzardOnCooldown, BlizzardManaCost))
+            StartCoroutine(BlizzardStart());
+    }
+
+    void DeathsBreath()
+    {
+        if (PlayerUtilities.CheckSpell(playerData, DeathsBreathOnCooldown, playerData.currAR * 4 / 100))
+        {
+            StartCoroutine(SpellCooldown(Spell3, DeathsBreathCooldownTime, (x) => { DeathsBreathOnCooldown = x; }));
+            StartCoroutine(DeathsBreathStart(DeathsBreathDuration));
+        }
+
+    }
+
+    #endregion
+
+
+
+
+    IEnumerator CastSpell(SpellToCast spell, SpellToCast StopSpell, float CastTime, Slider Castbar, string AnimTransitionBool)
+    {
+        if (!InteruptCast)
+        {
+            SpellCheckAssigned = true;
+            playerData.anim.SetBool("Casting", true);
+            CastBarCanvasGroup.alpha = 1;
+            CastBar.value = 0;
+            float timeLeft = 0;
+            while (Castbar.value < 1)
+            {
+                if (InteruptCast)
+                {
+                    CastBar.value = 0;
+                    CastBarCanvasGroup.alpha = 0;
+                    playerData.anim.SetBool("Casting", false);
+                    StopSpell.Invoke();
+                    yield break;
+                }
+                timeLeft += Time.deltaTime;
+                Castbar.value = timeLeft / CastTime;
+                yield return null;
+            }
+            playerData.anim.SetBool(AnimTransitionBool, true);
+            spell.Invoke();
+
+            CastBarCanvasGroup.alpha = 0;
+        }
+    }
+
+    IEnumerator CastSpell(IEnumeratorDelegate spell, SpellToCast StopSpell, float CastTime, Slider Castbar, string AnimTransitionBool)
+    {
+        if (!InteruptCast)
+        {
+            IEnumeratorDelegate Spell;
+            SpellCheckAssigned = true;
+            playerData.anim.SetBool("Casting", true);
+            CastBarCanvasGroup.alpha = 1;
+            CastBar.value = 0;
+            float timeLeft = 0;
+            Spell = spell;
+            StartCoroutine(Spell.Invoke());
+
+            while (Castbar.value < 1)
+            {
+                if (InteruptCast)
+                {
+                    CastBar.value = 0;
+                    CastBarCanvasGroup.alpha = 0;
+                    playerData.anim.SetBool("Casting", false);
+                    StopSpell.Invoke();
+
+
+                    yield break;
+                }
+                timeLeft += Time.deltaTime;
+                Castbar.value = timeLeft / CastTime;
+                yield return null;
+            }
+            playerData.anim.SetBool(AnimTransitionBool, true);
+
+            CastBarCanvasGroup.alpha = 0;
+        }
+    }
+
+
+    #region Fireball - Body Functions
+
+
+    /// <summary>
+    /// Fireball Start Function - Triggers the cooldown of the ability
+    /// </summary>
+    void FireballStart()
+    {
+        StartCoroutine(SpellCooldown(Spell1, FireballCooldownTime, (x) => { FireballOnCooldown = x; ; }));
+    }
+
+
+    /// <summary>
+    /// Instantiate the fireball or reposition the fireball
+    /// </summary>
+    void InitFireball()
+    {
+        Vector3 FireballInitPos = (GameObject.Find("Hand_R").transform.position + GameObject.Find("Hand_L").transform.position) / 2;
+
+        if (!FireballGameObjectRef)
+            FireballGameObjectRef = Instantiate(FireballPrefab, FireballInitPos, Quaternion.identity);
+        else
+        {
+            FireballGameObjectRef.SetActive(true);
+            FireballGameObjectRef.transform.position = FireballInitPos;
+        }
+
+        FireballGameObjectRef.transform.parent = GameObject.Find("Hand_R").gameObject.transform;
+
+    }
+
+
+    /// <summary>
+    /// Launches Fireball (Enables the Missile Script)
+    /// </summary>
+    void LaunchFireball()
+    {
+        FireballGameObjectRef.transform.parent = null;
+        FireballGameObjectRef.GetComponent<Missiles>().enabled = true;
+        FireballGameObjectRef.GetComponent<Missiles>().FireballMultiplier = FireballDamageMultiplier;
+        playerData.ConsumeAR(FireballManaCost);
+    }
+
+
+    /// <summary>
+    /// Sets all the Animator Transition to false
+    /// </summary>
+    void FireballStop()
+    {
+        playerData.anim.SetBool("Fireball", false);
+        playerData.anim.SetBool("Casting", false);
+        SpellCheckAssigned = false;
+    }
+
+    #endregion
+
+
+    #region Blizzard - Body Functions
+
+    /// <summary>
+    /// Blizzard Start - Starts the Projector and places the Spell Marker
+    /// </summary>
+    /// <returns></returns>
+    IEnumerator BlizzardStart()
+    {
+        if (!InteruptCast)
+        {
+            Ray dir = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
+            Physics.Raycast(dir, out hit, Mathf.Infinity, IgnoreSpellIndicator);
+
+            if (!SpellIndicatorGameObject)
+            {
+                SpellIndicatorGameObject = Instantiate(SpellIndicator, new Vector3(hit.point.x, 0, hit.point.z), Quaternion.identity);
+                BlizzardProjector = SpellIndicatorGameObject.transform.GetChild(0).GetComponent<Projector>();
+            }
+            else
+            {
+                SpellIndicatorGameObject.transform.GetChild(0).gameObject.SetActive(true);
+                BlizzardProjector.enabled = true;
+
+            }
+
+            while (true)
+            {
+                dir = Camera.main.ScreenPointToRay(Input.mousePosition);
+                Physics.Raycast(dir, out hit, Mathf.Infinity, IgnoreSpellIndicator);
+
+                if (hit.collider)
+                    SpellIndicatorGameObject.transform.position = new Vector3(hit.point.x, SpellIndicator.transform.position.y, hit.point.z);
+
+                if (Vector3.Distance(gameObject.transform.position, SpellIndicatorGameObject.transform.position) > BlizzardCastRange)
+                {
+                    MessageManager.instance.DisplayMessage(Constants.OUT_OF_RANGE, 0.1f);
+                    BlizzardProjector.material.color = SpellIndicatorForbiddenColor;
+                    BlizzardProjector.material.SetTexture("_ShadowTex", ForbiddenTexture);
+                }
+                else if (Vector3.Distance(gameObject.transform.position, SpellIndicatorGameObject.transform.position) < BlizzardCastRange)
+                {
+                    BlizzardProjector.material.color = SpellIndicatorColor;
+                    BlizzardProjector.material.SetTexture("_ShadowTex", SpellIndicatorTexture);
+
+                    if (Input.GetMouseButtonDown(0))
+                    {
+                        SpellIndicatorGameObject.transform.GetChild(0).gameObject.SetActive(false);
+                        StartCoroutine(CastSpell(BlizzardLaunch, BlizzardStop, BlizzardCastTime, CastBar, "Blizzard"));
+
+                        yield break;
+                    }
+                }
+
+                if (Input.GetMouseButtonDown(1))
+                {
+                    SpellIndicatorGameObject.transform.GetChild(0).gameObject.SetActive(false);
+                    yield break;
+                }
+                yield return null;
+            }
+        }
+        else
+        {
+            BlizzardStop();
+            SpellIndicatorGameObject.transform.GetChild(0).gameObject.SetActive(false);
+            yield break;
+        }
+
+    }
+
+    /// <summary>
+    /// Blizzard Launch - Instantiate the Missiles or Reposition them
+    /// <para>Object Pooling</para>
+    /// </summary>
+    /// <returns></returns>
+    IEnumerator BlizzardLaunch()
+    {
+        if (!InteruptCast)
+        {
+            StartCoroutine(SpellCooldown(Spell2, BlizzardCooldownTime, (x) => { BlizzardOnCooldown = x; }));
+            BlizzardProjector.enabled = false;
+
+            for (int i = 0; i < NumberOfMissiles; i++)
+            {
+                if (InteruptCast)
+                {
+                    BlizzardStop();
+                    break;
+                }
+
+                Vector2 pos = new Vector2(SpellIndicatorGameObject.transform.position.x, SpellIndicatorGameObject.transform.position.z) + UnityEngine.Random.insideUnitCircle * BlizzardAreaAffected;
+                print(pos);
+
+                if (BlizzardMissiles.Count < NumberOfMissiles)
+                {
+                    var temp = Instantiate(IceMissle, new Vector3(pos.x, SpellIndicatorGameObject.transform.GetChild(0).transform.position.y, pos.y), Quaternion.identity);
+                    activeMissiles++;
+                    temp.GetComponent<Missiles>().BlizzardDamage = 10 * playerData.AttackPower;
+                    temp.GetComponent<Missiles>().AOEDamage = SpellIndicatorGameObject.transform.GetChild(0).transform.GetChild(0).gameObject.GetComponent<AOEDamageScript>();
+                    BlizzardMissiles.Add(temp);
+                }
+                else
+                {
+                    BlizzardMissiles[i].transform.position = new Vector3(pos.x, BlizzardProjector.transform.position.y, pos.y);
+                    BlizzardMissiles[i].SetActive(true);
+                }
+
+                yield return new WaitForSeconds(BlizzardCastTime / NumberOfMissiles);
+            }
+
+            while (activeMissiles > 0)
+            {
+                yield return null;
+            }
+            SpellIndicatorGameObject.transform.GetChild(0).gameObject.SetActive(false);
+        }
+        else
+        {
+            BlizzardStop();
+            yield break;
+        }
+    }
+
+
+    /// <summary>
+    /// Blizzard Stop - Stops the animations
+    /// </summary>
+    void BlizzardStop()
+    {
+        playerData.anim.SetBool("Casting", false);
+        playerData.anim.SetBool("Blizzard", false);
+        SpellCheckAssigned = false;
+    }
+
+    #endregion
+
+
+    #region Death's Breath - Body Function
+
+    /// <summary>
+    /// Death's Breath - Flame thrower
+    /// <para> Creates a Flame - Thrower Skull </para>
+    /// </summary>
+    /// <param name="TimeToBePausedFor"></param>
+    /// <returns></returns>
+    IEnumerator DeathsBreathStart(float TimeToBePausedFor)
+    {
+        //Disables the Spell Assignment 
+        SpellCheckAssigned = true;
+
+        //Consume the 4% of the Player's Mana
+        playerData.ConsumeAR(playerData.currAR * 4 / 100);
+
+
+        //Checks if the Object was instantiated
+        if (!DeathsBreathGameObject)
+            DeathsBreathGameObject = Instantiate(DeathsBreathPrefab, transform.position + new Vector3(0, DeathsBreathHeight, 0), transform.rotation);
+        else
+        {
+            //Reposition Object, Rotates Object, Activates Object, Reset Initial Setup of the Children
+            DeathsBreathGameObject.SetActive(true);
+            DeathsBreathGameObject.transform.GetChild(0).gameObject.SetActive(false);
+            DeathsBreathGameObject.transform.GetChild(1).gameObject.SetActive(false);
+
+            DeathsBreathGameObject.transform.position = transform.position + new Vector3(0, DeathsBreathHeight, 0);
+            DeathsBreathGameObject.transform.rotation = transform.rotation;
+        }
+
+        //Make it a Child of the Player GameObject
+        DeathsBreathGameObject.transform.parent = gameObject.transform;
+
+        //Data Gather
+        var FireRaisingParticle = DeathsBreathGameObject.transform.GetChild(0).transform.GetChild(1).GetComponent<ParticleSystem>().main;
+        var SkullParticle = DeathsBreathGameObject.transform.GetChild(0).transform.GetChild(2).GetComponent<ParticleSystem>();
+        var JawParticle = DeathsBreathGameObject.transform.GetChild(0).transform.GetChild(3).GetComponent<ParticleSystem>();
+        var EndSmokeParticle = DeathsBreathGameObject.transform.GetChild(0).transform.GetChild(5).GetComponent<ParticleSystem>().main;
+
+
+        //Updates the Duration and the Start Delay Time to the Time we want the skull to be paused for
+        FireRaisingParticle.duration += TimeToBePausedFor;
+        EndSmokeParticle.startDelay = EndSmokeParticle.startDelay.constant + TimeToBePausedFor;
+
+
+        //Enables the FireFlame and Skull Particle Effects
+        DeathsBreathGameObject.transform.GetChild(0).gameObject.SetActive(true);
+        DeathsBreathGameObject.transform.GetChild(1).gameObject.SetActive(true);
+
+        //Gathers all Objects in from of the player 
+        RaycastHit[] hitss;
+        hitss = Physics.SphereCastAll(transform.position + new Vector3(0, DeathsBreathHeight, 0), DeathsBreathFlameRadius, transform.forward, DeathsBreathMaxDistance, DeathsBreathLayers, QueryTriggerInteraction.UseGlobal);
+
+        foreach (RaycastHit hit in hitss)
+        {
+            //If any of the objects on that Layer Mask are Enemies then Hit them if they are alive
+            if (hit.collider.GetComponent<Enemy>() && hit.collider.GetComponent<Enemy>().defaultStats.Alive)
+                hit.collider.GetComponent<Enemy>().TakeDamage(playerData.AttackPower * DeathsBreathDamageMultiplier);
+        }
+
+        //Wait for Half of the Skull Particle Effect to play
+        yield return new WaitForSeconds(SkullParticle.main.startLifetime.constant / 2);
+
+
+        //Pause Skull and Jaw for TimeToBePausedFor
+        SkullParticle.Pause(true);
+        JawParticle.Pause(true);
+
+        yield return new WaitForSeconds(TimeToBePausedFor);
+
+        //Play Skull and Jaw Particle Effect
+        SkullParticle.Play(true);
+        JawParticle.Play(true);
+
+        //Wait for the remaining time of the skull effect
+        yield return new WaitForSeconds(SkullParticle.main.duration - SkullParticle.time);
+
+        //Disable the FlameThrower Particle
+        DeathsBreathGameObject.transform.GetChild(1).gameObject.SetActive(false);
+
+        //Release Spell Assignment
+        SpellCheckAssigned = false;
+
+        //Wait for the remaining time of the EndSmokeParticle Effect
+        yield return new WaitForSeconds(EndSmokeParticle.duration - DeathsBreathGameObject.transform.GetChild(0).transform.GetChild(5).GetComponent<ParticleSystem>().time);
+
+        //Disbale Skull GameObject
+        DeathsBreathGameObject.transform.GetChild(0).gameObject.SetActive(false);
+
+        //Disable Entire Object
+        DeathsBreathGameObject.SetActive(false);
+
+        //Reset  
+        FireRaisingParticle.duration -= TimeToBePausedFor;
+        EndSmokeParticle.startDelay = EndSmokeParticle.startDelay.constant - TimeToBePausedFor;
+
+
+
+    }
+
+    #endregion
+}

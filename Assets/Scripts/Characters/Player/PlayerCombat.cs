@@ -1,154 +1,194 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.SceneManagement;
-using System;
+using System.Linq;
 
 public class PlayerCombat : MonoBehaviour
 {
+    protected delegate void Ability();
+    protected Ability CurrAbility;
 
-    public GameObject projectile;
-    public int costAbility1;
-    public float Ability1Time;
-    public float customRange;
-    public int costAbility2;
-    public int costAbility3;
-    public int costAbility4;
+    protected GameObject projectile;
+
+
+    protected Image Spell1;
+    protected Image Spell2;
+    protected Image Spell3;
+    protected Image Spell4;
+    protected bool SpellCheckAssigned = false;
+
 
     [HideInInspector]
-    public bool AbleToLoot;
-    PlayerData playerData;
+    protected PlayerData playerData;
 
-    bool AnimHasStarted = false;
 
-    private void Awake()
+
+
+    public void Awake()
     {
-       // CharacterSelection.ChosenCharacter = new CharacterInfo();
-       // CharacterSelection.ChosenCharacter.breed = (CharacterInfo.Breed)Enum.Parse(typeof(CharacterInfo.Breed), gameObject.tag);
+
+
+        CharacterSelection.ChosenCharacter = new CharacterInfo();
+        CharacterSelection.ChosenCharacter.breed = (CharacterInfo.Breed)Enum.Parse(typeof(CharacterInfo.Breed), gameObject.tag);
+       
+
+
+
+        switch (CharacterSelection.ChosenCharacter.breed)
+        {
+            case CharacterInfo.Breed.Mage:
+                GetComponent<MageCombatSystem>().enabled = true;
+                GetComponent<RogueCombatSystem>().enabled = false;
+                GetComponent<WarriorCombatSystem>().enabled = false;
+                break;
+            case CharacterInfo.Breed.Warrior:
+                GetComponent<MageCombatSystem>().enabled = false;
+                GetComponent<RogueCombatSystem>().enabled = false;
+                GetComponent<WarriorCombatSystem>().enabled = true;
+                break;
+            case CharacterInfo.Breed.Rogue:
+                GetComponent<MageCombatSystem>().enabled = false;
+                GetComponent<RogueCombatSystem>().enabled = true;
+                GetComponent<WarriorCombatSystem>().enabled = false;
+                break;
+
+        }
+        //print(CharacterSelection.ChosenCharacter.breed);
+        //ChargeAbilityTime = Constants.CHARGE_ABILITY_TIME;
+        //ChargeCooldownTime = Constants.CHARGE_COOLDOWN_TIME;
+        //ChargeRange = Constants.CHARGE_RANGE;
+        //  ToogleInvisibility(false);
+
+
+
+
         playerData = GetComponent<PlayerData>();
     }
 
+    public virtual void Start()
+    {
+        Spell1 = GameObject.Find(Constants.FIRST_SPELL).transform.GetChild(0).GetComponent<Image>();
+        Spell2 = GameObject.Find(Constants.SECOND_SPELL).transform.GetChild(0).GetComponent<Image>();
+        Spell3 = GameObject.Find(Constants.THIRD_SPELL).transform.GetChild(0).GetComponent<Image>();
+        Spell4 = GameObject.Find(Constants.FORTH_SPELL).transform.GetChild(0).GetComponent<Image>();
+    }
+
+
+    public void DisplaySpellsUI()
+    {
+        Spell1.gameObject.transform.parent.gameObject.SetActive(!(Spell1.gameObject.transform.parent.GetComponent<Image>().sprite == null && Spell1.sprite == null));
+        Spell2.gameObject.transform.parent.gameObject.SetActive(!(Spell2.gameObject.transform.parent.GetComponent<Image>().sprite == null && Spell2.sprite == null));
+        Spell3.gameObject.transform.parent.gameObject.SetActive(!(Spell3.gameObject.transform.parent.GetComponent<Image>().sprite == null && Spell3.sprite == null));
+        Spell4.gameObject.transform.parent.gameObject.SetActive(!(Spell4.gameObject.transform.parent.GetComponent<Image>().sprite == null && Spell4.sprite == null));
+
+    }
 
     // Update is called once per frame
-    void Update()
+    public virtual void Update()
     {
-      //  CharacterSelection.ChosenCharacter.breed = (CharacterInfo.Breed)Enum.Parse(typeof(CharacterInfo.Breed), gameObject.tag);
-
-        //NOT CONSISTENT CODE
-        if (Input.GetKeyDown(KeyCode.L) && AbleToLoot)
+        if (CurrAbility != null && !SpellCheckAssigned)
         {
-            playerData.anim.SetBool("Looting", !playerData.anim.GetBool("Looting"));
-            GetComponent<PlayerMovement>().enabled = !playerData.anim.GetBool("Looting");
-            GetComponent<Rigidbody>().velocity = Vector3.zero;
-            Inventory.instance.inventory.SetActive(playerData.anim.GetBool("Looting"));
+            CurrAbility.Invoke();
+            CurrAbility = null;
         }
 
 
 
+
     }
-    private void OnDrawGizmos()
+
+
+
+
+    protected void GetInput(Ability Spell1, Ability Spell2, Ability Spell3, Ability Spell4 = null)
     {
-        Gizmos.DrawWireSphere(transform.position, customRange);
+        if (Input.GetKeyDown(KeyCode.Alpha1) && CurrAbility == null && !SpellCheckAssigned)
+            CurrAbility = BasicAttack;
+        else if (Input.GetKeyDown(KeyCode.Alpha2) && CurrAbility == null && !SpellCheckAssigned)
+            CurrAbility = Spell1;
+        else if (Input.GetKeyDown(KeyCode.Alpha3) && CurrAbility == null && !SpellCheckAssigned)
+            CurrAbility = Spell2;
+        else if (Input.GetKeyDown(KeyCode.Alpha4) && CurrAbility == null && !SpellCheckAssigned)
+            CurrAbility = Spell3;
+        else if (Spell4 != null && Input.GetKeyDown(KeyCode.Alpha5) && CurrAbility == null && !SpellCheckAssigned)
+            CurrAbility = Spell4;
     }
 
 
-    private void LateUpdate()
+
+
+    protected void SetSpellsUI(Sprite Ability1, Sprite Ability2, Sprite Ability3, Sprite Ability4 = null)
     {
-        if (Input.GetKeyDown(KeyCode.Alpha1))
-        {
-            if (Target.instance.getCurrTarget() == null)
-                MessageManager.instance.DisplayMessage(Constants.NO_TARGET_SELECTED);
-            else if (!Target.instance.targetInRange)
-                MessageManager.instance.DisplayMessage(Constants.OUT_OF_RANGE);
-            else
-                playerData.anim.SetTrigger("BasicAttack");
-        }
-        else if(Input.GetKeyDown(KeyCode.Alpha2))
-        {
-            if (Target.instance.getCurrTarget() == null)
-                MessageManager.instance.DisplayMessage(Constants.NO_TARGET_SELECTED);
-            //else if (!Target.instance.targetInRange)
-            //    MessageManager.instance.DisplayMessage(Constants.OUT_OF_RANGE);
-            else if(Vector3.Distance(gameObject.transform.position, Target.instance.getCurrEnemy().gameObject.transform.position) <customRange )
-            {
-                playerData.anim.SetBool("Ability 1", true);
-                StartCoroutine(Charge());
-            }
+        GetComponent<Animator>().runtimeAnimatorController = Resources.Load(CharacterSelection.ChosenCharacter.breed.ToString()) as RuntimeAnimatorController;
 
-        }
+        Spell1.gameObject.transform.parent.GetComponentInParent<Image>().sprite = Ability1;
+        Spell2.gameObject.transform.parent.GetComponentInParent<Image>().sprite = Ability2;
+        Spell3.gameObject.transform.parent.GetComponentInParent<Image>().sprite = Ability3;
+        Spell4.gameObject.transform.parent.GetComponentInParent<Image>().sprite = Ability4 ? Ability4 : null;
+
+        Spell1.sprite = Ability1;
+        Spell2.sprite = Ability2;
+        Spell3.sprite = Ability3;
+        Spell4.sprite = (Ability4) ? Ability4 : null;
+        DisplaySpellsUI();
+
     }
 
-    #region Warrior Abilities
 
-    IEnumerator Charge()
+    protected void BasicAttack()
     {
-        while(Vector3.Distance(gameObject.transform.position, Target.instance.getCurrEnemy().gameObject.transform.position)>Target.instance.RangeDistance)
-        {
-            GetComponent<Rigidbody>().position = Vector3.MoveTowards(transform.position, Target.instance.getCurrEnemy().gameObject.transform.position, Time.deltaTime * Ability1Time);
-            gameObject.transform.LookAt(Target.instance.getCurrEnemy().transform, transform.up);
-            yield return null;
-
-        }
-        GameObject.Find("PlasmaMissileRed").GetComponent<ParticleSystem>().Play();
-        playerData.anim.SetBool("Ability 1 Condition", true);
-        yield return null;
-
-        
+        if (Target.instance.getCurrTarget() == null)
+            MessageManager.instance.DisplayMessage(Constants.NO_TARGET_SELECTED);
+        else if (!Target.instance.targetInRange)
+            MessageManager.instance.DisplayMessage(Constants.OUT_OF_RANGE);
+        else
+            playerData.anim.SetBool("BasicAttack", true);
     }
 
-    public void EndAbility1()
-    {
-        playerData.anim.SetBool("Ability 1", false);
-        playerData.anim.SetBool("Ability 1 Condition", false);
-        GameObject.Find("PlasmaMissileRed").GetComponent<ParticleSystem>().Stop();
-
-
-    }
-
-
-
-
-
-    #endregion
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    public void ApplyRootMotion()
+    protected void ApplyRootMotion()
     {
         GetComponent<PlayerMovement>().enabled = false;
         playerData.anim.applyRootMotion = true;
     }
 
-    public void StopRootMotion()
+    protected void StopRootMotion()
     {
         playerData.anim.applyRootMotion = false;
         GetComponent<PlayerMovement>().enabled = true;
+        playerData.anim.SetBool("BasicAttack", false);
 
     }
 
     public void DealDamageToTarget()
     {
         if (Target.instance.getCurrEnemy())
-        {
-            Target.instance.getCurrEnemy().defaultStats.Hostile = true;
             Target.instance.getCurrEnemy().TakeDamage(playerData.AttackPower);
-        }
 
     }
 
+    public void DealDamageToTarget(float Multiplier)
+    {
+        if (Target.instance.getCurrEnemy())
+            Target.instance.getCurrEnemy().TakeDamage(playerData.AttackPower * Multiplier);
+    }
+
+    protected IEnumerator SpellCooldown(Image image, float cooldonwTime, System.Action<bool> CooldownBool)
+    {
+        CooldownBool(true);
+        float temporaryCooldownTime = cooldonwTime;
+        while (temporaryCooldownTime >= 0.000f)
+        {
+            temporaryCooldownTime -= Time.deltaTime;
+            image.fillAmount = temporaryCooldownTime / cooldonwTime;
+            yield return null;
+        }
+        image.fillAmount = 0;
+
+
+        CooldownBool(false);
+    }
 
 
 }

@@ -89,8 +89,12 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Floats:
     - _BodyArt_Amount: 0.69094646
+    - _DstBlend: 10
     - _Smoothness: 0.2
+    - _SrcBlend: 5
     - _Tattoo_Amount: 1
+    - _Transparency: 1
+    - _ZWrite: 1
     - __dirty: 0
     m_Colors:
     - _Color_BodyArt: {r: 1, g: 1, b: 1, a: 0}

@@ -18,12 +18,27 @@ ModelImporter:
   - first:
       43: 4300000
     second: PLANE_ROAD_01
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: ASPHALT_ROAD
+    second: {fileID: 2100000, guid: 5ee134066b354484897d501dccf183eb, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: SIDEWALK_01
+    second: {fileID: 2100000, guid: 36ec0c0fc87b0214999862371e011bfe, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: WHITE_ROAD
+    second: {fileID: 2100000, guid: e110dda021d3eee4eab37aca8318f7ed, type: 2}
   materials:
     importMaterials: 1
     materialName: 0
     materialSearch: 1
-    materialLocation: 0
+    materialLocation: 1
   animations:
     legacyGenerateAnimations: 4
     bakeSimulation: 0

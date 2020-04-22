@@ -14,6 +14,9 @@ public class CharacterStats : MonoBehaviour
         public Image Icon;
 
         [SerializeField]
+        public float maxHealth;
+
+        [SerializeField]
         public float Health;
         public bool Alive;
     }
@@ -31,8 +34,6 @@ public class CharacterStats : MonoBehaviour
     public float Armour;
 
 
-    public float maxHealth;
-
 
     public Animator anim;
     public virtual void Awake()
@@ -45,7 +46,6 @@ public class CharacterStats : MonoBehaviour
 
     public virtual void Start()
     {
-        print("It has started" + gameObject.name);
     }
 
 
@@ -56,7 +56,9 @@ public class CharacterStats : MonoBehaviour
         if(!defaultStats.Alive)
         {
             GetComponent<Rigidbody>().useGravity = false;
+            GetComponent<Rigidbody>().isKinematic = true;
             GetComponent<Collider>().isTrigger = true;
+            GetComponent<Rigidbody>().velocity = Vector3.zero;
         }
     }
 

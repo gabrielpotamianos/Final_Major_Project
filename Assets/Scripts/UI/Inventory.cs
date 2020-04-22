@@ -51,7 +51,7 @@ public class Inventory : MonoBehaviour
         AddInSlot(item);
     }
 
-    public void RemoveItem(Slot slot)
+    public virtual void RemoveItem(Slot slot)
     {
         slot.EmptySlot();
     }
@@ -68,6 +68,16 @@ public class Inventory : MonoBehaviour
                break;
             }
         }
+    }
+
+    public void EmptyAllSlots()
+    {
+        for (int i = 0; i < slots.Count; i++)
+        {
+            if (!slots[i].IsSlotEmpty())
+                slots[i].EmptySlot();
+        }
+
     }
 
 

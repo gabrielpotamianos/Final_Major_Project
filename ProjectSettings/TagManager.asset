@@ -12,6 +12,7 @@ TagManager:
   - Inventory
   - Icon
   - Water
+  - SpellBar
   layers:
   - Default
   - TransparentFX
@@ -24,7 +25,7 @@ TagManager:
   - Ground
   - Player
   - Enemy
-  - 
+  - Missiles
   - 
   - 
   - 

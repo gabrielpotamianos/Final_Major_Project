@@ -1,7 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using System.Configuration;
+﻿using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -10,7 +7,7 @@ public class PlayerMovement : MonoBehaviour
     //
     #region Public Variables
 
-    public GameObject camera;
+    public new GameObject camera;
 
     [Range(0, 1)]
     public float rayLength;
@@ -49,15 +46,6 @@ public class PlayerMovement : MonoBehaviour
     {
         if(camera==null)
             camera = Camera.main.gameObject;
-
-        RaycastHit hit;
-        grounded = Physics.Raycast(transform.position + new Vector3(0, 0.1f, 0), new Vector3(0, -rayLength, 0), out hit, 1);
-        //if (!grounded) rayLength += 0.005f;
-        //else rayLength = 0.001f;
-        Debug.DrawRay(transform.position, new Vector3(0, -rayLength, 0), Color.yellow);
-        //print(hit.collider.name);
-        //print(fps = (1.0f / Time.deltaTime));
-
     }
 
     private void FixedUpdate()
@@ -65,7 +53,7 @@ public class PlayerMovement : MonoBehaviour
         if (playerData.defaultStats.Alive)
         {
             Rotate();
-            // if (grounded)
+
             Move();
         }
     }
@@ -77,6 +65,7 @@ public class PlayerMovement : MonoBehaviour
 
         if (Input.GetAxisRaw("Horizontal") != 0 || Input.GetAxisRaw("Vertical") != 0)
         {
+            MageCombatSystem.InteruptCast = true;
             //  print("Moving");
             //Get the Input Axis
             Vector3 rightDir = camera.transform.right;
@@ -93,7 +82,11 @@ public class PlayerMovement : MonoBehaviour
             // print(rigid.velocity);
 
         }
-        else rigid.velocity = new Vector3(0, rigid.velocity.y, 0);
+        else
+        {
+            MageCombatSystem.InteruptCast = false;
+            rigid.velocity = new Vector3(0, rigid.velocity.y, 0);
+        }
 
         axisInput = axisInput.normalized;
         playerData.anim.SetFloat("SpeedMovement", axisInput.magnitude);
@@ -114,22 +107,7 @@ public class PlayerMovement : MonoBehaviour
         //else transform.rotation = lastRotation;
     }
 
-    //private void OnCollisionEnter(Collision collision)
-    //{
-    //    if(collision.gameObject.layer.Equals(LayerMask.NameToLayer("Ground")))
-    //        grounded = true;
-    //}
-    private void OnCollisionStay(Collision collision)
-    {
-        if (collision.gameObject.layer.Equals(LayerMask.NameToLayer("Ground")))
-            grounded = true;
-    }
-
-    //private void OnCollisionStay2D(Collision2D collision)
-    //{
-    //    if (collision.gameObject.layer.Equals(LayerMask.NameToLayer("Ground")))
-    //        grounded = false;
-    //}
+    
 
 
 }

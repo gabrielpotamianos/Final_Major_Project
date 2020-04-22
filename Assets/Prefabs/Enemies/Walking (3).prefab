@@ -756,6 +756,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inventory: {fileID: 0}
   slots: []
+  AllPossibleDropItems:
+  - {fileID: 11400000, guid: 134a281d78cc28f47bf5387b9729e7b9, type: 2}
+  - {fileID: 11400000, guid: 9f401a15aa1649c4397acbe003f03bb7, type: 2}
+  - {fileID: 11400000, guid: 8ec66a9e19832d843bddaacd1eeb7d7c, type: 2}
+  ChanceOfItemDrop: 640000002c010000bc020000
 --- !u!195 &7855487586998632422
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -770,7 +775,7 @@ NavMeshAgent:
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 935.9
-  m_StoppingDistance: 1.5
+  m_StoppingDistance: 2
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 0
   m_AutoRepath: 1
@@ -789,11 +794,11 @@ Rigidbody:
   m_Mass: 1
   m_Drag: 0
   m_AngularDrag: 0.05
-  m_UseGravity: 0
-  m_IsKinematic: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 80
-  m_CollisionDetection: 0
+  m_Constraints: 126
+  m_CollisionDetection: 1
 --- !u!65 &6934457085767963017
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -823,7 +828,7 @@ MonoBehaviour:
     Name: 
     Hostile: 0
     Icon: {fileID: 0}
-    Health: 90
+    Health: 40
     Alive: 0
   AttackPower: 10
   Armour: 0
@@ -832,8 +837,10 @@ MonoBehaviour:
   HealthBar: {fileID: 0}
   CentrePatrolPointPatrol: {fileID: 0}
   player: {fileID: 0}
-  rangeSphere: 10
+  rangeSphere: 15
   agent: {fileID: 0}
+  BladeStormHit: 0
+  LootInventory: {fileID: 0}
 --- !u!1 &3133657431671660178
 GameObject:
   m_ObjectHideFlags: 0

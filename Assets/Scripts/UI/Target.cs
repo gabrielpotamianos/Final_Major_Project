@@ -5,11 +5,12 @@ using UnityEngine.UI;
 
 public class Target : MonoBehaviour
 {
-    public float RangeDistance;
+    public float MeleeAttackRange;
+    public float SphereCastRadius;
+    public float SphereCastDistance;
     GameObject TargetHUD;
     Enemy currentTarget;
     // Animator TargetSelectedAnim;
-    RaycastHit lastHit;
     public LayerMask TargetableLayers;
     public GameObject player;
     public bool targetInRange;
@@ -17,6 +18,10 @@ public class Target : MonoBehaviour
 
     #region Singleton
     static public Target instance;
+
+
+    RaycastHit hit;
+    Ray ray;
 
     private void Awake()
     {
@@ -27,7 +32,7 @@ public class Target : MonoBehaviour
         }
         instance = this;
 
-       // player = GameObject.FindGameObjectWithTag("Warrior");
+        // player = GameObject.FindGameObjectWithTag("Warrior");
 
     }
     #endregion
@@ -37,7 +42,8 @@ public class Target : MonoBehaviour
         player = GameObject.FindGameObjectWithTag(CharacterSelection.ChosenCharacter.breed.ToString());
 
         player.GetComponent<PlayerMovement>().enabled = true;
-        player.GetComponent<PlayerCombat>().enabled = true;
+
+        //player.GetComponent<PlayerCombat>().enabled = true;
         player.GetComponent<PlayerData>().enabled = true;
         TargetHUD = GameObject.Find(Constants.TARGET_HUD);
 
@@ -45,9 +51,8 @@ public class Target : MonoBehaviour
 
     private void Update()
     {
-        RaycastHit hit;
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        if (Input.GetMouseButtonDown(0) && Physics.Raycast(ray, out hit)) 
+        ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        if (Input.GetMouseButtonDown(0) && Physics.Raycast(ray, out hit))
         {
             if (0 != (1 << hit.collider.gameObject.layer & TargetableLayers.value))
             {
@@ -75,7 +80,7 @@ public class Target : MonoBehaviour
         {
             RaycastHit secondHit;
             targetInRange = Physics.Linecast(currentTarget.gameObject.transform.position, player.transform.position, out secondHit);
-            if (Vector3.Distance(currentTarget.transform.position, player.transform.position) <= RangeDistance)
+            if (Vector3.Distance(currentTarget.transform.position, player.transform.position) <= MeleeAttackRange)
                 targetInRange = true;
             else
             {
@@ -92,8 +97,17 @@ public class Target : MonoBehaviour
             return currentTarget;
         else
         {
-            Debug.LogError("Target Not Been Selected!");
-            return null;
+            RaycastHit hit;
+            //Cast Sphere forward for an enemy
+            Physics.SphereCast(player.transform.position + new Vector3(0, 1, 0), SphereCastRadius, player.transform.forward, out hit, SphereCastDistance, TargetableLayers, QueryTriggerInteraction.UseGlobal);
+            if (hit.collider)
+            {
+                currentTarget = hit.collider.gameObject.GetComponent<Enemy>();
+                currentTarget.HealthBar = TargetHUD.transform.GetChild(0).gameObject;
+
+                return currentTarget;
+            }
+            else return null;
         }
     }
 
@@ -115,5 +129,17 @@ public class Target : MonoBehaviour
         else return null;
     }
 
+    public void SetEnemy(Enemy enemy)
+    {
+        currentTarget = enemy;
+    }
+
+    /// <summary>
+    /// Callback to draw gizmos that are pickable and always drawn.
+    /// </summary>
+    void OnDrawGizmos()
+    {
+        Gizmos.DrawWireSphere(player.transform.position + (player.transform.forward * SphereCastDistance), SphereCastRadius);
+    }
 
 }

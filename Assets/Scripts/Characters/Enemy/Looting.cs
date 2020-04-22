@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class Looting : Inventory
 {
-    public Item[] AllPossibleDropItems;
-    public int[] ChanceOfItemDrop;
+    public List<Item> AllPossibleDropItems;
+    public List<int> ChanceOfItemDrop;
 
     Enemy creature;
     bool looting = false;
@@ -18,51 +18,43 @@ public class Looting : Inventory
     public override void Start()
     {
         base.Start();
-        if (AllPossibleDropItems.Length == ChanceOfItemDrop.Length)
-        {
-            for (int i = 0; i < AllPossibleDropItems.Length; i++)
-            {
-                if (Random.Range(0, 100) <= ChanceOfItemDrop[i])
-                    AddInSlot(AllPossibleDropItems[i]);
-            }
-        }
-        else throw new System.Exception("Drop Array Length Does Not Match!!");
-
     }
 
     public override void Update()
     {
-        if (!creature.defaultStats.Alive)
+        if (!creature.defaultStats.Alive && !GetComponent<Collider>().isTrigger )
+        {
             GetComponent<Collider>().isTrigger = true;
-
-       // print(creature.defaultStats.Alive);
+        }
 
 
         if (Input.GetKeyDown(KeyCode.L) && !creature.defaultStats.Alive && looting)
+        {
+            AddLootingItems();
             inventory.SetActive(!inventory.activeSelf);
+            Target.instance.SetEnemy(creature);
+            creature.player.GetComponent<PlayerData>().ToogleLoot();
+        }
         else if (Input.GetKeyDown(KeyCode.R) && !creature.defaultStats.Alive && looting)
             GatherAllItems();
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.GetComponent<PlayerCombat>())
+        if (other.GetComponent<PlayerData>() && other.GetComponent<PlayerData>().defaultStats.Alive)
         {
             looting = true;
-            other.GetComponent<PlayerCombat>().AbleToLoot = looting;
+            other.GetComponent<PlayerData>().AbleToLoot = looting;
             MessageManager.instance.DisplayMessage("Press L to Loot",5);
         }
     }
-    //
-    //Player dies looting becomes available 
-    //
-    //
+
     private void OnTriggerExit(Collider other)
     {
-        if (other.GetComponent<PlayerCombat>())
+        if (other.GetComponent<PlayerData>() && other.GetComponent<PlayerData>().defaultStats.Alive)
         {
             looting = false;
-            other.GetComponent<PlayerCombat>().AbleToLoot = looting;
+            other.GetComponent<PlayerData>().AbleToLoot = looting;
             MessageManager.instance.KillMessage();
         }
     }
@@ -74,13 +66,51 @@ public class Looting : Inventory
 
     public void GatherAllItems()
     {
-        foreach(Slot slot in slots)
+        for(int i=0;i<slots.Count;i++)
         {
-            if (!slot.IsSlotEmpty())
+            if (!slots[i].IsSlotEmpty())
             {
-                Inventory.instance.AddInSlot(slot.item);
-                slot.EmptySlot();
+                Inventory.instance.AddInSlot(slots[i].item);
+
+                if (AllPossibleDropItems.Count>0)
+                {
+
+                    AllPossibleDropItems.RemoveAt(0);
+                    ChanceOfItemDrop.RemoveAt(0);
+                }
+                slots[i].EmptySlot();
             }
         }
     }
+
+
+    public void AddLootingItems()
+    {
+        if (AllPossibleDropItems.Count == ChanceOfItemDrop.Count)
+        {
+            EmptyAllSlots();
+            for (int i = 0; i < AllPossibleDropItems.Count; i++)
+            {
+                if (Random.Range(0, 100) <= ChanceOfItemDrop[i])
+                    AddInSlot(AllPossibleDropItems[i]);
+            }
+        }
+        else throw new System.Exception("Drop Array Length Does Not Match!!");
+
+    }
+
+    public override void RemoveItem(Slot slot)
+    {
+        for(int i=0;i<AllPossibleDropItems.Count;i++)
+        {
+            if (AllPossibleDropItems[i] == slot.item)
+            {
+                AllPossibleDropItems.RemoveAt(i);
+                ChanceOfItemDrop.RemoveAt(i);
+                break;
+            }
+        }
+        base.RemoveItem(slot);
+    }
+
 }
