@@ -43,7 +43,20 @@ public class Target : MonoBehaviour
 
         player.GetComponent<PlayerMovement>().enabled = true;
 
-        //player.GetComponent<PlayerCombat>().enabled = true;
+        switch (CharacterSelection.ChosenCharacter.breed)
+        {
+            case CharacterInfo.Breed.Mage:
+                GameObject.FindObjectOfType<MageCombatSystem>().enabled = true;
+                break;
+            case CharacterInfo.Breed.Warrior:
+                GameObject.FindObjectOfType<WarriorCombatSystem>().enabled = true;
+                break;
+            case CharacterInfo.Breed.Rogue:
+                GameObject.FindObjectOfType<RogueCombatSystem>().enabled = true;
+                break;
+
+        }
+
         player.GetComponent<PlayerData>().enabled = true;
         TargetHUD = GameObject.Find(Constants.TARGET_HUD);
 

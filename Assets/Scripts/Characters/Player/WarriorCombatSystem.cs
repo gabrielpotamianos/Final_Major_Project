@@ -202,12 +202,12 @@ public class WarriorCombatSystem : PlayerCombat
 
 
         while (BladestormSeconds < BladestormAbilityTime)
-        {
-
+        {            
+            BladestormSeconds++;
             playerData.anim.SetInteger("BladeStormLoop", BladestormSeconds);
             AOE_Bladestorm_Damage();
             yield return new WaitForSeconds(1);
-            BladestormSeconds++;
+
         }
     }
 

@@ -8672,6 +8672,11 @@ PrefabInstance:
       propertyPath: m_TagString
       value: Mage
       objectReference: {fileID: 0}
+    - target: {fileID: 6261805024279626525, guid: 4864f1c4e6402af48908b47ce22bb19b,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6970797783983288590, guid: 4864f1c4e6402af48908b47ce22bb19b,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -106977,6 +106982,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_UseGravity
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6934457085767963018, guid: 2ae577436e80a444ca17acc4a05fe49f,
+        type: 3}
+      propertyPath: m_CollisionDetection
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 7855487586998632422, guid: 2ae577436e80a444ca17acc4a05fe49f,
         type: 3}

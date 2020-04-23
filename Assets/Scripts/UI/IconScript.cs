@@ -101,7 +101,7 @@ public class IconScript : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDr
         if (eventData.button == PointerEventData.InputButton.Right)
             if (gameObject.transform.parent.transform.parent.name.Equals(Constants.LOOT_INVENTORY))
             {
-                if (ParentSlot.item)
+                if (ParentSlot.item!=null)
                 {
                     Inventory.instance.AddInSlot(ParentSlot.item);
                     Target.instance.getCurrEnemy().LootInventory.RemoveItem(ParentSlot);

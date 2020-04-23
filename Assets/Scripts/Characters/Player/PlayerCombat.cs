@@ -23,46 +23,14 @@ public class PlayerCombat : MonoBehaviour
     [HideInInspector]
     protected PlayerData playerData;
 
-
-
-
     public void Awake()
     {
-
-
         CharacterSelection.ChosenCharacter = new CharacterInfo();
         CharacterSelection.ChosenCharacter.breed = (CharacterInfo.Breed)Enum.Parse(typeof(CharacterInfo.Breed), gameObject.tag);
-       
 
-
-
-        switch (CharacterSelection.ChosenCharacter.breed)
-        {
-            case CharacterInfo.Breed.Mage:
-                GetComponent<MageCombatSystem>().enabled = true;
-                GetComponent<RogueCombatSystem>().enabled = false;
-                GetComponent<WarriorCombatSystem>().enabled = false;
-                break;
-            case CharacterInfo.Breed.Warrior:
-                GetComponent<MageCombatSystem>().enabled = false;
-                GetComponent<RogueCombatSystem>().enabled = false;
-                GetComponent<WarriorCombatSystem>().enabled = true;
-                break;
-            case CharacterInfo.Breed.Rogue:
-                GetComponent<MageCombatSystem>().enabled = false;
-                GetComponent<RogueCombatSystem>().enabled = true;
-                GetComponent<WarriorCombatSystem>().enabled = false;
-                break;
-
-        }
-        //print(CharacterSelection.ChosenCharacter.breed);
         //ChargeAbilityTime = Constants.CHARGE_ABILITY_TIME;
         //ChargeCooldownTime = Constants.CHARGE_COOLDOWN_TIME;
         //ChargeRange = Constants.CHARGE_RANGE;
-        //  ToogleInvisibility(false);
-
-
-
 
         playerData = GetComponent<PlayerData>();
     }
@@ -93,14 +61,7 @@ public class PlayerCombat : MonoBehaviour
             CurrAbility.Invoke();
             CurrAbility = null;
         }
-
-
-
-
     }
-
-
-
 
     protected void GetInput(Ability Spell1, Ability Spell2, Ability Spell3, Ability Spell4 = null)
     {
@@ -116,9 +77,6 @@ public class PlayerCombat : MonoBehaviour
             CurrAbility = Spell4;
     }
 
-
-
-
     protected void SetSpellsUI(Sprite Ability1, Sprite Ability2, Sprite Ability3, Sprite Ability4 = null)
     {
         GetComponent<Animator>().runtimeAnimatorController = Resources.Load(CharacterSelection.ChosenCharacter.breed.ToString()) as RuntimeAnimatorController;
@@ -133,9 +91,7 @@ public class PlayerCombat : MonoBehaviour
         Spell3.sprite = Ability3;
         Spell4.sprite = (Ability4) ? Ability4 : null;
         DisplaySpellsUI();
-
     }
-
 
     protected void BasicAttack()
     {
@@ -164,14 +120,20 @@ public class PlayerCombat : MonoBehaviour
     public void DealDamageToTarget()
     {
         if (Target.instance.getCurrEnemy())
+        {
             Target.instance.getCurrEnemy().TakeDamage(playerData.AttackPower);
+            playerData.InCombat = true;
+        }
 
     }
 
     public void DealDamageToTarget(float Multiplier)
     {
         if (Target.instance.getCurrEnemy())
+        {
             Target.instance.getCurrEnemy().TakeDamage(playerData.AttackPower * Multiplier);
+            playerData.InCombat = true;
+        }
     }
 
     protected IEnumerator SpellCooldown(Image image, float cooldonwTime, System.Action<bool> CooldownBool)

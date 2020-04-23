@@ -93,7 +93,7 @@ public class RogueCombatSystem : PlayerCombat
 
     void Vanish()
     {
-        if (!stealth && !VanishOnCooldown)
+        if (!stealth && !VanishOnCooldown && !playerData.InCombat)
         {
             StartCoroutine(VanishStart());
             StartCoroutine(SpellCooldown(Spell3, VanishCooldownTime, (x) => { VanishOnCooldown = x; }));

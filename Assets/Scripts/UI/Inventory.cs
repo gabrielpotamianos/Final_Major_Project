@@ -15,6 +15,10 @@ public class Inventory : MonoBehaviour
     [SerializeField]
     public List<Slot> slots;
 
+    PlayerData playerData;
+
+
+
     #region Singleton
     public static Inventory instance;
 
@@ -35,6 +39,7 @@ public class Inventory : MonoBehaviour
         slots = new List<Slot>();
         slots.AddRange(inventory.transform.GetComponentsInChildren<Slot>().ToList());
         inventory.SetActive(false);
+        playerData=GameObject.FindObjectOfType<PlayerData>();   
     }
 
     public virtual void Update()

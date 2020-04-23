@@ -1294,10 +1294,11 @@ GameObject:
   - component: {fileID: 2162728553176977573}
   - component: {fileID: -1635591235268103149}
   - component: {fileID: -1080936299010840053}
-  - component: {fileID: -802878562709883430}
   - component: {fileID: 2776905989277608209}
   - component: {fileID: -5307785774160209262}
   - component: {fileID: 7240421209867532293}
+  - component: {fileID: -6128300044052720804}
+  - component: {fileID: 4573784403493902984}
   m_Layer: 0
   m_Name: Male
   m_TagString: Untagged
@@ -1371,19 +1372,6 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 1, z: 0}
---- !u!114 &-802878562709883430
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5103374631800606668}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 421b5f28b93659f459d9626236867658, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ObjectMaterial: {fileID: 0}
 --- !u!114 &2776905989277608209
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1428,6 +1416,7 @@ MonoBehaviour:
   RegenRateAR: 1.75
   RegenDelayAR: 1
   RegenDelayHealth: 2
+  InCombat: 0
   SpellBar: {fileID: 0}
   SpellImages: []
   SpellCooldownImages: []
@@ -1443,9 +1432,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2912ae047b4e24745a73934e941966c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ObjectMaterial: {fileID: 2100000, guid: ea128b040f8b0af4c9d2de400aaff30a, type: 2}
   MaxComboPoints: 7
   ComboPoints: 0
+  ObjectMaterial: {fileID: 2100000, guid: ea128b040f8b0af4c9d2de400aaff30a, type: 2}
   SinisterStrikeSprite: {fileID: 21300000, guid: fcd40eae818889045acc0b209cd89b7a,
     type: 3}
   SinisterStrikeDamageMultiplier: 400
@@ -1474,6 +1463,97 @@ MonoBehaviour:
   BackstabDamageMultiplier: 600
   BackstabComboPointsToAdd: 2
   BackstabOnCooldown: 0
+--- !u!114 &-6128300044052720804
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5103374631800606668}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c2f286d4d23f754fb1b25bb06f9a3d5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CastBar: {fileID: 0}
+  CastBarCanvasGroup: {fileID: 0}
+  FireballSprite: {fileID: 21300000, guid: 7140c686292792a4abfe218b90b2ae90, type: 3}
+  FireballPrefab: {fileID: 4896689988908916635, guid: cd7f6c5606c0a1046be86f3482943bf3,
+    type: 3}
+  FireballDamageMultiplier: 200
+  FireballManaCost: 10
+  FireballCooldownTime: 5
+  FireballRange: 40
+  FireballCastTime: 2.01
+  FireballOnCooldown: 0
+  SpellIndicatorForbiddenColor: {r: 1, g: 0, b: 0, a: 0}
+  SpellIndicatorColor: {r: 0.11609791, g: 0.6792453, b: 0.048059803, a: 0}
+  ForbiddenTexture: {fileID: 2800000, guid: 2aba7d32f24167a459ef8b1fb43cda69, type: 3}
+  SpellIndicatorTexture: {fileID: 2800000, guid: b1d7fee26e54cc3498f6267f072a45b9,
+    type: 3}
+  SpellIndicator: {fileID: 3157947009412108337, guid: 16cf98b85ac3a6f4dbb309260dd675c2,
+    type: 3}
+  IceMissle: {fileID: 6324285665450794318, guid: 7c238e98316438e499a513b3f72b6df8,
+    type: 3}
+  NumberOfMissiles: 10
+  IgnoreSpellIndicator:
+    serializedVersion: 2
+    m_Bits: 256
+  BlizzardSprite: {fileID: 21300000, guid: ec632235b0c01aa41b95997c276b3115, type: 3}
+  BlizzardCastTime: 4
+  BlizzardCastRange: 50
+  BlizzardAreaAffected: 6
+  BlizzardDamageMultiplier: 50
+  BlizzardManaCost: 25
+  BlizzardCooldownTime: 10
+  BlizzardOnCooldown: 0
+  DeathsBreathSprite: {fileID: 21300000, guid: a6de44afda0790f4dbc48564f6714c1f, type: 3}
+  DeathsBreathPrefab: {fileID: 4970288754262267739, guid: 3025584897c762743902ed6efbdc1847,
+    type: 3}
+  DeathsBreathDamageMultiplier: 200
+  DeathsBreathDuration: 0.5
+  DeathsBreathHeight: 3
+  DeathsBreathFlameRadius: 4
+  DeathsBreathMaxDistance: 2
+  DeathsBreathLayers:
+    serializedVersion: 2
+    m_Bits: 1024
+  DeathsBreathCooldownTime: 7
+  DeathsBreathOnCooldown: 0
+--- !u!114 &4573784403493902984
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5103374631800606668}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc3a5ee1436cc89418f731f02c9eb5e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ChargeSprite: {fileID: 21300000, guid: fd6ab744a13821741bae075ba578bce0, type: 3}
+  ChargeAbilityTime: 16
+  ChargeCooldownTime: 5
+  ChargeDamageMultiplier: 10
+  AddUpRage: 25
+  ChargeRange: 36
+  ChargeOnCooldown: 0
+  MortalStrikeSprite: {fileID: 21300000, guid: 4873aa989d5fcd546b28025805f15ee8, type: 3}
+  MortalStrikeCooldownTime: 7
+  MortalStrikeDamageMultiplier: 30
+  MortalStrikeAbilityCost: 10
+  MortalStrikeOnCooldown: 0
+  BladestormSprite: {fileID: 21300000, guid: 0c136515f7aa49e43ba0840df48c1f4d, type: 3}
+  BladestormCooldownTime: 9
+  BladestormAbilityTime: 5
+  BladestormDamageMultiplier: 30
+  BladestormAbilityCost: 10
+  BladestormRadius: 6.5
+  BladestormLayers:
+    serializedVersion: 2
+    m_Bits: 1024
+  BladestormOnCooldown: 0
 --- !u!1 &5269214549182791908
 GameObject:
   m_ObjectHideFlags: 0

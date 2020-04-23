@@ -46944,9 +46944,11 @@ GameObject:
   - component: {fileID: 294108907312826071}
   - component: {fileID: -6053710328897525762}
   - component: {fileID: -124957762487667661}
-  - component: {fileID: 489703816789552669}
   - component: {fileID: -5748849949123492868}
   - component: {fileID: 6668527054470794872}
+  - component: {fileID: -7268417885501619174}
+  - component: {fileID: -5569006915461295459}
+  - component: {fileID: 5534646322728728041}
   m_Layer: 0
   m_Name: Female
   m_TagString: Untagged
@@ -47020,59 +47022,6 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 1, z: 0}
---- !u!114 &489703816789552669
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6684951976304351678}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 421b5f28b93659f459d9626236867658, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m: {fileID: 2100000, guid: ea128b040f8b0af4c9d2de400aaff30a, type: 2}
-  ChargeSprite: {fileID: 21300000, guid: fd6ab744a13821741bae075ba578bce0, type: 3}
-  ChargeAbilityTime: 25
-  ChargeCooldownTime: 5
-  ChargeDamageMultiplier: 3
-  AddUpRage: 20
-  ChargeRange: 18.44
-  ChargeOnCooldown: 0
-  MortalStrikeSprite: {fileID: 21300000, guid: 4873aa989d5fcd546b28025805f15ee8, type: 3}
-  MortalStrikeCooldownTime: 5
-  MortalStrikeDamageMultiplier: 109
-  MortalStrikeAbilityCost: 20
-  MortalStrikeOnCooldown: 0
-  BladestormSprite: {fileID: 21300000, guid: 0c136515f7aa49e43ba0840df48c1f4d, type: 3}
-  BladestormCooldownTime: 7
-  BladestormAbilityTime: 3
-  BladestormDamageMultiplier: 4
-  BladestormAbilityCost: 0
-  BladestormOnCooldown: 0
-  BladestormRangeSphere: {fileID: 0}
-  FireballDamageMultiplier: 2
-  FireballManaCost: 10
-  FireballSprite: {fileID: 21300000, guid: 7140c686292792a4abfe218b90b2ae90, type: 3}
-  FireballPrefab: {fileID: 1815553834518870, guid: 7674f5091cc9ae049a2ad44f3eb88a4c,
-    type: 3}
-  FireballCooldownTime: 4
-  FireballRange: 20
-  FireballOnCooldown: 0
-  MaxComboPoints: 5
-  ComboPoints: 0
-  SinisterStrikeSprite: {fileID: 21300000, guid: 1d7e1548e7fc4c74faee93a7cfe2d397,
-    type: 3}
-  SinisterStrikeDamageMultiplier: 7
-  SinisterStrikeEnergyCost: 20
-  SinisterStrikeCooldownTime: 7
-  SinisterStrikeOnCooldown: 0
-  EviscerateSprite: {fileID: 21300000, guid: bfa491db9b4718849944980f21518f40, type: 3}
-  EviscerateDamageMultiplier: 10
-  EviscerateEnergyCost: 10
-  EviscerateCooldownTime: 3
-  EviscerateOnCooldown: 0
 --- !u!114 &-5748849949123492868
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -47104,11 +47053,11 @@ MonoBehaviour:
     Name: 
     Hostile: 1
     Icon: {fileID: 0}
+    maxHealth: 0
     Health: 100
     Alive: 0
   AttackPower: 5
   Armour: 0
-  maxHealth: 100
   anim: {fileID: 0}
   AbleToLoot: 0
   HealthBar: {fileID: 0}
@@ -47120,6 +47069,140 @@ MonoBehaviour:
   SpellBar: {fileID: 0}
   SpellImages: []
   SpellCooldownImages: []
+--- !u!114 &-7268417885501619174
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6684951976304351678}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2912ae047b4e24745a73934e941966c0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MaxComboPoints: 7
+  ComboPoints: 0
+  ObjectMaterial: {fileID: 2100000, guid: ea128b040f8b0af4c9d2de400aaff30a, type: 2}
+  SinisterStrikeSprite: {fileID: 21300000, guid: fcd40eae818889045acc0b209cd89b7a,
+    type: 3}
+  SinisterStrikeDamageMultiplier: 400
+  SinisterStrikeEnergyCost: 20
+  SinisterStrikeCooldownTime: 6
+  SinisterStrikeComboPointsToAdd: 2
+  SinisterStrikeOnCooldown: 0
+  EviscerateSprite: {fileID: 21300000, guid: 7316db08996502d4595db505fe173a1e, type: 3}
+  EviscerateDamageMultiplier: 800
+  EviscerateEnergyCost: 30
+  EviscerateCooldownTime: 10
+  EviscerateOnCooldown: 0
+  VanishSprite: {fileID: 21300000, guid: b312589b493f16e43aa0c9d52d001902, type: 3}
+  SmokePrefab: {fileID: 1095767987829304, guid: bbdffbb5bb33e0942a03dd0c4a2b87f4,
+    type: 3}
+  VanishTime: 5
+  VanishDamageMultiplier: 300
+  VanishCooldownTime: 6
+  VanishOnCooldown: 0
+  DirectionDotProductThreshold: 0
+  PositionDotProductThreshold: 0
+  BackstabDistanceTreshold: 4
+  BackstabSprite: {fileID: 21300000, guid: d75d7791213ede94c88d79ee5f982e31, type: 3}
+  BackstabEnergyCost: 20
+  BackstabCooldownTime: 10
+  BackstabDamageMultiplier: 600
+  BackstabComboPointsToAdd: 2
+  BackstabOnCooldown: 0
+--- !u!114 &-5569006915461295459
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6684951976304351678}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c2f286d4d23f754fb1b25bb06f9a3d5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CastBar: {fileID: 0}
+  CastBarCanvasGroup: {fileID: 0}
+  FireballSprite: {fileID: 21300000, guid: 7140c686292792a4abfe218b90b2ae90, type: 3}
+  FireballPrefab: {fileID: 4896689988908916635, guid: cd7f6c5606c0a1046be86f3482943bf3,
+    type: 3}
+  FireballDamageMultiplier: 200
+  FireballManaCost: 10
+  FireballCooldownTime: 5
+  FireballRange: 40
+  FireballCastTime: 2.01
+  FireballOnCooldown: 0
+  SpellIndicatorForbiddenColor: {r: 1, g: 0, b: 0, a: 0}
+  SpellIndicatorColor: {r: 0.11609791, g: 0.6792453, b: 0.048059803, a: 0}
+  ForbiddenTexture: {fileID: 2800000, guid: 2aba7d32f24167a459ef8b1fb43cda69, type: 3}
+  SpellIndicatorTexture: {fileID: 2800000, guid: b1d7fee26e54cc3498f6267f072a45b9,
+    type: 3}
+  SpellIndicator: {fileID: 3157947009412108337, guid: 16cf98b85ac3a6f4dbb309260dd675c2,
+    type: 3}
+  IceMissle: {fileID: 6324285665450794318, guid: 7c238e98316438e499a513b3f72b6df8,
+    type: 3}
+  NumberOfMissiles: 10
+  IgnoreSpellIndicator:
+    serializedVersion: 2
+    m_Bits: 256
+  BlizzardSprite: {fileID: 21300000, guid: ec632235b0c01aa41b95997c276b3115, type: 3}
+  BlizzardCastTime: 4
+  BlizzardCastRange: 50
+  BlizzardAreaAffected: 6
+  BlizzardDamageMultiplier: 50
+  BlizzardManaCost: 25
+  BlizzardCooldownTime: 10
+  BlizzardOnCooldown: 0
+  DeathsBreathSprite: {fileID: 21300000, guid: a6de44afda0790f4dbc48564f6714c1f, type: 3}
+  DeathsBreathPrefab: {fileID: 4970288754262267739, guid: 3025584897c762743902ed6efbdc1847,
+    type: 3}
+  DeathsBreathDamageMultiplier: 200
+  DeathsBreathDuration: 0.5
+  DeathsBreathHeight: 3
+  DeathsBreathFlameRadius: 4
+  DeathsBreathMaxDistance: 2
+  DeathsBreathLayers:
+    serializedVersion: 2
+    m_Bits: 1024
+  DeathsBreathCooldownTime: 7
+  DeathsBreathOnCooldown: 0
+--- !u!114 &5534646322728728041
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6684951976304351678}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc3a5ee1436cc89418f731f02c9eb5e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ChargeSprite: {fileID: 21300000, guid: fd6ab744a13821741bae075ba578bce0, type: 3}
+  ChargeAbilityTime: 16
+  ChargeCooldownTime: 5
+  ChargeDamageMultiplier: 10
+  AddUpRage: 25
+  ChargeRange: 36
+  ChargeOnCooldown: 0
+  MortalStrikeSprite: {fileID: 21300000, guid: 4873aa989d5fcd546b28025805f15ee8, type: 3}
+  MortalStrikeCooldownTime: 7
+  MortalStrikeDamageMultiplier: 30
+  MortalStrikeAbilityCost: 10
+  MortalStrikeOnCooldown: 0
+  BladestormSprite: {fileID: 21300000, guid: 0c136515f7aa49e43ba0840df48c1f4d, type: 3}
+  BladestormCooldownTime: 9
+  BladestormAbilityTime: 5
+  BladestormDamageMultiplier: 30
+  BladestormAbilityCost: 10
+  BladestormRadius: 6.5
+  BladestormLayers:
+    serializedVersion: 2
+    m_Bits: 1024
+  BladestormOnCooldown: 0
 --- !u!1 &6694948323419073241
 GameObject:
   m_ObjectHideFlags: 0

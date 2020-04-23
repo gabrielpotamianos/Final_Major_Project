@@ -20,7 +20,7 @@ public class PlayerData : CharacterStats
 
     bool IsRegenAR = true;
     bool IsRegenHealth = false;
-    bool InCombat = false;
+    public bool InCombat = false;
 
     private IEnumerator HealthRegenCoroutine;
     private IEnumerator InCombatCoroutine;
@@ -40,6 +40,10 @@ public class PlayerData : CharacterStats
 
 
 
+    Text AbilityResourceBarName;
+
+
+
 
 
 
@@ -51,8 +55,8 @@ public class PlayerData : CharacterStats
 
     public override void Awake()
     {
-        HealthRegenCoroutine = RegenHealth();
-        InCombatCoroutine = CombatCooldown(5);
+        HealthRegenCoroutine = null;
+        InCombatCoroutine = null;
         base.Awake();
     }
 
@@ -61,20 +65,30 @@ public class PlayerData : CharacterStats
         base.Start();
         HealthBar = GameObject.Find("PlayerHealthSlider");
         AbilityResourceBar = GameObject.Find("PlayerAbilitySlider");
+        AbilityResourceBarName = GameObject.Find("AbilitySliderText").GetComponent<Text>();
         //SpellBar = GameObject.FindGameObjectWithTag("SpellBar");
-       // SpellImages.AddRange(SpellBar.GetComponentsInChildren<Image>());
+        // SpellImages.AddRange(SpellBar.GetComponentsInChildren<Image>());
         //SpellCooldownImages.AddRange(SpellImages.)
         switch (CharacterSelection.ChosenCharacter.breed)
         {
             case CharacterInfo.Breed.Mage:
-                AbilityResourceBar.transform.GetChild(1).GetChild(0).GetComponent<Image>().color = Color.blue + new Color(0.4f, 0.4f, 0);
+                {
+                    AbilityResourceBar.transform.GetChild(1).GetChild(0).GetComponent<Image>().color = Color.blue + new Color(0.4f, 0.4f, 0);
+                    AbilityResourceBarName.text = "Mana";
+                }
                 break;
             case CharacterInfo.Breed.Rogue:
-                AbilityResourceBar.transform.GetChild(1).GetChild(0).GetComponent<Image>().color = Color.yellow;
+                {
+                    AbilityResourceBar.transform.GetChild(1).GetChild(0).GetComponent<Image>().color = Color.yellow;
+                    AbilityResourceBarName.text = "Energy";
+                }
                 break;
             case CharacterInfo.Breed.Warrior:
-                AbilityResourceBar.transform.GetChild(1).GetChild(0).GetComponent<Image>().color = Color.red;
-                currAR = 0;
+                {
+                    AbilityResourceBar.transform.GetChild(1).GetChild(0).GetComponent<Image>().color = Color.red;
+                    currAR = 0;
+                    AbilityResourceBarName.text = "Rage";
+                }
                 break;
             default:
                 break;
@@ -86,6 +100,7 @@ public class PlayerData : CharacterStats
     // Update is called once per frame
     public override void Update()
     {
+        print(InCombat + " this is the state of In combat ");
 
         base.Update();
         if (defaultStats.Alive)
@@ -93,12 +108,12 @@ public class PlayerData : CharacterStats
             if (IsRegenAR)
                 StartCoroutine(RegenAR(CharacterSelection.ChosenCharacter.breed == CharacterInfo.Breed.Warrior));
 
-            if (InCombat)
+            if (InCombat && InCombatCoroutine == null)
             {
                 InCombatCoroutine = CombatCooldown(5);
                 StartCoroutine(InCombatCoroutine);
             }
-            else if (IsRegenHealth)
+            else if (IsRegenHealth && HealthRegenCoroutine == null)
             {
                 HealthRegenCoroutine = RegenHealth();
                 StartCoroutine(HealthRegenCoroutine);
@@ -125,14 +140,15 @@ public class PlayerData : CharacterStats
 
         //Activate combate mode if you take damage
         InCombat = true;
+        
 
         //update health
         defaultStats.Health -= defaultStats.Health - dmg >= 0 ? dmg : defaultStats.Health;
     }
 
-    public void ConsumeAR( float cost)
+    public void ConsumeAR(float cost)
     {
-            currAR -= currAR - cost >= 0 ? cost : currAR;
+        currAR -= currAR - cost >= 0 ? cost : currAR;
     }
 
     public void AddAR(float Rage)
@@ -169,22 +185,25 @@ public class PlayerData : CharacterStats
 
     IEnumerator RegenHealth()
     {
-
-        IsRegenHealth = false;
+        print("got here");
         while (defaultStats.Health < defaultStats.maxHealth)
         {
             yield return new WaitForSeconds(RegenDelayHealth);
             HealthRecharge(defaultStats.maxHealth / 100);
         }
+        IsRegenHealth = false;
+        HealthRegenCoroutine = null;
     }
 
     IEnumerator CombatCooldown(float time)
     {
-        InCombat = false;
         yield return new WaitForSeconds(time);
 
+        InCombat = false;
         //Activate health regen if you take damage
         IsRegenHealth = true;
+
+        InCombatCoroutine = null;
 
     }
 
@@ -217,7 +236,7 @@ public class PlayerData : CharacterStats
         {
             anim.SetBool("Looting", !anim.GetBool("Looting"));
             GetComponent<PlayerMovement>().enabled = !anim.GetBool("Looting");
-            Target.instance.enabled= !anim.GetBool("Looting");
+            Target.instance.enabled = !anim.GetBool("Looting");
             GetComponent<Rigidbody>().velocity = Vector3.zero;
             Inventory.instance.inventory.SetActive(anim.GetBool("Looting"));
         }
