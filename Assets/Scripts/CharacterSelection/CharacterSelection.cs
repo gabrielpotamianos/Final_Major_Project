@@ -28,6 +28,7 @@ public class CharacterSelection : MonoBehaviour
     public void InitScene()
     {
         allCharacters = SaveSystem.LoadAllCharacters();
+        print(allCharacters[0].breed);
 
         MinArrayLength = Mathf.Min(allCharacters.Count, CharacterInfoUIButtons.Length);
 

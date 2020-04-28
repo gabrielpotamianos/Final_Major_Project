@@ -13,7 +13,7 @@ public class AOEDamageScript : MonoBehaviour
         {
             foreach (Enemy enemy in enemiesToHit.ToList())
             {
-                if(enemy.defaultStats.Alive)
+                if(enemy.Alive)
                     enemy.TakeDamage(damage);
                 else
                     enemiesToHit.Remove(enemy);
@@ -24,7 +24,7 @@ public class AOEDamageScript : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         Enemy currEnemy = other.GetComponent<Enemy>() ? other.GetComponent<Enemy>() : null;
-        if (currEnemy && !enemiesToHit.Contains(currEnemy) && currEnemy.defaultStats.Alive)
+        if (currEnemy && !enemiesToHit.Contains(currEnemy) && currEnemy.Alive)
             enemiesToHit.Add(other.GetComponent<Enemy>());
     }
 

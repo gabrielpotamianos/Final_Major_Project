@@ -28,10 +28,6 @@ public class PlayerCombat : MonoBehaviour
         CharacterSelection.ChosenCharacter = new CharacterInfo();
         CharacterSelection.ChosenCharacter.breed = (CharacterInfo.Breed)Enum.Parse(typeof(CharacterInfo.Breed), gameObject.tag);
 
-        //ChargeAbilityTime = Constants.CHARGE_ABILITY_TIME;
-        //ChargeCooldownTime = Constants.CHARGE_COOLDOWN_TIME;
-        //ChargeRange = Constants.CHARGE_RANGE;
-
         playerData = GetComponent<PlayerData>();
     }
 
@@ -75,6 +71,7 @@ public class PlayerCombat : MonoBehaviour
             CurrAbility = Spell3;
         else if (Spell4 != null && Input.GetKeyDown(KeyCode.Alpha5) && CurrAbility == null && !SpellCheckAssigned)
             CurrAbility = Spell4;
+
     }
 
     protected void SetSpellsUI(Sprite Ability1, Sprite Ability2, Sprite Ability3, Sprite Ability4 = null)
@@ -95,13 +92,19 @@ public class PlayerCombat : MonoBehaviour
 
     protected void BasicAttack()
     {
-        if (Target.instance.getCurrTarget() == null)
-            MessageManager.instance.DisplayMessage(Constants.NO_TARGET_SELECTED);
-        else if (!Target.instance.targetInRange)
-            MessageManager.instance.DisplayMessage(Constants.OUT_OF_RANGE);
-        else
+        if (SpellChecks.CheckSpell(Target.instance.getCurrEnemy(), playerData, Target.instance.MeleeAttackRange))
+        {
             playerData.anim.SetBool("BasicAttack", true);
+            SpellCheckAssigned = true;
+        }
     }
+    protected void StopBasicAttack()
+    {
+        playerData.anim.SetBool("BasicAttack", false);
+        SpellCheckAssigned = false;
+
+    }
+
 
     protected void ApplyRootMotion()
     {
@@ -113,17 +116,13 @@ public class PlayerCombat : MonoBehaviour
     {
         playerData.anim.applyRootMotion = false;
         GetComponent<PlayerMovement>().enabled = true;
-        playerData.anim.SetBool("BasicAttack", false);
-
     }
 
-    public void DealDamageToTarget()
+
+    protected void DealDamageToTarget()
     {
-        if (Target.instance.getCurrEnemy())
-        {
-            Target.instance.getCurrEnemy().TakeDamage(playerData.AttackPower);
-            playerData.InCombat = true;
-        }
+        Target.instance.getCurrEnemy().TakeDamage(playerData.statistics.AttackPower);
+        playerData.ResetCombatCoroutine();
 
     }
 
@@ -131,8 +130,8 @@ public class PlayerCombat : MonoBehaviour
     {
         if (Target.instance.getCurrEnemy())
         {
-            Target.instance.getCurrEnemy().TakeDamage(playerData.AttackPower * Multiplier);
-            playerData.InCombat = true;
+            playerData.ResetCombatCoroutine();
+            Target.instance.getCurrEnemy().TakeDamage(playerData.statistics.AttackPower * Multiplier);
         }
     }
 

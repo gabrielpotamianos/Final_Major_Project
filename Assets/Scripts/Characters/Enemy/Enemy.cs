@@ -1,93 +1,96 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UI;
 
 
-[System.Serializable]
-public class Enemy : CharacterStats
+public class Enemy : Character
 {
+    public BaseStatistics statistics;
 
-    public GameObject HealthBar;
     public GameObject CentrePatrolPointPatrol;
     public PlayerData player;
-    public float rangeSphere = 10.0f;
 
+    [HideInInspector]
     public NavMeshAgent agent;
-    public FiniteStateMachine FSMMachine;
-    Vector3 PatrolPoint;
 
-    public bool BladeStormHit = false;
+    [HideInInspector]
+    public ArtificialIntelligence.FiniteStateMachine FSMMachine;
+
+    public float rangeSphere = 10.0f;
+    public bool Hostile;
 
     [HideInInspector]
     public Looting LootInventory;
 
+    GameObject CanvasRoot;
+
     public override void Awake()
     {
+        IsItAlive(statistics.Health,statistics.MaxHealth);
+        CanvasRoot=GameObject.Find("CanvasHUD");
         LootInventory = GetComponent<Looting>();
         agent = GetComponent<NavMeshAgent>();
         base.Awake();
-
     }
 
-    public override void Start()
+    public void Start()
     {
-
         player = GameObject.FindGameObjectWithTag(CharacterSelection.ChosenCharacter.breed.ToString()).GetComponent<PlayerData>();
-        FSMMachine = new FiniteStateMachine(this, new GoTo());
-
+        FSMMachine = new ArtificialIntelligence.FiniteStateMachine(this, new ArtificialIntelligence.GoTo());
     }
 
-    // Update is called once per frame
-    public override void Update()
+    public void Update()
     {
-        base.Update();
-        if (defaultStats.Alive)
+        if (IsItAlive(statistics.Health,statistics.MaxHealth))
+        {
             FSMMachine.UpdateFSM();
+            if (InCombat && InCombatCoroutine == null)
+            {
+                InCombatCoroutine = CombatCooldown(5);
+                StartCoroutine(InCombatCoroutine);
+            }
+            else if (IsRegenHealth && HealthRegenCoroutine == null)
+            {
+                HealthRegenCoroutine = RegenHealth();
+                StartCoroutine(HealthRegenCoroutine);
+            }
+        }
         else agent.isStopped = true;
-        anim.SetFloat("Health", defaultStats.Health);
 
-        //var newPos=Camera.main.WorldToScreenPoint(this.transform.position);
-        //newPos.Set(-newPos.x, newPos.y, newPos.z);
-
-        //if (HealthBar && HealthBar.GetComponent<Slider>().value!=defaultStats.Health)
-        //    UpdateBar(defaultStats.Health);
+        if (HealthBar)
+            UpdateBar(HealthBar, statistics.Health / statistics.MaxHealth);
+        anim.SetFloat("Health", statistics.Health);
 
     }
 
-    private void OnDrawGizmos()
-    {
-     //  Gizmos.DrawWireSphere(CentrePatrolPointPatrol.transform.position, rangeSphere);
-     //  Gizmos.DrawWireSphere(transform.position + transform.forward * rangeSphere, rangeSphere);
-    }
 
     public void RandomPatrolPoint(Vector3 center, float range, out Vector3 result)
     {
         while (true)
         {
             Vector3 randomPatrolPoint = center + UnityEngine.Random.insideUnitSphere * range;
-            Debug.DrawRay(randomPatrolPoint, Vector3.up, Color.blue, 14.0f);
-
             NavMeshHit hit;
             if (NavMesh.SamplePosition(randomPatrolPoint, out hit, 1.0f, NavMesh.AllAreas))
             {
                 result = hit.position;
                 break;
             }
-
         }
-
     }
 
 
 
-    public void TakeDamage(float dmg)
+    public override void TakeDamage(float damage)
     {
-        defaultStats.Health -= defaultStats.Health - dmg >= 0 ? dmg : defaultStats.Health;
-        defaultStats.Hostile = true;
-        if (FSMMachine != null && FSMMachine.GetCurrState()!=GoTo.Instance)
+        ResetCombatCoroutine();
+        ShowUpDamageText(damage);
+        statistics.Health -= statistics.Health - damage >= 0 ? damage : statistics.Health;
+        Hostile = true;
+        if (FSMMachine != null && FSMMachine.GetCurrState() != ArtificialIntelligence.GoTo.Instance)
         {
             transform.LookAt(player.gameObject.transform);
-            FSMMachine.ChangeState(GoTo.Instance);
+            FSMMachine.ChangeState(ArtificialIntelligence.GoTo.Instance);
         }
 
     }
@@ -95,138 +98,65 @@ public class Enemy : CharacterStats
     public void DealDamage()
     {
         if (player)
-            player.TakeDamage(AttackPower);
-    }
-
-    public void UpdateBar(float health)
-    {
-        HealthBar.GetComponent<Slider>().value = health / defaultStats.maxHealth;
-
-    }
-}
-
-
-public class FiniteStateMachine
-{
-    private Enemy enemy;
-    private State currState;
-
-    public FiniteStateMachine(Enemy enemy, State initialState)
-    {
-        this.enemy = enemy;
-        ChangeState(initialState);
-    }
-
-    public void UpdateFSM()
-    {
-        if (currState != null) currState.Execute(enemy);
-    }
-
-    public void ChangeState(State newState)
-    {
-        if (currState != null)
         {
-            currState.End(enemy);
-        }
-
-        currState = newState;
-
-        if (currState != null) currState.Begin(enemy);
-    }
-
-    public State GetCurrState()
-    {
-        return currState;
-    }
-}
-
-
-
-
-
-
-public abstract class State
-{
-    public string name;
-    abstract public void Begin(Enemy enemy);
-    abstract public void End(Enemy enemy);
-    abstract public void Execute(Enemy enemy);
-
-}
-
-
-sealed class GoTo : State
-{
-    static readonly GoTo instance = new GoTo();
-    public static GoTo Instance
-    {
-        get
-        {
-            return instance;
+            player.TakeDamage(statistics.AttackPower);
+            ResetCombatCoroutine();
         }
     }
 
-    Vector3 randomPoint;
-    public override void Begin(Enemy enemy)
+    protected override void UpdateBar(GameObject bar, float value)
     {
-        name = "GoTo";
-        enemy.RandomPatrolPoint(enemy.CentrePatrolPointPatrol.transform.position, enemy.rangeSphere, out randomPoint);
-        enemy.agent.SetDestination(randomPoint);
-        enemy.anim.SetFloat("Speed", enemy.agent.velocity.magnitude);
-
-
+        bar.GetComponent<Slider>().value = value;
     }
 
-    public override void Execute(Enemy enemy)
+    protected override void ShowUpDamageText(float Damage)
     {
+        Vector3 TextPosition = Camera.main.WorldToScreenPoint(transform.position + transform.up * 2) + new Vector3(Random.Range(-300, 300), 0, 0);
+        GameObject DamageTextGameObject = Instantiate(DamageTextPrefab, TextPosition, Quaternion.identity, CanvasRoot.transform);
+        Text DamageText = DamageTextGameObject.transform.GetChild(0).GetComponent<Text>();
+        DamageText.text = Damage.ToString();
+        DamageText.color = Color.yellow;
+    }
 
-        if (Vector3.Distance(enemy.player.transform.position, enemy.transform.position + enemy.transform.forward * enemy.rangeSphere) <= enemy.rangeSphere && enemy.defaultStats.Hostile && enemy.player.defaultStats.Alive)
+
+    protected override IEnumerator RegenHealth()
+    {
+        while (statistics.Health < statistics.MaxHealth)
         {
-            randomPoint = enemy.player.transform.position;
-            if (enemy.agent.remainingDistance <= enemy.agent.stoppingDistance )
-                enemy.FSMMachine.ChangeState(AttackState.Instance);
+            yield return new WaitForSeconds(Constants.TICK);
+            HealthRecharge((statistics.MaxHealth * statistics.HealthRegenerationPercentage) / 100);
         }
-        else if (enemy.agent.remainingDistance <= enemy.agent.stoppingDistance)
-            enemy.RandomPatrolPoint(enemy.CentrePatrolPointPatrol.transform.position, enemy.rangeSphere, out randomPoint);
-
-        if (enemy.agent.destination != randomPoint)
-            enemy.agent.SetDestination(randomPoint);
-
+        IsRegenHealth = false;
+        HealthRegenCoroutine = null;
     }
 
-    public override void End(Enemy enemy)
+    protected override IEnumerator CombatCooldown(float time)
     {
-        enemy.anim.SetFloat("Speed", 0);
+        yield return new WaitForSeconds(time);
+
+        InCombat = false;
+        //Activate health regen if you take damage
+        IsRegenHealth = true;
+
+        InCombatCoroutine = null;
     }
 
-}
-
-
-sealed class AttackState : State
-{
-    static readonly AttackState instance = new AttackState();
-    public static AttackState Instance
+    protected override void HealthRecharge(float RechargeValue)
     {
-        get
+        statistics.Health += statistics.Health + RechargeValue <= statistics.MaxHealth ? RechargeValue : statistics.MaxHealth - statistics.Health;
+    }
+
+    public override void ResetCombatCoroutine()
+    {
+        InCombat = true;
+        if (HealthRegenCoroutine != null)
         {
-            return instance;
+            StopCoroutine(HealthRegenCoroutine);
+            HealthRegenCoroutine = null;
         }
-    }
-    public override void Begin(Enemy enemy)
-    {
-        name = "Attack";
-        enemy.anim.SetBool("Attack", true);
-    }
-
-
-    public override void End(Enemy enemy)
-    {
-        enemy.anim.SetBool("Attack", false);
-    }
-
-    public override void Execute(Enemy enemy)
-    {
-        if (Vector3.Distance(enemy.player.transform.position, enemy.transform.position) > enemy.agent.stoppingDistance || !enemy.player.defaultStats.Alive)
-            enemy.FSMMachine.ChangeState(GoTo.Instance);
+        if (InCombatCoroutine != null)
+            StopCoroutine(InCombatCoroutine);
+        InCombatCoroutine = CombatCooldown(CombatCooldownTime);
+        StartCoroutine(InCombatCoroutine);
     }
 }

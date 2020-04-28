@@ -22,26 +22,26 @@ public class Looting : Inventory
 
     public override void Update()
     {
-        if (!creature.defaultStats.Alive && !GetComponent<Collider>().isTrigger )
+        if (!creature.Alive && !GetComponent<Collider>().isTrigger )
         {
             GetComponent<Collider>().isTrigger = true;
         }
 
 
-        if (Input.GetKeyDown(KeyCode.L) && !creature.defaultStats.Alive && looting)
+        if (Input.GetKeyDown(KeyCode.L) && !creature.Alive && looting)
         {
             AddLootingItems();
             inventory.SetActive(!inventory.activeSelf);
             Target.instance.SetEnemy(creature);
             creature.player.GetComponent<PlayerData>().ToogleLoot();
         }
-        else if (Input.GetKeyDown(KeyCode.R) && !creature.defaultStats.Alive && looting)
+        else if (Input.GetKeyDown(KeyCode.R) && !creature.Alive && looting)
             GatherAllItems();
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.GetComponent<PlayerData>() && other.GetComponent<PlayerData>().defaultStats.Alive)
+        if (other.GetComponent<PlayerData>() && other.GetComponent<PlayerData>().Alive)
         {
             looting = true;
             other.GetComponent<PlayerData>().AbleToLoot = looting;
@@ -51,7 +51,7 @@ public class Looting : Inventory
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.GetComponent<PlayerData>() && other.GetComponent<PlayerData>().defaultStats.Alive)
+        if (other.GetComponent<PlayerData>() && other.GetComponent<PlayerData>().Alive)
         {
             looting = false;
             other.GetComponent<PlayerData>().AbleToLoot = looting;

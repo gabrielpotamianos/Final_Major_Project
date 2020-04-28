@@ -32,7 +32,7 @@ public class Missiles : MonoBehaviour
     {
         if (!IceMissiles && CurrTarger)
         {
-            if (!CurrTarger.defaultStats.Alive)
+            if (!CurrTarger.Alive)
             {
                 CurrTarger = null;
                 return;
@@ -64,7 +64,7 @@ public class Missiles : MonoBehaviour
             transform.GetChild(0).gameObject.SetActive(false);
             transform.GetChild(1).gameObject.SetActive(true);
 
-            CurrTarger.TakeDamage(GameObject.FindGameObjectWithTag(CharacterSelection.ChosenCharacter.breed.ToString()).GetComponent<PlayerData>().AttackPower * FireballMultiplier);
+            CurrTarger.TakeDamage(GameObject.FindGameObjectWithTag(CharacterSelection.ChosenCharacter.breed.ToString()).GetComponent<PlayerData>().statistics.AttackPower * FireballMultiplier);
             StartCoroutine(Explode());
         }
 

@@ -44,7 +44,7 @@ public class Inventory : MonoBehaviour
 
     public virtual void Update()
     {
-        if (Input.GetKeyDown(KeyCode.I) && playerData.defaultStats.Alive)
+        if (Input.GetKeyDown(KeyCode.I) && playerData.Alive)
             inventory.SetActive(!inventory.activeSelf);
 
 

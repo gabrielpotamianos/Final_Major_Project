@@ -9,6 +9,7 @@ public static class Constants
     public const string INVENTORY = "Inventory";
     public const string MESSAGE_PANEL = "MessagePanel";
     public const string MAXIMUM_CHARACTERS_MESSAGE = "Character cannot be created! \nPlease delete a character before creating a new one!\n Character will not be saved!";
+    public const float TICK=2;
 
 
     #region Spells

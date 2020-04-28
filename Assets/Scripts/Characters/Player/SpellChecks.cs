@@ -1,21 +1,45 @@
 using UnityEngine;
 
-public static class PlayerUtilities
+public static class SpellChecks
 {
-    public static bool CheckSpell(bool cooldown)
+    private static bool EnemyOnSight(Enemy enemy)
     {
-        if (cooldown)
-            MessageManager.instance.DisplayMessage("Spell on cooldown!");
+        Vector3 screenPoint = Camera.main.WorldToViewportPoint(enemy.transform.position);
+        bool onScreen = screenPoint.z > 0 && screenPoint.x > 0 && screenPoint.x < 1 && screenPoint.y > 0 && screenPoint.y < 1;
+
+        return onScreen;
+    }
+
+    public static bool CheckSpell(bool boolean, string Message)
+    {
+        if (boolean)
+            MessageManager.instance.DisplayMessage(Message);
         else return true;
 
         return false;
     }
+
+    public static bool CheckSpell(Enemy enemy, PlayerData playerData, float range)
+    {
+        if (enemy == null || !enemy.Alive)
+            MessageManager.instance.DisplayMessage(Constants.NO_TARGET_SELECTED);
+        else if (!EnemyOnSight(enemy))
+            MessageManager.instance.DisplayMessage("You must look at the enemy!");
+        else if (Vector3.Distance(playerData.transform.position, enemy.transform.position) > range)
+            MessageManager.instance.DisplayMessage(Constants.OUT_OF_RANGE);
+        else return true;
+
+        return false;
+    }
+
     public static bool CheckSpell(Enemy enemy, bool cooldown)
     {
-        if (CheckSpell(cooldown))
+        if (CheckSpell(cooldown, "Spell on cooldown!"))
         {
-            if (enemy == null || !enemy.defaultStats.Alive)
+            if (enemy == null || !enemy.Alive)
                 MessageManager.instance.DisplayMessage(Constants.NO_TARGET_SELECTED);
+            else if (!EnemyOnSight(enemy))
+                MessageManager.instance.DisplayMessage("You must look at the enemy!");
             else return true;
         }
         return false;
@@ -23,7 +47,7 @@ public static class PlayerUtilities
 
     public static bool CheckSpell(PlayerData playerData, bool cooldown, float AbilityCost)
     {
-        if (CheckSpell(cooldown))
+        if (CheckSpell(cooldown, "Spell on cooldown!"))
         {
             if (AbilityCost > playerData.currAR)
                 MessageManager.instance.DisplayMessage("Not enough " + "Rage");
@@ -87,11 +111,11 @@ public static class PlayerUtilities
             float BackstabDistance = Vector3.Distance(Target.instance.getCurrEnemy().transform.position, playerData.transform.position);
 
             if (DirectionDotProduct < DirectionDotProductTreshold)
-                MessageManager.instance.DisplayMessage("YOU MUST FACE TOWARDS THE TARGET!");
+                MessageManager.instance.DisplayMessage("YOU MUST BE BEHIND THE TARGET!");
             else if (PositionDotProduct < PositionDotProductThreshold)
                 MessageManager.instance.DisplayMessage("YOU MUST BE BEHIND THE TARGET!");
             else if (BackstabDistance > Distance)
-                MessageManager.instance.DisplayMessage("YOU MUST BE CLOSER TO THE TARGET!");
+                MessageManager.instance.DisplayMessage("YOU MUST BE BEHIND THE TARGET!");
             else return true;
 
         }

@@ -30,8 +30,6 @@ public class PlayerMovement : MonoBehaviour
 
     private void Awake()
     {
-        //if (!gameObject.tag.Equals(SelectCharacter.SelectedGameObject))
-        //    gameObject.SetActive(false);
         rigid = GetComponent<Rigidbody>();
         playerData = GetComponent<PlayerData>();
     }
@@ -44,13 +42,13 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
-        if(camera==null)
+        if (camera == null)
             camera = Camera.main.gameObject;
     }
 
     private void FixedUpdate()
     {
-        if (playerData.defaultStats.Alive)
+        if (playerData.Alive)
         {
             Rotate();
 
@@ -63,10 +61,10 @@ public class PlayerMovement : MonoBehaviour
 
         Vector2 axisInput = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
 
-        if (Input.GetAxisRaw("Horizontal") != 0 || Input.GetAxisRaw("Vertical") != 0)
+        if (axisInput.x!=0 || axisInput.y!=0)
         {
             MageCombatSystem.InteruptCast = true;
-            //  print("Moving");
+
             //Get the Input Axis
             Vector3 rightDir = camera.transform.right;
             Vector3 forwardDir = camera.transform.forward;
@@ -74,13 +72,12 @@ public class PlayerMovement : MonoBehaviour
             //Exclude Y Axis to avoid tilting forward or backwards
             rightDir.y = 0;
             forwardDir.y = 0;
-
+            
             //Apply velocity
-            direction = (Input.GetAxis("Horizontal") * rightDir + Input.GetAxis("Vertical") * forwardDir).normalized;
-            Vector3 temp = direction * Time.deltaTime * speed;
-            rigid.velocity = new Vector3(temp.x, rigid.velocity.y, temp.z);
-            // print(rigid.velocity);
+            direction = (axisInput.x * rightDir + axisInput.y * forwardDir).normalized;
 
+            Vector3 desiredVelocity = direction * Time.deltaTime * speed;
+            rigid.velocity = new Vector3(desiredVelocity.x, rigid.velocity.y, desiredVelocity.z);
         }
         else
         {
@@ -104,10 +101,9 @@ public class PlayerMovement : MonoBehaviour
             transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(newDirection), 0.2f);
             lastRotation = transform.rotation;
         }
-        //else transform.rotation = lastRotation;
     }
 
-    
+
 
 
 }

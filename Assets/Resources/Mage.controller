@@ -450,32 +450,32 @@ AnimatorStateMachine:
   m_ChildStates:
   - serializedVersion: 1
     m_State: {fileID: 7451963432360238490}
-    m_Position: {x: 150, y: 220, z: 0}
+    m_Position: {x: 420, y: 90, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 8988073698976275053}
-    m_Position: {x: 570, y: 350, z: 0}
+    m_Position: {x: 1080, y: 580, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 4637799661501148637}
-    m_Position: {x: 570, y: 300, z: 0}
+    m_Position: {x: 920, y: 190, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 9065463947688037456}
-    m_Position: {x: 0, y: 300, z: 0}
+    m_Position: {x: -120, y: 250, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 2933410874836329517}
-    m_Position: {x: 0, y: 400, z: 0}
+    m_Position: {x: -200, y: 570, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 7337467548455493053}
     m_Position: {x: 0, y: 0, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -5825268375658482740}
-    m_Position: {x: 20, y: 680, z: 0}
+    m_Position: {x: -200, y: 720, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -2030351041258163775}
-    m_Position: {x: 70, y: 970, z: 0}
+    m_Position: {x: 40, y: 1080, z: 0}
   m_ChildStateMachines:
   - serializedVersion: 1
     m_StateMachine: {fileID: -5148501883473204428}
-    m_Position: {x: 430, y: 930, z: 0}
+    m_Position: {x: 710, y: 1080, z: 0}
   m_AnyStateTransitions: []
   m_EntryTransitions: []
   m_StateMachineTransitions:
@@ -494,7 +494,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Standing_2H_Magic_Area_Attack_01
+  m_Name: Blizzard
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -509,7 +509,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: 8c02aced7b7c5884ca3df778f4717ae2, type: 2}
+  m_Motion: {fileID: 7400000, guid: fb66141563124274796d8a6f5d3258ac, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -711,7 +711,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Unarmed-Cast-Dual-Attack3_end
+  m_Name: Firebal_End
   m_Speed: 0.4
   m_CycleOffset: 0
   m_Transitions:
@@ -912,7 +912,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Unarmed-Cast-Dual-Attack3_start
+  m_Name: Fireball_Start
   m_Speed: 0.7
   m_CycleOffset: 0
   m_Transitions:
@@ -939,7 +939,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Unarmed-Cast-Dual-Attack3_loop
+  m_Name: Fireball_Loop
   m_Speed: 0.4
   m_CycleOffset: 0
   m_Transitions:
@@ -1441,7 +1441,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: 6d0c8fe5d9413c748a1dd23b2f92bc08, type: 2}
+  m_Motion: {fileID: 7400000, guid: 0eff2d4fb48ed844987b7b18861315f3, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -1522,7 +1522,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: 848e2bdcffce6394cb4bd64b8d4095c1, type: 2}
+  m_Motion: {fileID: 7400000, guid: aae93fa831d4782469f23984bc6e5f00, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
