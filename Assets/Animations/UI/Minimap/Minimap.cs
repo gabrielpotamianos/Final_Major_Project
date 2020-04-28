@@ -22,7 +22,7 @@ public class Minimap : MonoBehaviour
         player = GameObject.FindWithTag(CharacterSelection.ChosenCharacter.breed.ToString());
         MinimapPointer = GameObject.Find("Minimap-Pointer-Player");
         CurrCamera = GetComponent<Camera>();
-    }
+        }
 
 
     void Update()
@@ -34,7 +34,7 @@ public class Minimap : MonoBehaviour
         if(Zoom_Out_Button)
             Zoom_Out_Button.interactable=CurrCamera.orthographicSize<MaxOrtographicSize;
     }
-    
+
     void OnPreRender()
     {
         previousShadowDistance = QualitySettings.shadowDistance;
@@ -48,12 +48,12 @@ public class Minimap : MonoBehaviour
 
     public void ZoomIn()
     {
-        if(!Zoom_In_Button) Zoom_In_Button=EventSystem.current.currentSelectedGameObject.GetComponent<Button>();
+        if (!Zoom_In_Button) Zoom_In_Button = EventSystem.current.currentSelectedGameObject.GetComponent<Button>();
         CurrCamera.orthographicSize -= (CurrCamera.orthographicSize - AmoutToZoomBy >= MinOrtographicSize) ? AmoutToZoomBy : (CurrCamera.orthographicSize - AmoutToZoomBy);
     }
     public void ZoomOut()
     {
-        if(!Zoom_Out_Button) Zoom_Out_Button=EventSystem.current.currentSelectedGameObject.GetComponent<Button>();
+        if (!Zoom_Out_Button) Zoom_Out_Button = EventSystem.current.currentSelectedGameObject.GetComponent<Button>();
         CurrCamera.orthographicSize += (CurrCamera.orthographicSize + AmoutToZoomBy <= MaxOrtographicSize) ? AmoutToZoomBy : (MaxOrtographicSize - CurrCamera.orthographicSize);
     }
 }
