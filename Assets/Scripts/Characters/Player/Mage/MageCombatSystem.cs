@@ -109,7 +109,7 @@ public class MageCombatSystem : PlayerCombat
 
     void Fireball()
     {
-        if (SpellChecks.CheckSpell(Target.instance.getCurrEnemy(), playerData, FireballRange, FireballOnCooldown, FireballManaCost))
+        if (SpellChecks.CheckSpell(Target.instance.GetCurrentTarget(), playerData, FireballRange, FireballOnCooldown, FireballManaCost))
         {
             Missiles.CurrTarger = Target.instance.getCurrEnemy();
             StartCoroutine(CastSpell(FireballStart, FireballStop, FireballCastTime, CastBar, "Fireball"));

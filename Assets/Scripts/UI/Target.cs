@@ -126,6 +126,11 @@ public class Target : MonoBehaviour
 
     public EnemyCombat getCurrEnemy()
     {
+        if (currentTarget && !currentTarget.GetComponent<EnemyCombat>())
+        {
+            MessageManager.instance.DisplayMessage("You cannot do that!");
+            return null;
+        }
         if (currentTarget.GetComponent<EnemyCombat>() && currentTarget.Alive)
             return currentTarget.GetComponent<EnemyCombat>();
         else
@@ -182,7 +187,11 @@ public class Target : MonoBehaviour
         DisableAvatarCamera();
         TargetGameObject.SetActive(false);
         TargetGameObject.transform.parent = null;
-        currentTarget = null;
+        if (currentTarget)
+        {
+            currentTarget.SetHealthBar(null);
+            currentTarget = null;
+        }
         EnemyAvatar.texture = null;
 
     }
@@ -222,11 +231,9 @@ public class Target : MonoBehaviour
 
     }
 
-    public GameObject getCurrTarget()
+    public CharacterData GetCurrentTarget()
     {
-        if (currentTarget)
-            return currentTarget.gameObject;
-        else return null;
+        return currentTarget;
     }
 
 
@@ -257,7 +264,6 @@ public class Target : MonoBehaviour
     {
         if (currentTarget)
             currentTarget.GetComponentInChildren<Camera>().enabled = true;
-
     }
 
 

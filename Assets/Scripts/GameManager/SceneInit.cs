@@ -15,11 +15,11 @@ public class SceneInit : MonoBehaviour
         if(instance==null)
             instance=this;
         else Debug.LogError("many instances going on");
+        player = GameObject.Find("Warrior (2)");
 
         CharacterSelection.ChosenCharacter = new CharacterInfo();
-        CharacterSelection.ChosenCharacter.breed = (CharacterInfo.Breed)Enum.Parse(typeof(CharacterInfo.Breed), "Mage");
+        CharacterSelection.ChosenCharacter.breed = (CharacterInfo.Breed)Enum.Parse(typeof(CharacterInfo.Breed), player.tag);
 
-        player = GameObject.FindGameObjectWithTag(CharacterSelection.ChosenCharacter.breed.ToString());
 
         switch (CharacterSelection.ChosenCharacter.breed)
         {

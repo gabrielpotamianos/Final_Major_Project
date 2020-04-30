@@ -63,7 +63,7 @@ public class WarriorCombatSystem : PlayerCombat
     /// </summary>
     void Charge()
     {
-        if (SpellChecks.CheckSpell(Target.instance.getCurrEnemy(), playerData, ChargeRange, ChargeOnCooldown))
+        if (SpellChecks.CheckSpell(Target.instance.GetCurrentTarget(), playerData, ChargeRange, ChargeOnCooldown))
         {
             StartCoroutine(ChargeCoroutine());
         }
@@ -71,7 +71,7 @@ public class WarriorCombatSystem : PlayerCombat
 
     void MortalStrike()
     {
-        if (SpellChecks.CheckSpell(Target.instance.getCurrEnemy(), playerData, Target.instance.MeleeAttackRange, MortalStrikeOnCooldown, MortalStrikeAbilityCost))
+        if (SpellChecks.CheckSpell(Target.instance.GetCurrentTarget(), playerData, Target.instance.MeleeAttackRange, MortalStrikeOnCooldown, MortalStrikeAbilityCost))
         {
             MortalStrikeStart();
         }

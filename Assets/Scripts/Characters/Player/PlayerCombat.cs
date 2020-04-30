@@ -138,7 +138,7 @@ public class PlayerCombat : Combat
 
     protected void BasicAttack()
     {
-        if (SpellChecks.CheckSpell(Target.instance.getCurrEnemy(), playerData, Target.instance.MeleeAttackRange))
+        if (SpellChecks.CheckSpell(Target.instance.GetCurrentTarget(), playerData, Target.instance.MeleeAttackRange))
         {
             playerData.animator.SetBool("BasicAttack", true);
             SpellCheckAssigned = true;

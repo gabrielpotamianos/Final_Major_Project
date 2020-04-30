@@ -54298,7 +54298,7 @@ PrefabInstance:
     - target: {fileID: 6261805024279626525, guid: 4864f1c4e6402af48908b47ce22bb19b,
         type: 3}
       propertyPath: m_TagString
-      value: Mage
+      value: Rogue
       objectReference: {fileID: 0}
     - target: {fileID: 6970797783983288590, guid: 4864f1c4e6402af48908b47ce22bb19b,
         type: 3}
@@ -54410,7 +54410,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Controller
       value: 
-      objectReference: {fileID: 9100000, guid: 6a5e72b0729fba74b9a3eb7bc6f51323, type: 2}
+      objectReference: {fileID: 9100000, guid: 69173161847da074eafd7be7123a1fc2, type: 2}
     - target: {fileID: 4117704287015554931, guid: 4864f1c4e6402af48908b47ce22bb19b,
         type: 3}
       propertyPath: CombatCooldownTime
@@ -78983,7 +78983,7 @@ MonoBehaviour:
   statistics:
     CurrentHealth: 0.4
     MaxHealth: 1000
-    HealthRegenerationPercentage: 33
+    HealthRegenerationPercentage: 10
     AttackPower: 100
     HitChance: 0
     Defence: 0
