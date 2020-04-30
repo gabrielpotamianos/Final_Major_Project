@@ -31,6 +31,7 @@ public class Target : MonoBehaviour
     public List<RaycastHit> ClosestTargets;
 
     RawImage EnemyAvatar;
+    Text TargetName;
 
     #region Singleton
 
@@ -70,6 +71,7 @@ public class Target : MonoBehaviour
 
         TargetGameObject.SetActive(false);
         EnemyAvatar = TargetHUD.transform.GetChild(2).GetComponent<RawImage>();
+        TargetName = TargetHUD.transform.GetChild(3).transform.GetChild(0).GetComponent<Text>();
         HideHUD();
 
         //THINK OF IT
@@ -166,7 +168,7 @@ public class Target : MonoBehaviour
             currentTarget = GetTarget(target);
             EnableAvatarCamera();
             EnemyAvatar.texture = currentTarget.GetComponentInChildren<Camera>().targetTexture;
-
+            TargetName.text=currentTarget.Name;
             //THINK OF IT
             // currentTarget.GetComponentInChildren<Camera>().enabled = false;
 

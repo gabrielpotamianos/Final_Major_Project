@@ -91,7 +91,7 @@ public class PlayerCombat : Combat
         GameObject DamageTextGameObject = Instantiate(DamageTextPrefab, TextPosition, Quaternion.identity, playerData.GetCanvasRoot().transform);
         Text DamageText = DamageTextGameObject.transform.GetChild(0).GetComponent<Text>();
         DamageText.text = Damage.ToString();
-        DamageText.color = Color.red;
+        DamageText.color = Color.yellow;
     }
 
     public override void ResetCombatCoroutine()

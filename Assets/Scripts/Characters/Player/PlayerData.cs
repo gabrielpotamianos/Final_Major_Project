@@ -39,6 +39,7 @@ public class PlayerData : CharacterData
         HealthBar = GameObject.Find("PlayerHealthSlider").GetComponent<Slider>();
         AbilityResourceBar = GameObject.Find("PlayerAbilitySlider").GetComponent<Slider>();
         AbilityResourceBarName = GameObject.Find("AbilitySliderText").GetComponent<Text>();
+        GameObject.Find("PlayerNameText").GetComponent<Text>().text=Name;
 
 
     }
