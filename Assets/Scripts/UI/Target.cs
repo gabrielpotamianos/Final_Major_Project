@@ -15,7 +15,7 @@ public class Target : MonoBehaviour
 
     public float SphereCastAllRadius;
     GameObject TargetHUD;
-    public Enemy currentTarget;
+    public CharacterData currentTarget;
     int currentTargetIndex = 0;
 
 
@@ -30,13 +30,17 @@ public class Target : MonoBehaviour
     [SerializeField]
     public List<RaycastHit> ClosestTargets;
 
+    RawImage EnemyAvatar;
+
     #region Singleton
+
     static public Target instance;
 
 
 
     private void Awake()
     {
+
         if (instance != null)
         {
             Debug.LogError("You have MORE than ONE TARGET instances!");
@@ -51,53 +55,65 @@ public class Target : MonoBehaviour
         ClosestTargets = new List<RaycastHit>();
         player = GameObject.FindGameObjectWithTag(CharacterSelection.ChosenCharacter.breed.ToString());
 
+        //THINK OF IT
+        GameObject.Find("PlayerInfoPanel").transform.GetChild(2).GetComponent<RawImage>().texture = player.GetComponentInChildren<Camera>().targetTexture;
+
+
+
+
         player.GetComponent<PlayerMovement>().enabled = true;
 
-        switch (CharacterSelection.ChosenCharacter.breed)
-        {
-            case CharacterInfo.Breed.Mage:
-                GameObject.FindObjectOfType<MageCombatSystem>().enabled = true;
-                Destroy(GameObject.FindObjectOfType<RogueCombatSystem>());
-                Destroy(GameObject.FindObjectOfType<WarriorCombatSystem>());
-                break;
-            case CharacterInfo.Breed.Warrior:
-                GameObject.FindObjectOfType<WarriorCombatSystem>().enabled = true;
-                Destroy(GameObject.FindObjectOfType<RogueCombatSystem>());
-                Destroy(GameObject.FindObjectOfType<MageCombatSystem>());
-                break;
-            case CharacterInfo.Breed.Rogue:
-                GameObject.FindObjectOfType<RogueCombatSystem>().enabled = true;
-                Destroy(GameObject.FindObjectOfType<WarriorCombatSystem>());
-                Destroy(GameObject.FindObjectOfType<MageCombatSystem>());
-                break;
-
-        }
 
         player.GetComponent<PlayerData>().enabled = true;
         TargetHUD = GameObject.Find(Constants.TARGET_HUD);
         TargetGameObject = Instantiate(TargetPrefab, TargetPrefab.transform.position, TargetPrefab.transform.rotation);
 
         TargetGameObject.SetActive(false);
+        EnemyAvatar = TargetHUD.transform.GetChild(2).GetComponent<RawImage>();
+        HideHUD();
+
+        //THINK OF IT
+        //  StartCoroutine(StopPlayerCameraAvatar());
     }
+
+
+    //THINK OF IT
+    IEnumerator StopPlayerCameraAvatar()
+    {
+        yield return new WaitForSeconds(3);
+        player.GetComponentInChildren<Camera>().enabled = false;
+
+    }
+
+
+
 
     private void Update()
     {
+
         GetAllTargets();
         if (Input.GetMouseButtonDown(0))
         {
             ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            if (Physics.Raycast(ray, out hit,Mathf.Infinity,TargetableLayers))
+            if (Physics.Raycast(ray, out hit, Mathf.Infinity, TargetableLayers))
             {
-                if (hit.collider.gameObject.layer.Equals(LayerMask.NameToLayer("Enemy")))
+                //SelectTarget(hit);
+
+                if (TargetableLayers == (TargetableLayers.value | 1 << hit.collider.gameObject.layer))
                 {
+                    DeselectTarget();
                     SelectTarget(hit);
                     ShowHUD();
                 }
-                else DeselectTarget();
+            }
+            else
+            {
+                DeselectTarget();
+                HideHUD();
             }
         }
 
-        if (!currentTarget || !currentTarget.Alive)
+        if (currentTarget && !currentTarget.Alive)
         {
             DeselectTarget();
             HideHUD();
@@ -108,18 +124,18 @@ public class Target : MonoBehaviour
 
 
 
-    public Enemy getCurrEnemy()
+    public EnemyCombat getCurrEnemy()
     {
-        if (currentTarget && currentTarget.Alive)
-            return currentTarget;
+        if (currentTarget.GetComponent<EnemyCombat>() && currentTarget.Alive)
+            return currentTarget.GetComponent<EnemyCombat>();
         else
         {
             //Cast Sphere forward for an enemy
             Physics.SphereCast(player.transform.position + new Vector3(0, 1, 0), SphereCastRadius, player.transform.forward, out hit, SphereCastDistance, TargetableLayers, QueryTriggerInteraction.UseGlobal);
-            if (hit.collider.GetComponent<Enemy>())
+            if (hit.collider.GetComponent<EnemyCombat>())
             {
                 SelectTarget(hit);
-                return currentTarget;
+                return hit.collider.GetComponent<EnemyCombat>();
             }
             else
                 return null;
@@ -138,23 +154,45 @@ public class Target : MonoBehaviour
 
     private void SelectTarget(RaycastHit target)
     {
-        currentTarget = target.collider.gameObject.GetComponent<Enemy>();
+        if (target.collider.GetComponent<CharacterData>())
+        {
+            if (currentTarget)
+                DeselectTarget();
+            currentTarget = GetTarget(target);
+            EnableAvatarCamera();
+            EnemyAvatar.texture = currentTarget.GetComponentInChildren<Camera>().targetTexture;
 
-        //To modify - when implementing for more than just Enemies
-        currentTarget.HealthBar = TargetHUD.transform.GetChild(0).gameObject;
+            //THINK OF IT
+            // currentTarget.GetComponentInChildren<Camera>().enabled = false;
 
-        TargetGameObject.SetActive(true);
-        TargetGameObject.transform.position = new Vector3(currentTarget.transform.position.x, TargetGameObject.transform.position.y, currentTarget.transform.position.z);
-        TargetGameObject.transform.parent = currentTarget.transform;
+
+            //To modify - when implementing for more than just Enemies
+            currentTarget.SetHealthBar(TargetHUD.transform.GetChild(0).gameObject.GetComponent<Slider>());
+
+            TargetGameObject.SetActive(true);
+            TargetGameObject.transform.position = new Vector3(currentTarget.transform.position.x, TargetGameObject.transform.position.y, currentTarget.transform.position.z);
+            TargetGameObject.transform.parent = currentTarget.transform;
+        }
 
     }
 
+
     private void DeselectTarget()
     {
+        DisableAvatarCamera();
         TargetGameObject.SetActive(false);
         TargetGameObject.transform.parent = null;
         currentTarget = null;
+        EnemyAvatar.texture = null;
 
+    }
+
+    public CharacterData GetTarget(RaycastHit target)
+    {
+        if (target.collider.GetComponent<EnemyData>())
+            return target.collider.GetComponent<EnemyData>();
+
+        return target.collider.GetComponent<CharacterData>();
     }
 
     private void GetAllTargets()
@@ -191,11 +229,7 @@ public class Target : MonoBehaviour
         else return null;
     }
 
-    public void SetEnemy(Enemy enemy)
-    {
-        currentTarget = enemy;
-    }
-                                                  
+
     public bool IsTargetInRange()
     {
         if (currentTarget && player)
@@ -212,5 +246,19 @@ public class Target : MonoBehaviour
 
         return targetInRange;
     }
+
+    private void DisableAvatarCamera()
+    {
+        if (currentTarget)
+            currentTarget.GetComponentInChildren<Camera>().enabled = false;
+    }
+
+    private void EnableAvatarCamera()
+    {
+        if (currentTarget)
+            currentTarget.GetComponentInChildren<Camera>().enabled = true;
+
+    }
+
 
 }

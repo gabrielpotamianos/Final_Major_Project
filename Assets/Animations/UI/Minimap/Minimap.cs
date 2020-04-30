@@ -22,17 +22,17 @@ public class Minimap : MonoBehaviour
         player = GameObject.FindWithTag(CharacterSelection.ChosenCharacter.breed.ToString());
         MinimapPointer = GameObject.Find("Minimap-Pointer-Player");
         CurrCamera = GetComponent<Camera>();
-        }
+    }
 
 
     void Update()
     {
         transform.position = new Vector3(player.transform.position.x, transform.position.y, player.transform.position.z);
         MinimapPointer.transform.rotation = Quaternion.Euler(0, 0, -player.transform.eulerAngles.y);
-        if(Zoom_In_Button)
-            Zoom_In_Button.interactable=CurrCamera.orthographicSize>MinOrtographicSize;
-        if(Zoom_Out_Button)
-            Zoom_Out_Button.interactable=CurrCamera.orthographicSize<MaxOrtographicSize;
+        if (Zoom_In_Button)
+            Zoom_In_Button.interactable = CurrCamera.orthographicSize > MinOrtographicSize;
+        if (Zoom_Out_Button)
+            Zoom_Out_Button.interactable = CurrCamera.orthographicSize < MaxOrtographicSize;
     }
 
     void OnPreRender()

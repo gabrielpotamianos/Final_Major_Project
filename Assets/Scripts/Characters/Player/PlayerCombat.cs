@@ -1,62 +1,166 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
-using System.Linq;
 
-public class PlayerCombat : MonoBehaviour
+public class PlayerCombat : Combat
 {
     protected delegate void Ability();
     protected Ability CurrAbility;
 
-    protected GameObject projectile;
-
-
-    protected Image Spell1;
-    protected Image Spell2;
-    protected Image Spell3;
-    protected Image Spell4;
     protected bool SpellCheckAssigned = false;
+    protected bool SpellResourceRegen;
+    public PlayerData playerData;
 
-
-    [HideInInspector]
-    protected PlayerData playerData;
-
-    public void Awake()
+    protected override void Start()
     {
-        CharacterSelection.ChosenCharacter = new CharacterInfo();
-        CharacterSelection.ChosenCharacter.breed = (CharacterInfo.Breed)Enum.Parse(typeof(CharacterInfo.Breed), gameObject.tag);
-
+        base.Start();
         playerData = GetComponent<PlayerData>();
     }
 
-    public virtual void Start()
+    protected override void Update()
     {
-        Spell1 = GameObject.Find(Constants.FIRST_SPELL).transform.GetChild(0).GetComponent<Image>();
-        Spell2 = GameObject.Find(Constants.SECOND_SPELL).transform.GetChild(0).GetComponent<Image>();
-        Spell3 = GameObject.Find(Constants.THIRD_SPELL).transform.GetChild(0).GetComponent<Image>();
-        Spell4 = GameObject.Find(Constants.FORTH_SPELL).transform.GetChild(0).GetComponent<Image>();
-    }
-
-
-    public void DisplaySpellsUI()
-    {
-        Spell1.gameObject.transform.parent.gameObject.SetActive(!(Spell1.gameObject.transform.parent.GetComponent<Image>().sprite == null && Spell1.sprite == null));
-        Spell2.gameObject.transform.parent.gameObject.SetActive(!(Spell2.gameObject.transform.parent.GetComponent<Image>().sprite == null && Spell2.sprite == null));
-        Spell3.gameObject.transform.parent.gameObject.SetActive(!(Spell3.gameObject.transform.parent.GetComponent<Image>().sprite == null && Spell3.sprite == null));
-        Spell4.gameObject.transform.parent.gameObject.SetActive(!(Spell4.gameObject.transform.parent.GetComponent<Image>().sprite == null && Spell4.sprite == null));
-
-    }
-
-    // Update is called once per frame
-    public virtual void Update()
-    {
-        if (CurrAbility != null && !SpellCheckAssigned)
+        if (playerData.IsItAlive(playerData.statistics.CurrentHealth, playerData.statistics.MaxHealth))
         {
-            CurrAbility.Invoke();
-            CurrAbility = null;
+            playerData.IsHealthRegenNeeded(ref IsRegenHealth, playerData.statistics.CurrentHealth, playerData.statistics.MaxHealth);
+
+            if (SpellResourceRegen)
+                StartCoroutine(RegenerateSpellResource(CharacterSelection.ChosenCharacter.breed == CharacterInfo.Breed.Warrior));
+
+            if (CurrAbility != null && !SpellCheckAssigned)
+            {
+                CurrAbility.Invoke();
+                CurrAbility = null;
+            }
+
+            if (InCombat && InCombatCoroutine == null)
+            {
+                InCombatCoroutine = CombatCooldown(CombatCooldownTime);
+                StartCoroutine(InCombatCoroutine);
+            }
+            else if (IsRegenHealth && !InCombat && HealthRegenCoroutine == null)
+            {
+                HealthRegenCoroutine = HealthRegen();
+                StartCoroutine(HealthRegenCoroutine);
+            }
         }
+        else Die();
+    }
+
+
+
+    public void AddRage(float Rage)
+    {
+        if (gameObject.tag == CharacterInfo.Breed.Warrior.ToString())
+        {
+            playerData.statistics.CurrentSpellResource += Rage;
+            Mathf.Clamp(playerData.statistics.CurrentSpellResource, 0, Constants.WARRIOR_MAX_RAGE);
+        }
+    }
+
+    public void DealDamage(EnemyCombat enemy, float damage)
+    {
+        if (enemy)
+        {
+            ResetCombatCoroutine();
+            enemy.TakeDamage(playerData.statistics.AttackPower * damage);
+        }
+    }
+
+    public void DealDamageAnimationEvent()
+    {
+        Target.instance.getCurrEnemy().TakeDamage(playerData.statistics.AttackPower);
+        ResetCombatCoroutine();
+    }
+
+    public override void TakeDamage(float damage)
+    {
+        ResetCombatCoroutine();
+        DisplayDamageText(damage);
+        playerData.UpdateCurrentHealth(-damage);
+    }
+
+    public override void DealDamage()
+    {
+        Target.instance.getCurrEnemy().TakeDamage(playerData.statistics.AttackPower);
+        ResetCombatCoroutine();
+    }
+
+    public override void DisplayDamageText(float Damage)
+    {
+        Vector3 TextPosition = Camera.main.WorldToScreenPoint(transform.position + transform.up * 2) + new Vector3(UnityEngine.Random.Range(-300, 300), 0, 0);
+        GameObject DamageTextGameObject = Instantiate(DamageTextPrefab, TextPosition, Quaternion.identity, playerData.GetCanvasRoot().transform);
+        Text DamageText = DamageTextGameObject.transform.GetChild(0).GetComponent<Text>();
+        DamageText.text = Damage.ToString();
+        DamageText.color = Color.red;
+    }
+
+    public override void ResetCombatCoroutine()
+    {
+        InCombat = true;
+        if (HealthRegenCoroutine != null)
+        {
+            StopCoroutine(HealthRegenCoroutine);
+            HealthRegenCoroutine = null;
+        }
+        if (InCombatCoroutine != null)
+            StopCoroutine(InCombatCoroutine);
+        InCombatCoroutine = CombatCooldown(CombatCooldownTime);
+        StartCoroutine(InCombatCoroutine);
+    }
+
+    public override void Die()
+    {
+        playerData.Alive = false;
+        GetComponent<Rigidbody>().useGravity = false;
+        GetComponent<Rigidbody>().isKinematic = true;
+        GetComponent<Collider>().isTrigger = true;
+        GetComponent<Rigidbody>().velocity = Vector3.zero;
+    }
+
+    public override IEnumerator HealthRegen()
+    {
+        while (playerData.statistics.CurrentHealth < playerData.statistics.MaxHealth)
+        {
+            yield return new WaitForSeconds(Constants.TICK);
+            playerData.UpdateCurrentHealth((playerData.statistics.MaxHealth * playerData.statistics.HealthRegenerationPercentage) / 100);
+        }
+        IsRegenHealth = false;
+        HealthRegenCoroutine = null;
+    }
+
+    public override IEnumerator CombatCooldown(float time)
+    {
+        yield return new WaitForSeconds(time);
+        InCombat = false;
+        IsRegenHealth = playerData.statistics.CurrentHealth < playerData.statistics.MaxHealth;
+        InCombatCoroutine = null;
+    }
+
+    protected void BasicAttack()
+    {
+        if (SpellChecks.CheckSpell(Target.instance.getCurrEnemy(), playerData, Target.instance.MeleeAttackRange))
+        {
+            playerData.animator.SetBool("BasicAttack", true);
+            SpellCheckAssigned = true;
+        }
+    }
+
+    protected void StopBasicAttack()
+    {
+        playerData.animator.SetBool("BasicAttack", false);
+        SpellCheckAssigned = false;
+    }
+
+    protected void DisableMovement()
+    {
+        GetComponent<PlayerMovement>().enabled = false;
+        playerData.animator.applyRootMotion = true;
+    }
+
+    protected void EnableMovement()
+    {
+        playerData.animator.applyRootMotion = false;
+        GetComponent<PlayerMovement>().enabled = true;
     }
 
     protected void GetInput(Ability Spell1, Ability Spell2, Ability Spell3, Ability Spell4 = null)
@@ -74,82 +178,40 @@ public class PlayerCombat : MonoBehaviour
 
     }
 
-    protected void SetSpellsUI(Sprite Ability1, Sprite Ability2, Sprite Ability3, Sprite Ability4 = null)
-    {
-        GetComponent<Animator>().runtimeAnimatorController = Resources.Load(CharacterSelection.ChosenCharacter.breed.ToString()) as RuntimeAnimatorController;
-
-        Spell1.gameObject.transform.parent.GetComponentInParent<Image>().sprite = Ability1;
-        Spell2.gameObject.transform.parent.GetComponentInParent<Image>().sprite = Ability2;
-        Spell3.gameObject.transform.parent.GetComponentInParent<Image>().sprite = Ability3;
-        Spell4.gameObject.transform.parent.GetComponentInParent<Image>().sprite = Ability4 ? Ability4 : null;
-
-        Spell1.sprite = Ability1;
-        Spell2.sprite = Ability2;
-        Spell3.sprite = Ability3;
-        Spell4.sprite = (Ability4) ? Ability4 : null;
-        DisplaySpellsUI();
-    }
-
-    protected void BasicAttack()
-    {
-        if (SpellChecks.CheckSpell(Target.instance.getCurrEnemy(), playerData, Target.instance.MeleeAttackRange))
-        {
-            playerData.anim.SetBool("BasicAttack", true);
-            SpellCheckAssigned = true;
-        }
-    }
-    protected void StopBasicAttack()
-    {
-        playerData.anim.SetBool("BasicAttack", false);
-        SpellCheckAssigned = false;
-
-    }
-
-
-    protected void ApplyRootMotion()
-    {
-        GetComponent<PlayerMovement>().enabled = false;
-        playerData.anim.applyRootMotion = true;
-    }
-
-    protected void StopRootMotion()
-    {
-        playerData.anim.applyRootMotion = false;
-        GetComponent<PlayerMovement>().enabled = true;
-    }
-
-
-    protected void DealDamageToTarget()
-    {
-        Target.instance.getCurrEnemy().TakeDamage(playerData.statistics.AttackPower);
-        playerData.ResetCombatCoroutine();
-
-    }
-
-    public void DealDamageToTarget(float Multiplier)
-    {
-        if (Target.instance.getCurrEnemy())
-        {
-            playerData.ResetCombatCoroutine();
-            Target.instance.getCurrEnemy().TakeDamage(playerData.statistics.AttackPower * Multiplier);
-        }
-    }
-
     protected IEnumerator SpellCooldown(Image image, float cooldonwTime, System.Action<bool> CooldownBool)
     {
         CooldownBool(true);
         float temporaryCooldownTime = cooldonwTime;
-        while (temporaryCooldownTime >= 0.000f)
+        while (temporaryCooldownTime >= 0.0000f)
         {
             temporaryCooldownTime -= Time.deltaTime;
             image.fillAmount = temporaryCooldownTime / cooldonwTime;
             yield return null;
         }
         image.fillAmount = 0;
-
-
         CooldownBool(false);
     }
 
+    IEnumerator RegenerateSpellResource(bool IsItWarrior)
+    {
+        SpellResourceRegen = false;
+        if (!IsItWarrior)
+        {
+            while (playerData.statistics.CurrentSpellResource < playerData.statistics.MaxSpellResource)
+            {
+                yield return new WaitForSeconds(Constants.TICK);
+                playerData.UpdateSpellResource(playerData.statistics.CurrentSpellResource / playerData.statistics.MaxSpellResource * playerData.statistics.AbilityRegenerationRate);
+            }
+        }
+        else
+        {
+            while (playerData.statistics.CurrentSpellResource > 0)
+            {
+                yield return new WaitForSeconds(Constants.TICK);
+                playerData.UpdateSpellResource(-Constants.WARRIOR_DISCHARGE_RATE);
+            }
+        }
+        SpellResourceRegen = true;
+    }
 
 }

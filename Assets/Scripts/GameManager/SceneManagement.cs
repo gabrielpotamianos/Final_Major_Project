@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class SceneManagement : MonoBehaviour
 {
-    [Range(0,1)]
+    [Range(0, 1)]
     public float FadeInSpeed;
     public GameObject FadeInPanel;
     public Slider slider;
@@ -26,10 +26,10 @@ public class SceneManagement : MonoBehaviour
 
     IEnumerator FadeInScene(string name)
     {
-        while(FadeInPanel.GetComponent<Image>().color.a<1)
+        while (FadeInPanel.GetComponent<Image>().color.a < 1)
         {
-            Color temporary =FadeInPanel.GetComponent<Image>().color;
-            temporary.a+= 0.1f * FadeInSpeed;
+            Color temporary = FadeInPanel.GetComponent<Image>().color;
+            temporary.a += 0.1f * FadeInSpeed;
             FadeInPanel.GetComponent<Image>().color = temporary;
             yield return null;
         }
@@ -43,7 +43,7 @@ public class SceneManagement : MonoBehaviour
     {
         slider.gameObject.SetActive(true);
         AsyncOperation async = SceneManager.LoadSceneAsync(name);
-        while(!async.isDone)
+        while (!async.isDone)
         {
             float progress = Mathf.Clamp01(async.progress / .9f);
             slider.value = progress;

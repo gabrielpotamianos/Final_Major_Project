@@ -28,7 +28,6 @@ public class CameraCollision : MonoBehaviour
     {
         direction = transform.localPosition.normalized;
         distance = transform.localPosition.magnitude;
-
     }
 
     // Update is called once per frame

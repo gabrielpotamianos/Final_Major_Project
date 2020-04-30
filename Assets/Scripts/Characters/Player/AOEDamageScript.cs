@@ -4,16 +4,16 @@ using System.Linq;
 
 public class AOEDamageScript : MonoBehaviour
 {
-    public List<Enemy> enemiesToHit;
+    public List<EnemyCombat> enemiesToHit;
 
 
     public void AOE_Damage(float damage)
     {
         if (enemiesToHit.Count > 0)
         {
-            foreach (Enemy enemy in enemiesToHit.ToList())
+            foreach (EnemyCombat enemy in enemiesToHit.ToList())
             {
-                if(enemy.Alive)
+                if (enemy.enemyData.Alive)
                     enemy.TakeDamage(damage);
                 else
                     enemiesToHit.Remove(enemy);
@@ -23,14 +23,14 @@ public class AOEDamageScript : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Enemy currEnemy = other.GetComponent<Enemy>() ? other.GetComponent<Enemy>() : null;
-        if (currEnemy && !enemiesToHit.Contains(currEnemy) && currEnemy.Alive)
-            enemiesToHit.Add(other.GetComponent<Enemy>());
+        EnemyCombat currEnemy = other.GetComponent<EnemyCombat>() ? other.GetComponent<EnemyCombat>() : null;
+        if (currEnemy && !enemiesToHit.Contains(currEnemy) && currEnemy.enemyData.Alive)
+            enemiesToHit.Add(other.GetComponent<EnemyCombat>());
     }
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.GetComponent<Enemy>() && enemiesToHit.Contains(other.GetComponent<Enemy>()))
-            enemiesToHit.Remove(other.GetComponent<Enemy>());
+        if (other.GetComponent<EnemyCombat>() && enemiesToHit.Contains(other.GetComponent<EnemyCombat>()))
+            enemiesToHit.Remove(other.GetComponent<EnemyCombat>());
     }
 }

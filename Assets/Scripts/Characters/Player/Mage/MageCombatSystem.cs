@@ -10,9 +10,6 @@ public class MageCombatSystem : PlayerCombat
     private delegate IEnumerator IEnumeratorDelegate();
 
 
-
-
-
     [Space(20)]
     [Header("Mage")]
 
@@ -85,21 +82,20 @@ public class MageCombatSystem : PlayerCombat
 
     GameObject DeathsBreathGameObject;
 
-
     // Start is called before the first frame update
-    public override void Start()
+    protected override void Start()
     {
+        base.Start();
         CastBar = GameObject.Find("CastBar").gameObject.GetComponent<Slider>();
         CastBarCanvasGroup = CastBar.GetComponent<CanvasGroup>();
         BlizzardMissiles = new List<GameObject>();
 
 
-        base.Start();
-        SetSpellsUI(FireballSprite, BlizzardSprite, DeathsBreathSprite);
+        playerData.SetSpellsUI(FireballSprite, BlizzardSprite, DeathsBreathSprite);
     }
 
     // Update is called once per frame
-    public override void Update()
+    protected override void Update()
     {
         GetInput(Fireball, Blizzard, DeathsBreath);
         base.Update();
@@ -128,9 +124,9 @@ public class MageCombatSystem : PlayerCombat
 
     void DeathsBreath()
     {
-        if (SpellChecks.CheckSpell(playerData, DeathsBreathOnCooldown, playerData.currAR * 4 / 100))
+        if (SpellChecks.CheckSpell(playerData, DeathsBreathOnCooldown, playerData.statistics.CurrentSpellResource * 4 / 100))
         {
-            StartCoroutine(SpellCooldown(Spell3, DeathsBreathCooldownTime, (x) => { DeathsBreathOnCooldown = x; }));
+            StartCoroutine(SpellCooldown(playerData.Spell3, DeathsBreathCooldownTime, (x) => { DeathsBreathOnCooldown = x; }));
             StartCoroutine(DeathsBreathStart(DeathsBreathDuration));
         }
 
@@ -146,7 +142,7 @@ public class MageCombatSystem : PlayerCombat
         if (!InteruptCast)
         {
             SpellCheckAssigned = true;
-            playerData.anim.SetBool("Casting", true);
+            playerData.animator.SetBool("Casting", true);
             CastBarCanvasGroup.alpha = 1;
             CastBar.value = 0;
             float timeLeft = 0;
@@ -156,7 +152,7 @@ public class MageCombatSystem : PlayerCombat
                 {
                     CastBar.value = 0;
                     CastBarCanvasGroup.alpha = 0;
-                    playerData.anim.SetBool("Casting", false);
+                    playerData.animator.SetBool("Casting", false);
                     StopSpell.Invoke();
                     yield break;
                 }
@@ -164,7 +160,7 @@ public class MageCombatSystem : PlayerCombat
                 Castbar.value = timeLeft / CastTime;
                 yield return null;
             }
-            playerData.anim.SetBool(AnimTransitionBool, true);
+            playerData.animator.SetBool(AnimTransitionBool, true);
             spell.Invoke();
 
             CastBarCanvasGroup.alpha = 0;
@@ -177,7 +173,7 @@ public class MageCombatSystem : PlayerCombat
         {
             IEnumeratorDelegate Spell;
             SpellCheckAssigned = true;
-            playerData.anim.SetBool("Casting", true);
+            playerData.animator.SetBool("Casting", true);
             CastBarCanvasGroup.alpha = 1;
             CastBar.value = 0;
             float timeLeft = 0;
@@ -190,7 +186,7 @@ public class MageCombatSystem : PlayerCombat
                 {
                     CastBar.value = 0;
                     CastBarCanvasGroup.alpha = 0;
-                    playerData.anim.SetBool("Casting", false);
+                    playerData.animator.SetBool("Casting", false);
                     StopSpell.Invoke();
 
 
@@ -200,7 +196,7 @@ public class MageCombatSystem : PlayerCombat
                 Castbar.value = timeLeft / CastTime;
                 yield return null;
             }
-            playerData.anim.SetBool(AnimTransitionBool, true);
+            playerData.animator.SetBool(AnimTransitionBool, true);
 
             CastBarCanvasGroup.alpha = 0;
         }
@@ -215,7 +211,8 @@ public class MageCombatSystem : PlayerCombat
     /// </summary>
     void FireballStart()
     {
-        StartCoroutine(SpellCooldown(Spell1, FireballCooldownTime, (x) => { FireballOnCooldown = x; ; }));
+        ResetCombatCoroutine();
+        StartCoroutine(SpellCooldown(playerData.Spell1, FireballCooldownTime, (x) => { FireballOnCooldown = x; ; }));
     }
 
 
@@ -247,7 +244,7 @@ public class MageCombatSystem : PlayerCombat
         FireballGameObjectRef.transform.parent = null;
         FireballGameObjectRef.GetComponent<Missiles>().enabled = true;
         FireballGameObjectRef.GetComponent<Missiles>().FireballMultiplier = FireballDamageMultiplier;
-        playerData.ConsumeAR(FireballManaCost);
+        playerData.UpdateSpellResource(-FireballManaCost);
     }
 
 
@@ -256,8 +253,8 @@ public class MageCombatSystem : PlayerCombat
     /// </summary>
     void FireballStop()
     {
-        playerData.anim.SetBool("Fireball", false);
-        playerData.anim.SetBool("Casting", false);
+        playerData.animator.SetBool("Fireball", false);
+        playerData.animator.SetBool("Casting", false);
         SpellCheckAssigned = false;
     }
 
@@ -329,7 +326,8 @@ public class MageCombatSystem : PlayerCombat
         else
         {
             BlizzardStop();
-            SpellIndicatorGameObject.transform.GetChild(0).gameObject.SetActive(false);
+            if(SpellIndicatorGameObject)
+                SpellIndicatorGameObject.transform.GetChild(0).gameObject.SetActive(false);
             yield break;
         }
 
@@ -344,8 +342,9 @@ public class MageCombatSystem : PlayerCombat
     {
         if (!InteruptCast)
         {
-            StartCoroutine(SpellCooldown(Spell2, BlizzardCooldownTime, (x) => { BlizzardOnCooldown = x; }));
+            StartCoroutine(SpellCooldown(playerData.Spell2, BlizzardCooldownTime, (x) => { BlizzardOnCooldown = x; }));
             BlizzardProjector.enabled = false;
+            ResetCombatCoroutine();
 
             for (int i = 0; i < NumberOfMissiles; i++)
             {
@@ -393,8 +392,8 @@ public class MageCombatSystem : PlayerCombat
     /// </summary>
     void BlizzardStop()
     {
-        playerData.anim.SetBool("Casting", false);
-        playerData.anim.SetBool("Blizzard", false);
+        playerData.animator.SetBool("Casting", false);
+        playerData.animator.SetBool("Blizzard", false);
         SpellCheckAssigned = false;
     }
 
@@ -413,9 +412,10 @@ public class MageCombatSystem : PlayerCombat
     {
         //Disables the Spell Assignment 
         SpellCheckAssigned = true;
-
+        ResetCombatCoroutine();
+        
         //Consume the 4% of the Player's Mana
-        playerData.ConsumeAR(playerData.currAR * 4 / 100);
+        playerData.UpdateSpellResource(-(playerData.statistics.CurrentSpellResource * 4 / 100));
 
 
         //Checks if the Object was instantiated
@@ -458,8 +458,8 @@ public class MageCombatSystem : PlayerCombat
         foreach (RaycastHit hit in hitss)
         {
             //If any of the objects on that Layer Mask are Enemies then Hit them if they are alive
-            if (hit.collider.GetComponent<Enemy>() && hit.collider.GetComponent<Enemy>().Alive)
-                hit.collider.GetComponent<Enemy>().TakeDamage(playerData.statistics.AttackPower * DeathsBreathDamageMultiplier);
+            if (hit.collider.GetComponent<EnemyCombat>() && hit.collider.GetComponent<EnemyCombat>().enemyData.Alive)
+                hit.collider.GetComponent<EnemyCombat>().TakeDamage(playerData.statistics.AttackPower * DeathsBreathDamageMultiplier);
         }
 
         //Wait for Half of the Skull Particle Effect to play

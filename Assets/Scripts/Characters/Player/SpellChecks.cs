@@ -2,7 +2,7 @@ using UnityEngine;
 
 public static class SpellChecks
 {
-    private static bool EnemyOnSight(Enemy enemy)
+    private static bool EnemyOnSight(EnemyCombat enemy)
     {
         Vector3 screenPoint = Camera.main.WorldToViewportPoint(enemy.transform.position);
         bool onScreen = screenPoint.z > 0 && screenPoint.x > 0 && screenPoint.x < 1 && screenPoint.y > 0 && screenPoint.y < 1;
@@ -19,9 +19,9 @@ public static class SpellChecks
         return false;
     }
 
-    public static bool CheckSpell(Enemy enemy, PlayerData playerData, float range)
+    public static bool CheckSpell(EnemyCombat enemy, PlayerData playerData, float range)
     {
-        if (enemy == null || !enemy.Alive)
+        if (enemy == null || !enemy.enemyData.Alive)
             MessageManager.instance.DisplayMessage(Constants.NO_TARGET_SELECTED);
         else if (!EnemyOnSight(enemy))
             MessageManager.instance.DisplayMessage("You must look at the enemy!");
@@ -32,11 +32,11 @@ public static class SpellChecks
         return false;
     }
 
-    public static bool CheckSpell(Enemy enemy, bool cooldown)
+    public static bool CheckSpell(EnemyCombat enemy, bool cooldown)
     {
         if (CheckSpell(cooldown, "Spell on cooldown!"))
         {
-            if (enemy == null || !enemy.Alive)
+            if (enemy == null || !enemy.enemyData.Alive)
                 MessageManager.instance.DisplayMessage(Constants.NO_TARGET_SELECTED);
             else if (!EnemyOnSight(enemy))
                 MessageManager.instance.DisplayMessage("You must look at the enemy!");
@@ -49,7 +49,7 @@ public static class SpellChecks
     {
         if (CheckSpell(cooldown, "Spell on cooldown!"))
         {
-            if (AbilityCost > playerData.currAR)
+            if (AbilityCost > playerData.statistics.CurrentSpellResource)
                 MessageManager.instance.DisplayMessage("Not enough " + "Rage");
             else return true;
         }
@@ -58,7 +58,7 @@ public static class SpellChecks
 
     }
 
-    public static bool CheckSpell(Enemy enemy, PlayerData playerData, float range, bool cooldown)
+    public static bool CheckSpell(EnemyCombat enemy, PlayerData playerData, float range, bool cooldown)
     {
         if (CheckSpell(enemy, cooldown))
         {
@@ -69,29 +69,29 @@ public static class SpellChecks
         return false;
     }
 
-    public static bool CheckSpell(Enemy enemy, PlayerData playerData, float range, bool cooldown, float AbilityCost)
+    public static bool CheckSpell(EnemyCombat enemy, PlayerData playerData, float range, bool cooldown, float AbilityCost)
     {
         if (CheckSpell(enemy, playerData, range, cooldown))
         {
-            if (AbilityCost > playerData.currAR)
+            if (AbilityCost > playerData.statistics.CurrentSpellResource)
                 MessageManager.instance.DisplayMessage("Not enough" + "Ability Resource");
             else return true;
         }
         return false;
     }
 
-    public static bool CheckSpell(Enemy enemy, PlayerData playerData, bool cooldown, float AbilityCost)
+    public static bool CheckSpell(EnemyCombat enemy, PlayerData playerData, bool cooldown, float AbilityCost)
     {
         if (CheckSpell(enemy, cooldown))
         {
-            if (AbilityCost > playerData.currAR)
+            if (AbilityCost > playerData.statistics.CurrentSpellResource)
                 MessageManager.instance.DisplayMessage("Not enough" + "Ability Resource");
             else return true;
         }
         return false;
     }
 
-    public static bool CheckSpell(Enemy enemy, PlayerData playerData, float range, bool cooldown, float AbilityCost, float ComboPoints = 0)
+    public static bool CheckSpell(EnemyCombat enemy, PlayerData playerData, float range, bool cooldown, float AbilityCost, float ComboPoints = 0)
     {
         if (CheckSpell(enemy, playerData, range, cooldown, AbilityCost))
         {
@@ -102,7 +102,7 @@ public static class SpellChecks
         return false;
     }
 
-    public static bool CheckSpell(Enemy enemy, PlayerData playerData, float DirectionDotProductTreshold, float PositionDotProductThreshold, float Distance, bool cooldown, float AbilityCost)
+    public static bool CheckSpell(EnemyCombat enemy, PlayerData playerData, float DirectionDotProductTreshold, float PositionDotProductThreshold, float Distance, bool cooldown, float AbilityCost)
     {
         if (CheckSpell(enemy, playerData, cooldown, AbilityCost))
         {
@@ -123,7 +123,7 @@ public static class SpellChecks
     }
 
 
-    public static bool CheckSpell(Enemy enemy, PlayerData playerData, float DirectionDotProductTreshold, float PositionDotProductThreshold, float Distance, bool cooldown, float AbilityCost, bool Stealth)
+    public static bool CheckSpell(EnemyCombat enemy, PlayerData playerData, float DirectionDotProductTreshold, float PositionDotProductThreshold, float Distance, bool cooldown, float AbilityCost, bool Stealth)
     {
         if (CheckSpell(enemy, playerData, DirectionDotProductTreshold, PositionDotProductThreshold, Distance, cooldown, AbilityCost))
         {

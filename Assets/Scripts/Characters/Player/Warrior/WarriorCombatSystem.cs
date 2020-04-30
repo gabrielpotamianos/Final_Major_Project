@@ -42,16 +42,15 @@ public class WarriorCombatSystem : PlayerCombat
     [HideInInspector]
     public static int BladestormSeconds = 0;
 
-
     // Start is called before the first frame update
-    public override void Start()
+    protected override void Start()
     {
         base.Start();
-        SetSpellsUI(ChargeSprite, MortalStrikeSprite, BladestormSprite);
+        playerData.SetSpellsUI(ChargeSprite, MortalStrikeSprite, BladestormSprite);
     }
 
     // Update is called once per frame
-    public override void Update()
+    protected override void Update()
     {
         GetInput(Charge, MortalStrike, Bladestorm);
         base.Update();
@@ -88,6 +87,10 @@ public class WarriorCombatSystem : PlayerCombat
 
     #endregion
 
+    
+
+
+
     #region Charge - Body Function
 
     /// <summary>
@@ -99,9 +102,9 @@ public class WarriorCombatSystem : PlayerCombat
     {
         SpellCheckAssigned = true;
 
-        playerData.anim.SetBool("ChargeStart", true);
+        playerData.animator.SetBool("ChargeStart", true);
 
-        StartCoroutine(SpellCooldown(Spell1, ChargeCooldownTime, (x) => { ChargeOnCooldown = x; }));
+        StartCoroutine(SpellCooldown(playerData.Spell1, ChargeCooldownTime, (x) => { ChargeOnCooldown = x; }));
 
         while (Vector3.Distance(gameObject.transform.position, Target.instance.getCurrEnemy().gameObject.transform.position) > Target.instance.MeleeAttackRange)
         {
@@ -110,7 +113,7 @@ public class WarriorCombatSystem : PlayerCombat
             yield return null;
         }
 
-        playerData.anim.SetBool("ChargeEnd", true);
+        playerData.animator.SetBool("ChargeEnd", true);
         yield return null;
     }
 
@@ -119,8 +122,8 @@ public class WarriorCombatSystem : PlayerCombat
     /// </summary>
     void ChargeDamage()
     {
-        DealDamageToTarget(ChargeDamageMultiplier);
-        playerData.AddAR(AddUpRage);
+        DealDamage(Target.instance.getCurrEnemy(),ChargeDamageMultiplier);
+        AddRage(AddUpRage);
 
     }
 
@@ -129,8 +132,8 @@ public class WarriorCombatSystem : PlayerCombat
     /// </summary>
     private void ChargeEnd()
     {
-        playerData.anim.SetBool("ChargeStart", false);
-        playerData.anim.SetBool("ChargeEnd", false);
+        playerData.animator.SetBool("ChargeStart", false);
+        playerData.animator.SetBool("ChargeEnd", false);
         SpellCheckAssigned = false;
     }
 
@@ -151,8 +154,8 @@ public class WarriorCombatSystem : PlayerCombat
     void MortalStrikeStart()
     {
         SpellCheckAssigned = true;
-        StartCoroutine(SpellCooldown(Spell2, MortalStrikeCooldownTime, (x) => { MortalStrikeOnCooldown = x; }));
-        playerData.anim.SetBool("MortalStrike", true);
+        StartCoroutine(SpellCooldown(playerData.Spell2, MortalStrikeCooldownTime, (x) => { MortalStrikeOnCooldown = x; }));
+        playerData.animator.SetBool("MortalStrike", true);
     }
 
     /// <summary>
@@ -160,8 +163,8 @@ public class WarriorCombatSystem : PlayerCombat
     /// </summary>
     void MortalStrikeDamage()
     {
-        DealDamageToTarget(MortalStrikeDamageMultiplier);
-        playerData.ConsumeAR(MortalStrikeAbilityCost);
+        DealDamage(Target.instance.getCurrEnemy(),MortalStrikeDamageMultiplier);
+        playerData.UpdateSpellResource(-MortalStrikeAbilityCost);
     }
 
     /// <summary>
@@ -169,7 +172,7 @@ public class WarriorCombatSystem : PlayerCombat
     /// </summary>
     void StopMortalStrike()
     {
-        playerData.anim.SetBool("MortalStrike", false);
+        playerData.animator.SetBool("MortalStrike", false);
         SpellCheckAssigned = false;
     }
 
@@ -195,16 +198,16 @@ public class WarriorCombatSystem : PlayerCombat
     /// <returns></returns>
     IEnumerator BladestormStart()
     {
-        StartCoroutine(SpellCooldown(Spell3, BladestormCooldownTime, (x) => { BladestormOnCooldown = x; }));
+        StartCoroutine(SpellCooldown(playerData.Spell3, BladestormCooldownTime, (x) => { BladestormOnCooldown = x; }));
         SpellCheckAssigned = true;
         BladestormSeconds = 0;
-        playerData.anim.SetBool("BladeStormStart", true);
+        playerData.animator.SetBool("BladeStormStart", true);
 
 
         while (BladestormSeconds < BladestormAbilityTime)
         {            
             BladestormSeconds++;
-            playerData.anim.SetInteger("BladeStormLoop", BladestormSeconds);
+            playerData.animator.SetInteger("BladeStormLoop", BladestormSeconds);
             AOE_Bladestorm_Damage();
             yield return new WaitForSeconds(1);
 
@@ -218,8 +221,8 @@ public class WarriorCombatSystem : PlayerCombat
     /// </summary>
     void EndBladestorm()
     {
-        playerData.anim.SetInteger("BladeStormLoop", 0);
-        playerData.anim.SetBool("BladeStormStart", false);
+        playerData.animator.SetInteger("BladeStormLoop", 0);
+        playerData.animator.SetBool("BladeStormStart", false);
         SpellCheckAssigned = false;
     }
 
@@ -234,7 +237,7 @@ public class WarriorCombatSystem : PlayerCombat
 
         foreach (RaycastHit result in results)
         {
-            result.collider.GetComponent<Enemy>().TakeDamage(playerData.statistics.AttackPower * BladestormDamageMultiplier);
+            result.collider.GetComponent<EnemyCombat>().TakeDamage(playerData.statistics.AttackPower * BladestormDamageMultiplier);
         }
 
     }

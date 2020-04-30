@@ -86,7 +86,7 @@ public class PlayerMovement : MonoBehaviour
         }
 
         axisInput = axisInput.normalized;
-        playerData.anim.SetFloat("SpeedMovement", axisInput.magnitude);
+        playerData.animator.SetFloat("SpeedMovement", axisInput.magnitude);
 
     }
 

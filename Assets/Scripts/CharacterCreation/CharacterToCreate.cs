@@ -10,8 +10,6 @@ public class CharacterToCreate : MonoBehaviour
     public float RotationSpeed = 2;
     public CharacterInfo info;
 
-
-
     void Update()
     {
         if (rotateLeft)

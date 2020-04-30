@@ -17,7 +17,7 @@ public class Missiles : MonoBehaviour
     [HideInInspector]
     public float BlizzardDamage;
 
-    public static Enemy CurrTarger;
+    public static EnemyCombat CurrTarger;
 
     private void OnEnable()
     {
@@ -32,7 +32,7 @@ public class Missiles : MonoBehaviour
     {
         if (!IceMissiles && CurrTarger)
         {
-            if (!CurrTarger.Alive)
+            if (!CurrTarger.enemyData.Alive)
             {
                 CurrTarger = null;
                 return;

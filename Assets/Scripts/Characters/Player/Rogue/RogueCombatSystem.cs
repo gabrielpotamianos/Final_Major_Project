@@ -58,16 +58,16 @@ public class RogueCombatSystem : PlayerCombat
     public bool BackstabOnCooldown = false;
 
     // Start is called before the first frame update
-    public override void Start()
+    protected override void Start()
     {
         base.Start();
-        SetSpellsUI(SinisterStrikeSprite, EviscerateSprite, VanishSprite,BackstabSprite);
+        playerData.SetSpellsUI(SinisterStrikeSprite, EviscerateSprite, VanishSprite, BackstabSprite);
     }
 
     // Update is called once per frame
-    public override void Update()
+    protected override void Update()
     {
-        GetInput(SinisterStrike, Eviscerate, Vanish,Backstab);
+        GetInput(SinisterStrike, Eviscerate, Vanish, Backstab);
         base.Update();
     }
 
@@ -78,7 +78,7 @@ public class RogueCombatSystem : PlayerCombat
         if (SpellChecks.CheckSpell(Target.instance.getCurrEnemy(), playerData, Target.instance.MeleeAttackRange, SinisterStrikeOnCooldown, SinisterStrikeEnergyCost))
         {
             SinisterStrikeStart();
-            StartCoroutine(SpellCooldown(Spell1, SinisterStrikeCooldownTime, (x) => { SinisterStrikeOnCooldown = x; }));
+            StartCoroutine(SpellCooldown(playerData.Spell1, SinisterStrikeCooldownTime, (x) => { SinisterStrikeOnCooldown = x; }));
         }
     }
 
@@ -87,27 +87,27 @@ public class RogueCombatSystem : PlayerCombat
         if (SpellChecks.CheckSpell(Target.instance.getCurrEnemy(), playerData, Target.instance.MeleeAttackRange, EviscerateOnCooldown, EviscerateEnergyCost, ComboPoints))
         {
             EviscerateStart();
-            StartCoroutine(SpellCooldown(Spell2, EviscerateCooldownTime, (x) => { EviscerateOnCooldown = x; }));
+            StartCoroutine(SpellCooldown(playerData.Spell2, EviscerateCooldownTime, (x) => { EviscerateOnCooldown = x; }));
         }
     }
 
     void Vanish()
     {
-        if (SpellChecks.CheckSpell(VanishOnCooldown,"Spell on cooldown!") &&
-        SpellChecks.CheckSpell(playerData.InCombat,"You cannot use this in combat!")
-        && SpellChecks.CheckSpell(stealth,"You are invisible already!"))
+        if (SpellChecks.CheckSpell(VanishOnCooldown, "Spell on cooldown!") &&
+        SpellChecks.CheckSpell(InCombat, "You cannot use this in combat!")
+        && SpellChecks.CheckSpell(stealth, "You are invisible already!"))
         {
             StartCoroutine(VanishStart());
-            StartCoroutine(SpellCooldown(Spell3, VanishCooldownTime, (x) => { VanishOnCooldown = x; }));
+            StartCoroutine(SpellCooldown(playerData.Spell3, VanishCooldownTime, (x) => { VanishOnCooldown = x; }));
         }
     }
 
     void Backstab()
     {
-        if (SpellChecks.CheckSpell(Target.instance.getCurrEnemy(), playerData, DirectionDotProductThreshold, PositionDotProductThreshold, BackstabDistanceTreshold, BackstabOnCooldown, BackstabEnergyCost,stealth))
+        if (SpellChecks.CheckSpell(Target.instance.getCurrEnemy(), playerData, DirectionDotProductThreshold, PositionDotProductThreshold, BackstabDistanceTreshold, BackstabOnCooldown, BackstabEnergyCost, stealth))
         {
             BackstabStart();
-            StartCoroutine(SpellCooldown(Spell4, BackstabCooldownTime, (x) => { BackstabOnCooldown = x; }));
+            StartCoroutine(SpellCooldown(playerData.Spell4, BackstabCooldownTime, (x) => { BackstabOnCooldown = x; }));
         }
     }
 
@@ -116,7 +116,7 @@ public class RogueCombatSystem : PlayerCombat
     /// </summary>
     void OnApplicationQuit()
     {
-        if(stealth) ToogleInvisibility();
+        if (stealth) ToogleInvisibility();
     }
 
 
@@ -132,8 +132,8 @@ public class RogueCombatSystem : PlayerCombat
     {
         if (stealth) ToogleInvisibility();
         SpellCheckAssigned = true;
-        playerData.anim.SetBool("SinisterStrike", true);
-        playerData.ConsumeAR(SinisterStrikeEnergyCost);
+        playerData.animator.SetBool("SinisterStrike", true);
+        playerData.UpdateSpellResource(-SinisterStrikeEnergyCost);
     }
 
     /// <summary>
@@ -141,7 +141,7 @@ public class RogueCombatSystem : PlayerCombat
     /// </summary>
     void SinisterStrikeDamage()
     {
-        DealDamageToTarget(SinisterStrikeDamageMultiplier);
+        DealDamage(Target.instance.getCurrEnemy(), SinisterStrikeDamageMultiplier);
     }
 
     /// <summary>
@@ -149,7 +149,7 @@ public class RogueCombatSystem : PlayerCombat
     /// </summary>
     void SinisterStrikeEnd()
     {
-        playerData.anim.SetBool("SinisterStrike", false);
+        playerData.animator.SetBool("SinisterStrike", false);
         ComboPoints += ComboPoints < MaxComboPoints ? SinisterStrikeComboPointsToAdd : 0;
         SpellCheckAssigned = false;
     }
@@ -165,8 +165,8 @@ public class RogueCombatSystem : PlayerCombat
     void EviscerateStart()
     {
         if (stealth) ToogleInvisibility();
-        playerData.anim.SetBool("Eviscerate", true);
-        playerData.ConsumeAR(EviscerateEnergyCost);
+        playerData.animator.SetBool("Eviscerate", true);
+        playerData.UpdateSpellResource(-EviscerateEnergyCost);
         SpellCheckAssigned = true;
     }
 
@@ -175,7 +175,7 @@ public class RogueCombatSystem : PlayerCombat
     /// </summary>
     void EviscerateDamage()
     {
-        DealDamageToTarget(EviscerateDamageMultiplier * ComboPoints);
+        DealDamage(Target.instance.getCurrEnemy(), EviscerateDamageMultiplier * ComboPoints);
     }
 
     /// <summary>
@@ -183,7 +183,7 @@ public class RogueCombatSystem : PlayerCombat
     /// </summary>
     void EviscerateEnd()
     {
-        playerData.anim.SetBool("Eviscerate", false);
+        playerData.animator.SetBool("Eviscerate", false);
         ComboPoints = 0;
         SpellCheckAssigned = false;
     }
@@ -195,7 +195,7 @@ public class RogueCombatSystem : PlayerCombat
     IEnumerator VanishStart()
     {
         SpellCheckAssigned = true;
-        playerData.anim.SetBool("Vanish", true);
+        playerData.animator.SetBool("Vanish", true);
 
         yield return new WaitForSeconds(0.5f);
 
@@ -224,7 +224,7 @@ public class RogueCombatSystem : PlayerCombat
 
     public void VanishEnd()
     {
-        playerData.anim.SetBool("Vanish", false);
+        playerData.animator.SetBool("Vanish", false);
         SpellCheckAssigned = false;
     }
 
@@ -237,19 +237,19 @@ public class RogueCombatSystem : PlayerCombat
     {
         SpellCheckAssigned = true;
         if (stealth) ToogleInvisibility();
-        playerData.ConsumeAR(BackstabEnergyCost);
-        playerData.anim.SetBool("Backstab", true);
+        playerData.UpdateSpellResource(-BackstabEnergyCost);
+        playerData.animator.SetBool("Backstab", true);
     }
 
     void BackstabDamage()
     {
-        DealDamageToTarget(VanishDamageMultiplier * BackstabDamageMultiplier);
+        DealDamage(Target.instance.getCurrEnemy(), VanishDamageMultiplier * BackstabDamageMultiplier);
     }
 
     void BackstabEnd()
     {
         ComboPoints += BackstabComboPointsToAdd;
-        playerData.anim.SetBool("Backstab", false);
+        playerData.animator.SetBool("Backstab", false);
         SpellCheckAssigned = false;
     }
 

@@ -70,7 +70,7 @@ public class CharacterCreationManager : MonoBehaviour
         currCharacterInfo.race = (CharacterInfo.Race)RACE;
 
     }
-    
+
     public void SaveCharacteR()
     {
         SaveSystem.SaveNewCharacterCreated(currCharacterInfo);

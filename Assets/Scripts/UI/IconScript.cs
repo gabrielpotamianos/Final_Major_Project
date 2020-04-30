@@ -104,7 +104,7 @@ public class IconScript : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDr
                 if (ParentSlot.item!=null)
                 {
                     Inventory.instance.AddInSlot(ParentSlot.item);
-                    Target.instance.getCurrEnemy().LootInventory.RemoveItem(ParentSlot);
+                    Target.instance.getCurrEnemy().enemyData.LootInventory.RemoveItem(ParentSlot);
                 }
 
             }

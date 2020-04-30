@@ -15,7 +15,7 @@ public class MessageManager : MonoBehaviour
     static public MessageManager instance;
 
     private void Awake()
-    {
+    {       
         if (instance != null)
         {
             Debug.LogError("You have MORE than ONE MESSAGE MANAGER instances!");

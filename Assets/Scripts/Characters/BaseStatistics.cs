@@ -3,7 +3,7 @@ using UnityEngine;
 [System.Serializable]
 public class BaseStatistics
 {
-    public float Health;
+    public float CurrentHealth;
     public float MaxHealth;
     public float HealthRegenerationPercentage;
 
