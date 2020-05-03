@@ -18,6 +18,8 @@ public class PlayerData : CharacterData
     public Image Spell3;
     public Image Spell4;
 
+    public float gold;
+
     public static PlayerData instance;
 
     protected override void Awake()
@@ -39,7 +41,7 @@ public class PlayerData : CharacterData
         HealthBar = GameObject.Find("PlayerHealthSlider").GetComponent<Slider>();
         AbilityResourceBar = GameObject.Find("PlayerAbilitySlider").GetComponent<Slider>();
         AbilityResourceBarName = GameObject.Find("AbilitySliderText").GetComponent<Text>();
-        GameObject.Find("PlayerNameText").GetComponent<Text>().text=Name;
+        GameObject.Find("PlayerNameText").GetComponent<Text>().text = Name;
 
 
     }
@@ -66,13 +68,16 @@ public class PlayerData : CharacterData
 
     public void ToogleLoot()
     {
-        if (AbleToLoot)
+        if (AbleToLoot || animator.GetBool("Looting"))
         {
+            Target.instance.enabled = !animator.GetBool("Looting");
             animator.SetBool("Looting", !animator.GetBool("Looting"));
             GetComponent<PlayerMovement>().enabled = !animator.GetBool("Looting");
             Target.instance.enabled = !animator.GetBool("Looting");
             GetComponent<Rigidbody>().velocity = Vector3.zero;
-            Inventory.instance.inventory.SetActive(animator.GetBool("Looting"));
+            if (animator.GetBool("Looting"))
+                PlayerInventory.instance.ShowInventory();
+            else PlayerInventory.instance.HideInventory();
         }
     }
 
@@ -99,6 +104,16 @@ public class PlayerData : CharacterData
         Spell3.sprite = Ability3;
         Spell4.sprite = (Ability4) ? Ability4 : null;
         DisplaySpellsUI();
+    }
+
+    public bool IsItemAffordable(float sum)
+    {
+        return gold - sum >= 0;
+    }
+
+    public void UpdateGold(float sum)
+    {
+        gold += sum;
     }
 
 

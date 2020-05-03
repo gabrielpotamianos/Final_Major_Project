@@ -13,6 +13,8 @@ TagManager:
   - Icon
   - Water
   - SpellBar
+  - EnemyInventory
+  - VendorInventory
   layers:
   - Default
   - TransparentFX
@@ -27,7 +29,7 @@ TagManager:
   - Enemy
   - Missiles
   - NPC
-  - 
+  - Vendor
   - 
   - 
   - 

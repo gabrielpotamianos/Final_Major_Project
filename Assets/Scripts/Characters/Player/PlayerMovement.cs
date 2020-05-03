@@ -13,6 +13,7 @@ public class PlayerMovement : MonoBehaviour
     public float rayLength;
     public float speed = 5;
 
+    public static PlayerMovement instance;
     #endregion
 
     //
@@ -30,6 +31,10 @@ public class PlayerMovement : MonoBehaviour
 
     private void Awake()
     {
+        if (instance == null)
+            instance = this;
+        else Debug.LogError("More than One Player Movement instances!");
+
         rigid = GetComponent<Rigidbody>();
         playerData = GetComponent<PlayerData>();
     }
@@ -61,7 +66,7 @@ public class PlayerMovement : MonoBehaviour
 
         Vector2 axisInput = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
 
-        if (axisInput.x!=0 || axisInput.y!=0)
+        if (axisInput.x != 0 || axisInput.y != 0)
         {
             MageCombatSystem.InteruptCast = true;
 
@@ -72,7 +77,7 @@ public class PlayerMovement : MonoBehaviour
             //Exclude Y Axis to avoid tilting forward or backwards
             rightDir.y = 0;
             forwardDir.y = 0;
-            
+
             //Apply velocity
             direction = (axisInput.x * rightDir + axisInput.y * forwardDir).normalized;
 

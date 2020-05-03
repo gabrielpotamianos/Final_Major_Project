@@ -9,6 +9,7 @@ public class PlayerCombat : Combat
 
     protected bool SpellCheckAssigned = false;
     protected bool SpellResourceRegen;
+    IEnumerator SpellResourceRegenCoroutine;
     public PlayerData playerData;
 
     protected override void Start()
@@ -24,7 +25,12 @@ public class PlayerCombat : Combat
             playerData.IsHealthRegenNeeded(ref IsRegenHealth, playerData.statistics.CurrentHealth, playerData.statistics.MaxHealth);
 
             if (SpellResourceRegen)
-                StartCoroutine(RegenerateSpellResource(CharacterSelection.ChosenCharacter.breed == CharacterInfo.Breed.Warrior));
+                {
+                    if(SpellResourceRegenCoroutine!=null)
+                         StopCoroutine(SpellResourceRegenCoroutine);
+                    SpellResourceRegenCoroutine=RegenerateSpellResource(CharacterSelection.ChosenCharacter.breed == CharacterInfo.Breed.Warrior);
+                    StartCoroutine(SpellResourceRegenCoroutine);
+                }
 
             if (CurrAbility != null && !SpellCheckAssigned)
             {
@@ -91,7 +97,7 @@ public class PlayerCombat : Combat
         GameObject DamageTextGameObject = Instantiate(DamageTextPrefab, TextPosition, Quaternion.identity, playerData.GetCanvasRoot().transform);
         Text DamageText = DamageTextGameObject.transform.GetChild(0).GetComponent<Text>();
         DamageText.text = Damage.ToString();
-        DamageText.color = Color.yellow;
+        DamageText.color = Color.red;
     }
 
     public override void ResetCombatCoroutine()

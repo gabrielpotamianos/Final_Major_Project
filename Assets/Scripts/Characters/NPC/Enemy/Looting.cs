@@ -1,35 +1,53 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
+using System.Linq;
 
-public class Looting : Inventory
+public class Looting : InventoryBaseClass
 {
-    public List<Item> AllPossibleDropItems;
+    public List<Item> AllPossibleItems;
     public List<int> ChanceOfItemDrop;
+    public static EnemyData CurrentEnemy;
 
-    EnemyCombat creature;
-    bool looting = false;
+    EnemyData enemyData;
+    bool CanLoot = false;
+    bool happened = false;
+    GameObject inventory;
+
 
     public override void Awake()
-    {        
-        creature = GetComponent<EnemyCombat>();
+    {
+        inventory = GameObject.Find(Constants.LOOT_INVENTORY);
+        canvasGroup = inventory.transform.parent.GetComponent<CanvasGroup>();
+        enemyData = GetComponent<EnemyData>();
+        slots = new List<Slot>();
+
+        HideInventory();
+
     }
 
     public override void Start()
     {
-        base.Start();
+        slots.AddRange(inventory.transform.GetComponentsInChildren<Slot>().ToList());
     }
 
-    public override void Update()
+    public void Update()
     {
 
-        if (Input.GetKeyDown(KeyCode.L) && !creature.enemyData.Alive && looting)
+        if (Input.GetKeyDown(KeyCode.L) && CanLoot)
         {
-            AddLootingItems();
-            inventory.SetActive(!inventory.activeSelf);
-            PlayerData.instance.ToogleLoot();
+            Target.instance.gameObject.SetActive(canvasGroup.alpha==1);
+            if (enemyData != CurrentEnemy)
+            {
+                AddLootingItems();
+                CurrentEnemy = enemyData;
+            }
+            if (canvasGroup.alpha == 1) HideInventory();
+            else if (canvasGroup.alpha == 0) ShowInventory();
+            // PlayerData.instance.ToogleLoot();
         }
-        else if (Input.GetKeyDown(KeyCode.R) && !creature.enemyData.Alive && looting)
+        else if (Input.GetKeyDown(KeyCode.R) && !enemyData.Alive && CanLoot)
             GatherAllItems();
     }
 
@@ -37,9 +55,9 @@ public class Looting : Inventory
     {
         if (other.GetComponent<PlayerData>() && other.GetComponent<PlayerData>().Alive)
         {
-            looting = true;
-            other.GetComponent<PlayerData>().AbleToLoot = looting;
-            MessageManager.instance.DisplayMessage("Press L to Loot",5);
+            CanLoot = true;
+            other.GetComponent<PlayerData>().AbleToLoot = CanLoot;
+            MessageManager.instance.DisplayMessage("Press L to Loot", 5);
         }
     }
 
@@ -47,29 +65,28 @@ public class Looting : Inventory
     {
         if (other.GetComponent<PlayerData>() && other.GetComponent<PlayerData>().Alive)
         {
-            looting = false;
-            other.GetComponent<PlayerData>().AbleToLoot = looting;
+            CanLoot = false;
+            other.GetComponent<PlayerData>().AbleToLoot = CanLoot;
             MessageManager.instance.KillMessage();
         }
     }
 
     public bool IsLooting()
     {
-        return looting;
+        return CanLoot;
     }
 
     public void GatherAllItems()
     {
-        for(int i=0;i<slots.Count;i++)
+        for (int i = 0; i < slots.Count; i++)
         {
             if (!slots[i].IsSlotEmpty())
             {
-                Inventory.instance.AddInSlot(slots[i].item);
+                PlayerInventory.instance.AddItem(slots[i].item);
 
-                if (AllPossibleDropItems.Count>0)
+                if (AllPossibleItems.Count > 0)
                 {
-
-                    AllPossibleDropItems.RemoveAt(0);
+                    AllPossibleItems.RemoveAt(0);
                     ChanceOfItemDrop.RemoveAt(0);
                 }
                 slots[i].EmptySlot();
@@ -80,31 +97,30 @@ public class Looting : Inventory
 
     public void AddLootingItems()
     {
-        if (AllPossibleDropItems.Count == ChanceOfItemDrop.Count)
+        if (AllPossibleItems.Count == ChanceOfItemDrop.Count)
         {
-            EmptyAllSlots();
-            for (int i = 0; i < AllPossibleDropItems.Count; i++)
+            this.EmptyAllSlots();
+            for (int i = 0; i < AllPossibleItems.Count; i++)
             {
-                if (Random.Range(0, 100) <= ChanceOfItemDrop[i])
-                    AddInSlot(AllPossibleDropItems[i]);
+                if (UnityEngine.Random.Range(0, 100) <= ChanceOfItemDrop[i])
+                    AddInSlot(AllPossibleItems[i]);
             }
         }
         else throw new System.Exception("Drop Array Length Does Not Match!!");
-
     }
 
     public override void RemoveItem(Slot slot)
     {
-        for(int i=0;i<AllPossibleDropItems.Count;i++)
+        for (int i = 0; i < AllPossibleItems.Count; i++)
         {
-            if (AllPossibleDropItems[i] == slot.item)
+            if (AllPossibleItems[i] == slot.item)
             {
-                AllPossibleDropItems.RemoveAt(i);
+                AllPossibleItems.RemoveAt(i);
                 ChanceOfItemDrop.RemoveAt(i);
                 break;
             }
         }
-        base.RemoveItem(slot);
+        slot.EmptySlot();
     }
 
 }

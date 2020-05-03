@@ -1,23 +1,24 @@
 ﻿using System.Reflection;
 //using UnityEditor;
-public static class Constants 
+public static class Constants
 {
     public const string TARGET_HUD = "TargetInfoPanel";
     public const string OUT_OF_RANGE = "You are out of range";
     public const string NO_TARGET_SELECTED = "Pick a target";
     public const string LOOT_INVENTORY = "Loot Inventory";
-    public const string INVENTORY = "Inventory";
+    public const string PLAYER_INVENTORY = "Inventory";
+    public const string VENDOR_INVENTORY = "Vendor Inventory";
     public const string MESSAGE_PANEL = "MessagePanel";
     public const string MAXIMUM_CHARACTERS_MESSAGE = "Character cannot be created! \nPlease delete a character before creating a new one!\n Character will not be saved!";
-    public const float TICK=2;
+    public const float TICK = 2;
 
 
     #region Spells
 
-    public const string FIRST_SPELL  = "Spell (1)";
+    public const string FIRST_SPELL = "Spell (1)";
     public const string SECOND_SPELL = "Spell (2)";
-    public const string THIRD_SPELL  = "Spell (3)";
-    public const string FORTH_SPELL  = "Spell (4)";
+    public const string THIRD_SPELL = "Spell (3)";
+    public const string FORTH_SPELL = "Spell (4)";
 
     #endregion
 

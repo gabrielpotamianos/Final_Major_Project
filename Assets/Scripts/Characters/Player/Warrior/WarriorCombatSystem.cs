@@ -81,13 +81,14 @@ public class WarriorCombatSystem : PlayerCombat
     {
         if (SpellChecks.CheckSpell(playerData, BladestormOnCooldown, BladestormAbilityCost))
         {
+            SpellResourceRegen = true;
             StartCoroutine(BladestormStart());
         }
     }
 
     #endregion
 
-    
+
 
 
 
@@ -122,7 +123,7 @@ public class WarriorCombatSystem : PlayerCombat
     /// </summary>
     void ChargeDamage()
     {
-        DealDamage(Target.instance.getCurrEnemy(),ChargeDamageMultiplier);
+        DealDamage(Target.instance.getCurrEnemy(), ChargeDamageMultiplier);
         AddRage(AddUpRage);
 
     }
@@ -163,8 +164,10 @@ public class WarriorCombatSystem : PlayerCombat
     /// </summary>
     void MortalStrikeDamage()
     {
-        DealDamage(Target.instance.getCurrEnemy(),MortalStrikeDamageMultiplier);
+        DealDamage(Target.instance.getCurrEnemy(), MortalStrikeDamageMultiplier);
         playerData.UpdateSpellResource(-MortalStrikeAbilityCost);
+        SpellResourceRegen = true;
+
     }
 
     /// <summary>
@@ -205,7 +208,7 @@ public class WarriorCombatSystem : PlayerCombat
 
 
         while (BladestormSeconds < BladestormAbilityTime)
-        {            
+        {
             BladestormSeconds++;
             playerData.animator.SetInteger("BladeStormLoop", BladestormSeconds);
             AOE_Bladestorm_Damage();

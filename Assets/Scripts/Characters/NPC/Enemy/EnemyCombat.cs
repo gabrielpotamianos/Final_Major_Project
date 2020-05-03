@@ -82,7 +82,7 @@ public class EnemyCombat : Combat
         GameObject DamageTextGameObject = Instantiate(DamageTextPrefab, TextPosition, Quaternion.identity, enemyData.GetCanvasRoot().transform);
         Text DamageText = DamageTextGameObject.transform.GetChild(0).GetComponent<Text>();
         DamageText.text = Damage.ToString();
-        DamageText.color = Color.red;
+        DamageText.color = Color.yellow;
     }
 
 
@@ -111,10 +111,17 @@ public class EnemyCombat : Combat
         enemyData.agent.isStopped = true;
         enemyData.agent.velocity = Vector3.zero;
         enemyData.FSMMachine.ChangeState(null);
-        GetComponent<Rigidbody>().useGravity = false;
-        GetComponent<Rigidbody>().isKinematic = true;
-        GetComponent<Collider>().isTrigger = true;
-        GetComponent<Rigidbody>().velocity = Vector3.zero;
+        Rigidbody rigidbody = GetComponent<Rigidbody>();
+        BoxCollider collider = GetComponent<BoxCollider>();
+        rigidbody.useGravity = false;
+        rigidbody.isKinematic = true;
+        rigidbody.velocity = Vector3.zero;
+        collider.isTrigger = true;
+
+        //Shrinks the colliders size so you can select other targets with accuracy
+        collider.center= new Vector3(collider.center.x,0,collider.center.z);
+        collider.size= new Vector3(collider.size.x,1,collider.size.z);
+        GetComponent<Looting>().enabled = true;
     }
 
     public override void ResetCombatCoroutine()

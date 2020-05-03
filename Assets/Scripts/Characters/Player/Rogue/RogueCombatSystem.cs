@@ -134,6 +134,8 @@ public class RogueCombatSystem : PlayerCombat
         SpellCheckAssigned = true;
         playerData.animator.SetBool("SinisterStrike", true);
         playerData.UpdateSpellResource(-SinisterStrikeEnergyCost);
+        SpellResourceRegen = true;
+
     }
 
     /// <summary>
@@ -167,6 +169,7 @@ public class RogueCombatSystem : PlayerCombat
         if (stealth) ToogleInvisibility();
         playerData.animator.SetBool("Eviscerate", true);
         playerData.UpdateSpellResource(-EviscerateEnergyCost);
+        SpellResourceRegen = true;
         SpellCheckAssigned = true;
     }
 
@@ -238,6 +241,7 @@ public class RogueCombatSystem : PlayerCombat
         SpellCheckAssigned = true;
         if (stealth) ToogleInvisibility();
         playerData.UpdateSpellResource(-BackstabEnergyCost);
+        SpellResourceRegen = true;
         playerData.animator.SetBool("Backstab", true);
     }
 

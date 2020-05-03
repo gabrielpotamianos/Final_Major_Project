@@ -75,7 +75,7 @@ public class Target : MonoBehaviour
         HideHUD();
 
         //THINK OF IT
-        //  StartCoroutine(StopPlayerCameraAvatar());
+        StartCoroutine(StopPlayerCameraAvatar());
     }
 
 
@@ -115,11 +115,11 @@ public class Target : MonoBehaviour
             }
         }
 
-        if (currentTarget && !currentTarget.Alive)
-        {
-            DeselectTarget();
-            HideHUD();
-        }
+        // if (!currentTarget)
+        // {
+        //     DeselectTarget();
+        //     HideHUD();
+        // }
     }
 
 
@@ -133,7 +133,7 @@ public class Target : MonoBehaviour
             MessageManager.instance.DisplayMessage("You cannot do that!");
             return null;
         }
-        if (currentTarget.GetComponent<EnemyCombat>() && currentTarget.Alive)
+        if (currentTarget.GetComponent<EnemyCombat>())
             return currentTarget.GetComponent<EnemyCombat>();
         else
         {
@@ -168,7 +168,7 @@ public class Target : MonoBehaviour
             currentTarget = GetTarget(target);
             EnableAvatarCamera();
             EnemyAvatar.texture = currentTarget.GetComponentInChildren<Camera>().targetTexture;
-            TargetName.text=currentTarget.Name;
+            TargetName.text = currentTarget.Name;
             //THINK OF IT
             // currentTarget.GetComponentInChildren<Camera>().enabled = false;
 
@@ -180,6 +180,28 @@ public class Target : MonoBehaviour
             TargetGameObject.transform.position = new Vector3(currentTarget.transform.position.x, TargetGameObject.transform.position.y, currentTarget.transform.position.z);
             TargetGameObject.transform.parent = currentTarget.transform;
         }
+
+    }
+
+    private void SelectTarget(CharacterData target)
+    {
+
+        if (currentTarget)
+            DeselectTarget();
+        currentTarget = target;
+        EnableAvatarCamera();
+        EnemyAvatar.texture = currentTarget.GetComponentInChildren<Camera>().targetTexture;
+        TargetName.text = currentTarget.Name;
+        //THINK OF IT
+        // currentTarget.GetComponentInChildren<Camera>().enabled = false;
+
+
+        //To modify - when implementing for more than just Enemies
+        currentTarget.SetHealthBar(TargetHUD.transform.GetChild(0).gameObject.GetComponent<Slider>());
+
+        TargetGameObject.SetActive(true);
+        TargetGameObject.transform.position = new Vector3(currentTarget.transform.position.x, TargetGameObject.transform.position.y, currentTarget.transform.position.z);
+        TargetGameObject.transform.parent = currentTarget.transform;
 
     }
 
@@ -210,6 +232,7 @@ public class Target : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Tab))
         {
+
             if (currentTargetIndex >= ClosestTargets.Count)
             {
                 ClosestTargets = Physics.SphereCastAll(player.transform.position, SphereCastAllRadius, player.transform.forward, SphereCastDistance, TargetableLayers, QueryTriggerInteraction.UseGlobal).ToList();
@@ -227,8 +250,10 @@ public class Target : MonoBehaviour
             if (ClosestTargets.Count > 0)
             {
                 SelectTarget(ClosestTargets[currentTargetIndex]);
+                ShowHUD();
                 currentTargetIndex++;
             }
+
         }
 
     }
@@ -237,7 +262,6 @@ public class Target : MonoBehaviour
     {
         return currentTarget;
     }
-
 
     public bool IsTargetInRange()
     {
@@ -267,6 +291,5 @@ public class Target : MonoBehaviour
         if (currentTarget)
             currentTarget.GetComponentInChildren<Camera>().enabled = true;
     }
-
 
 }

@@ -245,6 +245,8 @@ public class MageCombatSystem : PlayerCombat
         FireballGameObjectRef.GetComponent<Missiles>().enabled = true;
         FireballGameObjectRef.GetComponent<Missiles>().FireballMultiplier = FireballDamageMultiplier;
         playerData.UpdateSpellResource(-FireballManaCost);
+        SpellResourceRegen = true;
+
     }
 
 
@@ -326,7 +328,7 @@ public class MageCombatSystem : PlayerCombat
         else
         {
             BlizzardStop();
-            if(SpellIndicatorGameObject)
+            if (SpellIndicatorGameObject)
                 SpellIndicatorGameObject.transform.GetChild(0).gameObject.SetActive(false);
             yield break;
         }
@@ -413,9 +415,10 @@ public class MageCombatSystem : PlayerCombat
         //Disables the Spell Assignment 
         SpellCheckAssigned = true;
         ResetCombatCoroutine();
-        
+
         //Consume the 4% of the Player's Mana
         playerData.UpdateSpellResource(-(playerData.statistics.CurrentSpellResource * 4 / 100));
+        SpellResourceRegen = true;
 
 
         //Checks if the Object was instantiated
