@@ -3,6 +3,7 @@ using UnityEngine;
 using System.Linq;
 using System.Collections.Generic;
 using System;
+using UnityEngine.UI;
 
 
 public class WarriorCombatSystem : PlayerCombat
@@ -41,17 +42,24 @@ public class WarriorCombatSystem : PlayerCombat
 
     [HideInInspector]
     public static int BladestormSeconds = 0;
-
+    public Text Test;
+    public Text Test1;
     // Start is called before the first frame update
     protected override void Start()
     {
+        Test = GameObject.Find("Text (1)").GetComponent<Text>();
+        Test1 = GameObject.Find("Text (2)").GetComponent<Text>();
+
         base.Start();
         playerData.SetSpellsUI(ChargeSprite, MortalStrikeSprite, BladestormSprite);
+        AssignSpellsOnButtons(Charge, MortalStrike, Bladestorm);
     }
 
     // Update is called once per frame
     protected override void Update()
     {
+        Test.text = BladestormSeconds.ToString();
+        Test1.text = playerData.animator.GetBool("BladeStormStart").ToString();
         GetInput(Charge, MortalStrike, Bladestorm);
         base.Update();
     }
@@ -63,7 +71,7 @@ public class WarriorCombatSystem : PlayerCombat
     /// </summary>
     void Charge()
     {
-        if (SpellChecks.CheckSpell(Target.instance.GetCurrentTarget(), playerData, ChargeRange, ChargeOnCooldown))
+        if (SpellChecks.CheckSpell(Target.instance.GetCurrentTarget(), playerData, ChargeRange, ChargeOnCooldown, SpellCheckAssigned))
         {
             StartCoroutine(ChargeCoroutine());
         }
@@ -71,7 +79,7 @@ public class WarriorCombatSystem : PlayerCombat
 
     void MortalStrike()
     {
-        if (SpellChecks.CheckSpell(Target.instance.GetCurrentTarget(), playerData, Target.instance.MeleeAttackRange, MortalStrikeOnCooldown, MortalStrikeAbilityCost))
+        if (SpellChecks.CheckSpell(Target.instance.GetCurrentTarget(), playerData, Target.instance.MeleeAttackRange, MortalStrikeOnCooldown, MortalStrikeAbilityCost, SpellCheckAssigned))
         {
             MortalStrikeStart();
         }
@@ -79,7 +87,7 @@ public class WarriorCombatSystem : PlayerCombat
 
     void Bladestorm()
     {
-        if (SpellChecks.CheckSpell(playerData, BladestormOnCooldown, BladestormAbilityCost))
+        if (SpellChecks.CheckSpell(playerData, BladestormOnCooldown, BladestormAbilityCost, SpellCheckAssigned))
         {
             SpellResourceRegen = true;
             StartCoroutine(BladestormStart());
@@ -224,8 +232,8 @@ public class WarriorCombatSystem : PlayerCombat
     /// </summary>
     void EndBladestorm()
     {
-        playerData.animator.SetInteger("BladeStormLoop", 0);
         playerData.animator.SetBool("BladeStormStart", false);
+        playerData.animator.SetInteger("BladeStormLoop", 0);
         SpellCheckAssigned = false;
     }
 
@@ -240,7 +248,8 @@ public class WarriorCombatSystem : PlayerCombat
 
         foreach (RaycastHit result in results)
         {
-            result.collider.GetComponent<EnemyCombat>().TakeDamage(playerData.statistics.AttackPower * BladestormDamageMultiplier);
+            if (result.collider.GetComponent<EnemyData>().Alive)
+                result.collider.GetComponent<EnemyCombat>().TakeDamage(playerData.statistics.AttackPower * BladestormDamageMultiplier);
         }
 
     }

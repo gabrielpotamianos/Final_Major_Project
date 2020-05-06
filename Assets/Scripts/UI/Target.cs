@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Linq;
+using UnityEngine.EventSystems;
 
 [System.Serializable]
 public class Target : MonoBehaviour
@@ -100,7 +101,6 @@ public class Target : MonoBehaviour
             if (Physics.Raycast(ray, out hit, Mathf.Infinity, TargetableLayers))
             {
                 //SelectTarget(hit);
-
                 if (TargetableLayers == (TargetableLayers.value | 1 << hit.collider.gameObject.layer))
                 {
                     DeselectTarget();
@@ -110,16 +110,30 @@ public class Target : MonoBehaviour
             }
             else
             {
-                DeselectTarget();
-                HideHUD();
-            }
-        }
+                PointerEventData ped = new PointerEventData(null);
 
-        // if (!currentTarget)
-        // {
-        //     DeselectTarget();
-        //     HideHUD();
-        // }
+                //Set required parameters, in this case, mouse position
+                ped.position = Input.mousePosition;
+
+                List<RaycastResult> results = new List<RaycastResult>();
+
+                //Raycast it
+                EventSystem.current.RaycastAll(ped, results);
+
+                if (results.Count <= 0)
+                {
+                    DeselectTarget();
+                    HideHUD();
+                }
+                
+            }
+            if (hit.collider)
+            {
+                print(hit.collider.gameObject.layer);
+                print(LayerMask.NameToLayer("UI"));
+            }
+
+        }
     }
 
 

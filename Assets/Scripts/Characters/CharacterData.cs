@@ -17,11 +17,10 @@ public class CharacterData : MonoBehaviour
     protected virtual void Awake()
     {
         animator = GetComponent<Animator>();
-        CanvasRoot= GameObject.Find("CanvasHUD").GetComponent<Canvas>();
     }
 
     protected void UpdateBar(Slider bar, float value)
-    {   
+    {
         bar.value = value;
     }
 
@@ -31,13 +30,16 @@ public class CharacterData : MonoBehaviour
         return Alive = health > 0;
     }
 
-    public void IsHealthRegenNeeded(ref bool healtRegen,float health, float MaxHealth)
+    public void IsHealthRegenNeeded(ref bool healtRegen, float health, float MaxHealth)
     {
-        healtRegen=health<=MaxHealth;
+        healtRegen = health <= MaxHealth;
     }
+
+
 
     public Canvas GetCanvasRoot()
     {
+        CanvasRoot = GameObject.Find("CanvasHUD").GetComponent<Canvas>();
         return CanvasRoot;
     }
     public Slider GetHealthBar()
@@ -46,7 +48,7 @@ public class CharacterData : MonoBehaviour
     }
     public void SetHealthBar(Slider bar)
     {
-        HealthBar=bar;
+        HealthBar = bar;
     }
 
 }

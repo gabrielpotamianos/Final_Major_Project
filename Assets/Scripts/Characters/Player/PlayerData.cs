@@ -25,6 +25,13 @@ public class PlayerData : CharacterData
     protected override void Awake()
     {
         base.Awake();
+
+
+
+    }
+
+    void Start()
+    {
         if (instance != null)
             Debug.LogError("More than one PlayerData Instances!");
         else instance = this;
@@ -34,16 +41,40 @@ public class PlayerData : CharacterData
         Spell3 = GameObject.Find(Constants.THIRD_SPELL).transform.GetChild(0).GetComponent<Image>();
         Spell4 = GameObject.Find(Constants.FORTH_SPELL).transform.GetChild(0).GetComponent<Image>();
 
-    }
-
-    void Start()
-    {
         HealthBar = GameObject.Find("PlayerHealthSlider").GetComponent<Slider>();
         AbilityResourceBar = GameObject.Find("PlayerAbilitySlider").GetComponent<Slider>();
         AbilityResourceBarName = GameObject.Find("AbilitySliderText").GetComponent<Text>();
         GameObject.Find("PlayerNameText").GetComponent<Text>().text = Name;
 
+        switch (CharacterSelection.ChosenCharacter.breed)
+        {
+            case CharacterInfo.Breed.Mage:
+                PlayerData.instance.GetAbilityResouce().transform.GetChild(1).GetChild(0).GetComponent<Image>().color = Color.blue + new Color(0.4f, 0.4f, 0);
 
+                PlayerData.instance.GetAbilityResouce().transform.GetChild(1).GetChild(0).GetComponent<Image>().color = Color.blue + new Color(0.4f, 0.4f, 0);
+                PlayerData.instance.GetAbilityResouceText().text = "Mana";
+
+                
+                break;
+            case CharacterInfo.Breed.Rogue:
+                PlayerData.instance.GetAbilityResouce().transform.GetChild(1).GetChild(0).GetComponent<Image>().color = Color.yellow;
+                {
+                    PlayerData.instance.GetAbilityResouce().transform.GetChild(1).GetChild(0).GetComponent<Image>().color = Color.yellow;
+                    PlayerData.instance.GetAbilityResouceText().text = "Energy";
+                }
+                break;
+            case CharacterInfo.Breed.Warrior:
+                PlayerData.instance.GetAbilityResouce().transform.GetChild(1).GetChild(0).GetComponent<Image>().color = Color.red;
+                PlayerData.instance.statistics.CurrentSpellResource = 0;
+                {
+                    PlayerData.instance.GetAbilityResouce().transform.GetChild(1).GetChild(0).GetComponent<Image>().color = Color.red;
+                    PlayerData.instance.statistics.CurrentSpellResource = 0;
+                    PlayerData.instance.GetAbilityResouceText().text = "Rage";
+                }
+                break;
+            default:
+                break;
+        }
     }
 
     void Update()
@@ -66,19 +97,17 @@ public class PlayerData : CharacterData
         statistics.CurrentSpellResource = Mathf.Clamp(statistics.CurrentSpellResource, 0, statistics.MaxSpellResource);
     }
 
-    public void ToogleLoot()
+    public void ToogleLoot(bool looting)
     {
-        if (AbleToLoot || animator.GetBool("Looting"))
+        AbleToLoot = looting;
+        if (AbleToLoot)
         {
-            Target.instance.enabled = !animator.GetBool("Looting");
-            animator.SetBool("Looting", !animator.GetBool("Looting"));
-            GetComponent<PlayerMovement>().enabled = !animator.GetBool("Looting");
-            Target.instance.enabled = !animator.GetBool("Looting");
+            animator.SetBool("Looting", AbleToLoot);
             GetComponent<Rigidbody>().velocity = Vector3.zero;
-            if (animator.GetBool("Looting"))
-                PlayerInventory.instance.ShowInventory();
-            else PlayerInventory.instance.HideInventory();
+            PlayerInventory.instance.ShowInventory();
         }
+        else PlayerInventory.instance.HideInventory();
+
     }
 
     public void DisplaySpellsUI()
@@ -116,5 +145,14 @@ public class PlayerData : CharacterData
         gold += sum;
     }
 
+    public Slider GetAbilityResouce()
+    {
+        return AbilityResourceBar;
+    }
+
+    public Text GetAbilityResouceText()
+    {
+        return AbilityResourceBarName;
+    }
 
 }

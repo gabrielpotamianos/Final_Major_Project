@@ -9,7 +9,7 @@ public class Missiles : MonoBehaviour
     public AOEDamageScript AOEDamage;
     public float Speed;
 
-    float time;
+    public float time;
 
     [HideInInspector]
     public float FireballMultiplier;
@@ -19,12 +19,13 @@ public class Missiles : MonoBehaviour
 
     public static EnemyCombat CurrTarger;
 
+
     private void OnEnable()
     {
+
         if (IceMissiles)
             Physics.IgnoreLayerCollision(gameObject.layer, LayerMask.NameToLayer("Enemy"), true);
         else Physics.IgnoreLayerCollision(gameObject.layer, LayerMask.NameToLayer("Enemy"), false);
-
         time = 0;
     }
 
@@ -50,6 +51,7 @@ public class Missiles : MonoBehaviour
     {
         if (IceMissiles && collision.gameObject.layer.Equals(LayerMask.NameToLayer("Ground")))
         {
+            print(collision.gameObject.name);
             transform.GetChild(0).gameObject.SetActive(false);
             transform.GetChild(1).gameObject.SetActive(true);
 
@@ -64,7 +66,8 @@ public class Missiles : MonoBehaviour
             transform.GetChild(0).gameObject.SetActive(false);
             transform.GetChild(1).gameObject.SetActive(true);
 
-            CurrTarger.TakeDamage(GameObject.FindGameObjectWithTag(CharacterSelection.ChosenCharacter.breed.ToString()).GetComponent<PlayerData>().statistics.AttackPower * FireballMultiplier);
+            CurrTarger.TakeDamage(GameObject.FindObjectOfType<PlayerData>().statistics.AttackPower * FireballMultiplier);
+            GetComponent<Collider>().enabled = false;
             StartCoroutine(Explode());
         }
 

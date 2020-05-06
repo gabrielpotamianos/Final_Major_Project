@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using System;
 public class SceneInit : MonoBehaviour
 {
@@ -12,15 +13,16 @@ public class SceneInit : MonoBehaviour
     /// </summary>
     void Awake()
     {
-        if(instance==null)
-            instance=this;
+        if (instance == null)
+            instance = this;
         else Debug.LogError("many instances going on");
         player = GameObject.Find("Warrior (2)");
 
         CharacterSelection.ChosenCharacter = new CharacterInfo();
         CharacterSelection.ChosenCharacter.breed = (CharacterInfo.Breed)Enum.Parse(typeof(CharacterInfo.Breed), player.tag);
+        GameObject.FindGameObjectWithTag(CharacterSelection.ChosenCharacter.breed.ToString()).GetComponent<PlayerData>().enabled = true;
 
-
+        GameObject.FindGameObjectWithTag(CharacterSelection.ChosenCharacter.breed.ToString()).GetComponent<PlayerMovement>().enabled = true;
         switch (CharacterSelection.ChosenCharacter.breed)
         {
             case CharacterInfo.Breed.Mage:
@@ -41,6 +43,18 @@ public class SceneInit : MonoBehaviour
 
         }
 
+        print(CharacterSelection.ChosenCharacter.breed);
     }
+
+    /// <summary>
+    /// Start is called on the frame when a script is enabled just before
+    /// any of the Update methods is called the first time.
+    /// </summary>
+    void Start()
+    {
+
+    }
+
+    
 
 }

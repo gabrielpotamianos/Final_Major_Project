@@ -92,6 +92,7 @@ public class MageCombatSystem : PlayerCombat
 
 
         playerData.SetSpellsUI(FireballSprite, BlizzardSprite, DeathsBreathSprite);
+        AssignSpellsOnButtons(Fireball, Blizzard, DeathsBreath);
     }
 
     // Update is called once per frame
@@ -109,7 +110,7 @@ public class MageCombatSystem : PlayerCombat
 
     void Fireball()
     {
-        if (SpellChecks.CheckSpell(Target.instance.GetCurrentTarget(), playerData, FireballRange, FireballOnCooldown, FireballManaCost))
+        if (SpellChecks.CheckSpell(Target.instance.GetCurrentTarget(), playerData, FireballRange, FireballOnCooldown, FireballManaCost, SpellCheckAssigned))
         {
             Missiles.CurrTarger = Target.instance.getCurrEnemy();
             StartCoroutine(CastSpell(FireballStart, FireballStop, FireballCastTime, CastBar, "Fireball"));
@@ -118,13 +119,13 @@ public class MageCombatSystem : PlayerCombat
 
     void Blizzard()
     {
-        if (SpellChecks.CheckSpell(playerData, BlizzardOnCooldown, BlizzardManaCost))
+        if (SpellChecks.CheckSpell(playerData, BlizzardOnCooldown, BlizzardManaCost, SpellCheckAssigned))
             StartCoroutine(BlizzardStart());
     }
 
     void DeathsBreath()
     {
-        if (SpellChecks.CheckSpell(playerData, DeathsBreathOnCooldown, playerData.statistics.CurrentSpellResource * 4 / 100))
+        if (SpellChecks.CheckSpell(playerData, DeathsBreathOnCooldown, playerData.statistics.CurrentSpellResource * 4 / 100, SpellCheckAssigned))
         {
             StartCoroutine(SpellCooldown(playerData.Spell3, DeathsBreathCooldownTime, (x) => { DeathsBreathOnCooldown = x; }));
             StartCoroutine(DeathsBreathStart(DeathsBreathDuration));
@@ -244,6 +245,7 @@ public class MageCombatSystem : PlayerCombat
         FireballGameObjectRef.transform.parent = null;
         FireballGameObjectRef.GetComponent<Missiles>().enabled = true;
         FireballGameObjectRef.GetComponent<Missiles>().FireballMultiplier = FireballDamageMultiplier;
+        FireballGameObjectRef.GetComponent<Collider>().enabled = true;
         playerData.UpdateSpellResource(-FireballManaCost);
         SpellResourceRegen = true;
 
@@ -362,6 +364,7 @@ public class MageCombatSystem : PlayerCombat
                 {
                     var temp = Instantiate(IceMissle, new Vector3(pos.x, SpellIndicatorGameObject.transform.GetChild(0).transform.position.y, pos.y), Quaternion.identity);
                     activeMissiles++;
+                    temp.GetComponent<Missiles>().enabled=true;
                     temp.GetComponent<Missiles>().BlizzardDamage = 10 * playerData.statistics.AttackPower;
                     temp.GetComponent<Missiles>().AOEDamage = SpellIndicatorGameObject.transform.GetChild(0).transform.GetChild(0).gameObject.GetComponent<AOEDamageScript>();
                     BlizzardMissiles.Add(temp);
@@ -369,6 +372,8 @@ public class MageCombatSystem : PlayerCombat
                 else
                 {
                     BlizzardMissiles[i].transform.position = new Vector3(pos.x, BlizzardProjector.transform.position.y, pos.y);
+                    BlizzardMissiles[i].transform.rotation = Quaternion.identity;
+                    BlizzardMissiles[i].GetComponent<Missiles>().enabled=true;
                     BlizzardMissiles[i].SetActive(true);
                 }
 

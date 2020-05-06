@@ -27,12 +27,14 @@ public class CharacterSelection : MonoBehaviour
 
     public void InitScene()
     {
-        allCharacters = SaveSystem.LoadAllCharacters();
-        print(allCharacters[0].breed);
 
+        //Loading all saved characters into an aray
+        allCharacters = SaveSystem.LoadAllCharacters();
+
+        //If there are saved more than Character UI Buttons then set minimum to 4 (Maximum length of the Characters UI Buttons)
         MinArrayLength = Mathf.Min(allCharacters.Count, CharacterInfoUIButtons.Length);
 
-
+        //Loop through all of them and instantiate the prefabs based on the race
         for (int i = 0; i < MinArrayLength; i++)
         {
             switch (allCharacters[i].race)
@@ -46,11 +48,17 @@ public class CharacterSelection : MonoBehaviour
                 default:
                     break;
             }
+
+
+            //Translates character information (race, breed, maybe name) to the UI Buttons
             DisplayCharacterInfo(CharacterInfoUIButtons[i], allCharacters[i]);
 
-            if (SelectedCharacter == null)
-                SelectedCharacter = allCharacters[0];
         }
+        //Define a default first character (GameObject)
+        if (SelectedCharacter == null)
+            SelectedCharacter = allCharacters[0];
+
+        //Enables Character GameObject in the scene based on the selected character (default - first one)
         DisplaySelectedCharacter();
     }
 
@@ -82,6 +90,11 @@ public class CharacterSelection : MonoBehaviour
         }
     }
 
+
+    /// <summary>
+    /// Displays UI Buttons According to the Number of Characters Created 
+    /// <para>Disables Create Character Button When Maximum Possible Characters Reached </para>
+    /// </summary>
     private void DisplayUIButtons()
     {
         if (allCharacters.Count <= 0)

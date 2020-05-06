@@ -8,12 +8,21 @@ public class PlayerCombat : Combat
     protected Ability CurrAbility;
 
     protected bool SpellCheckAssigned = false;
-    protected bool SpellResourceRegen;
+    protected bool SpellResourceRegen = true;
     IEnumerator SpellResourceRegenCoroutine;
     public PlayerData playerData;
 
+    Button BasicAttackButton;
+    Button Spell1Button;
+    Button Spell2Button;
+    Button Spell3Button;
+    Button Spell4Button;
+
+
     protected override void Start()
     {
+
+
         base.Start();
         playerData = GetComponent<PlayerData>();
     }
@@ -23,14 +32,19 @@ public class PlayerCombat : Combat
         if (playerData.IsItAlive(playerData.statistics.CurrentHealth, playerData.statistics.MaxHealth))
         {
             playerData.IsHealthRegenNeeded(ref IsRegenHealth, playerData.statistics.CurrentHealth, playerData.statistics.MaxHealth);
-
             if (SpellResourceRegen)
-                {
-                    if(SpellResourceRegenCoroutine!=null)
-                         StopCoroutine(SpellResourceRegenCoroutine);
-                    SpellResourceRegenCoroutine=RegenerateSpellResource(CharacterSelection.ChosenCharacter.breed == CharacterInfo.Breed.Warrior);
-                    StartCoroutine(SpellResourceRegenCoroutine);
-                }
+            {
+                if (SpellResourceRegenCoroutine != null)
+                    StopCoroutine(SpellResourceRegenCoroutine);
+                SpellResourceRegenCoroutine = RegenerateSpellResource(CharacterSelection.ChosenCharacter.breed == CharacterInfo.Breed.Warrior);
+                StartCoroutine(SpellResourceRegenCoroutine);
+            }
+
+            if (playerData.statistics.CurrentSpellResource == 0)
+                playerData.GetAbilityResouce().transform.GetChild(1).GetChild(0).gameObject.SetActive(false);
+            else if (playerData.statistics.CurrentSpellResource > 0)
+                playerData.GetAbilityResouce().transform.GetChild(1).GetChild(0).gameObject.SetActive(true);
+
 
             if (CurrAbility != null && !SpellCheckAssigned)
             {
@@ -116,6 +130,7 @@ public class PlayerCombat : Combat
 
     public override void Die()
     {
+        print("I am here");
         playerData.Alive = false;
         GetComponent<Rigidbody>().useGravity = false;
         GetComponent<Rigidbody>().isKinematic = true;
@@ -144,7 +159,7 @@ public class PlayerCombat : Combat
 
     protected void BasicAttack()
     {
-        if (SpellChecks.CheckSpell(Target.instance.GetCurrentTarget(), playerData, Target.instance.MeleeAttackRange))
+        if (SpellChecks.CheckSpell(Target.instance.GetCurrentTarget(), playerData, Target.instance.MeleeAttackRange, SpellCheckAssigned))
         {
             playerData.animator.SetBool("BasicAttack", true);
             SpellCheckAssigned = true;
@@ -184,6 +199,21 @@ public class PlayerCombat : Combat
 
     }
 
+    protected void AssignSpellsOnButtons(Ability Spell1, Ability Spell2, Ability Spell3, Ability Spell4 = null)
+    {
+        Spell1Button = playerData.Spell1.transform.parent.GetComponent<Button>();
+        Spell2Button = playerData.Spell2.transform.parent.GetComponent<Button>();
+        Spell3Button = playerData.Spell3.transform.parent.GetComponent<Button>();
+        Spell4Button = playerData.Spell4.transform.parent.GetComponent<Button>();
+
+        Spell1Button.onClick.AddListener(() => Spell1());
+        Spell2Button.onClick.AddListener(() => Spell2());
+        Spell3Button.onClick.AddListener(() => Spell3());
+        Spell4Button.onClick.AddListener(() => Spell4());
+    }
+
+
+
     protected IEnumerator SpellCooldown(Image image, float cooldonwTime, System.Action<bool> CooldownBool)
     {
         CooldownBool(true);
@@ -220,4 +250,10 @@ public class PlayerCombat : Combat
         SpellResourceRegen = true;
     }
 
+    public void IsSpellRegenNeeded(ref bool spellRegen, float spellResource, float MaxSpellResource, bool IsItWarrior)
+    {
+        if (!IsItWarrior)
+            spellRegen = spellResource < MaxSpellResource;
+        else spellRegen = spellResource > 0;
+    }
 }

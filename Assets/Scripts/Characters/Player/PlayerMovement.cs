@@ -8,7 +8,8 @@ public class PlayerMovement : MonoBehaviour
     #region Public Variables
 
     public new GameObject camera;
-
+    public float JumpForce;
+    public float JumpRayDistance;
     [Range(0, 1)]
     public float rayLength;
     public float speed = 5;
@@ -21,19 +22,22 @@ public class PlayerMovement : MonoBehaviour
     //
     #region Private Variables
 
-    bool grounded;
+    bool jumping;
     Rigidbody rigid;
     Vector3 direction;
     PlayerData playerData;
     Quaternion lastRotation;
     #endregion
+    RaycastHit hit;
+
+    bool grounded;
 
 
     private void Awake()
     {
-        if (instance == null)
-            instance = this;
-        else Debug.LogError("More than One Player Movement instances!");
+        // if (instance == null)
+        //     instance = this;
+        // else Debug.LogError("More than One Player Movement instances!");
 
         rigid = GetComponent<Rigidbody>();
         playerData = GetComponent<PlayerData>();
@@ -41,6 +45,10 @@ public class PlayerMovement : MonoBehaviour
 
     private void Start()
     {
+        if (instance == null)
+            instance = this;
+        else Debug.LogError("More than One Player Movement instances!");
+
         camera = Camera.main.gameObject;
     }
 
@@ -49,12 +57,28 @@ public class PlayerMovement : MonoBehaviour
     {
         if (camera == null)
             camera = Camera.main.gameObject;
+
+
+
     }
+
 
     private void FixedUpdate()
     {
+
         if (playerData.Alive)
         {
+            print(grounded);
+            grounded = Physics.Raycast(transform.position - new Vector3(0, -0.5f, 0), Vector3.down, out hit, JumpRayDistance, 1 << LayerMask.NameToLayer("Ground"));
+            if (Input.GetKeyDown(KeyCode.Space) && grounded && !jumping)
+                Jump();
+            if (jumping &&  Mathf.Round(rigid.velocity.y) < 0 && grounded)
+                StartLanding();
+
+            playerData.animator.SetBool("Jump", jumping);
+
+            Debug.DrawRay(transform.position - new Vector3(0, -0.5f, 0), Vector3.down * JumpRayDistance, Color.yellow);
+
             Rotate();
 
             Move();
@@ -69,6 +93,8 @@ public class PlayerMovement : MonoBehaviour
         if (axisInput.x != 0 || axisInput.y != 0)
         {
             MageCombatSystem.InteruptCast = true;
+            playerData.animator.SetBool("Looting", false);
+            Looting.instance.HideInventory();
 
             //Get the Input Axis
             Vector3 rightDir = camera.transform.right;
@@ -106,6 +132,31 @@ public class PlayerMovement : MonoBehaviour
             transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(newDirection), 0.2f);
             lastRotation = transform.rotation;
         }
+    }
+
+    private void StartLanding()
+    {
+        playerData.animator.SetBool("Land", true);
+    }
+    private void Jump()
+    {
+        jumping = true;
+    }
+
+    private void JumpAnimationEvent()
+    {
+        //rigid.AddForce(new Vector3(0, 1, 0) * JumpForce * Time.deltaTime, ForceMode.VelocityChange);
+        rigid.velocity = new Vector3(rigid.velocity.x, 0, rigid.velocity.z);
+        rigid.velocity = new Vector3(rigid.velocity.x, JumpForce, rigid.velocity.z);
+    }
+
+    private void Land()
+    {
+        rigid.velocity = new Vector3(rigid.velocity.x, 0, rigid.velocity.z);
+
+        jumping = false;
+        playerData.animator.SetBool("Land", false);
+
     }
 
 

@@ -1,8 +1,13 @@
 using UnityEngine;
 using UnityEngine.AI;
+using System.Collections;
+using System.Collections.Generic;
 
 public class EnemyData : CharacterData
 {
+    public List<Item> AllPossibleItems;
+    public List<int> ChanceOfItemDrop;
+
     public BaseStatistics statistics;
     public GameObject CentrePatrolPointPatrol;
     public NavMeshAgent agent;
@@ -12,13 +17,17 @@ public class EnemyData : CharacterData
     public float rangeSphere = 10.0f;
     public bool Hostile;
     public PlayerCombat playerCombat;
-    [HideInInspector]
+
     public Looting LootInventory;
+
+    bool CanLoot = false;
+
+    public static EnemyData CurrentEnemy;
 
     protected override void Awake()
     {
         CanvasRoot = GameObject.Find("CanvasHUD").GetComponent<Canvas>();
-        LootInventory = GetComponent<Looting>();
+        LootInventory = GameObject.FindObjectOfType<Looting>();
         agent = GetComponent<NavMeshAgent>();
         base.Awake();
 
@@ -30,12 +39,26 @@ public class EnemyData : CharacterData
 
     void Update()
     {
-        if(playerCombat==null)
-            playerCombat=GameObject.FindObjectOfType<PlayerCombat>();
+        if (playerCombat == null)
+            playerCombat = GameObject.FindObjectOfType<PlayerCombat>();
         if (HealthBar)
             UpdateBar(HealthBar, statistics.CurrentHealth / statistics.MaxHealth);
         animator.SetFloat("Health", statistics.CurrentHealth);
 
+
+        if (Input.GetKeyDown(KeyCode.L) && CanLoot)
+        {
+            if (this != CurrentEnemy)
+            {
+                LootInventory.AddLootingItems(ref AllPossibleItems, ref ChanceOfItemDrop);
+                CurrentEnemy = this;
+            }
+            if (LootInventory.visible) LootInventory.HideInventory();
+            else if (!LootInventory.visible) LootInventory.ShowInventory();
+            PlayerData.instance.ToogleLoot(LootInventory.visible);
+        }
+        else if (Input.GetKeyDown(KeyCode.R) && !Alive && CanLoot)
+            LootInventory.GatherAllItems(ref AllPossibleItems, ref ChanceOfItemDrop);
     }
 
     public void UpdateCurrentHealth(float Health)
@@ -43,4 +66,41 @@ public class EnemyData : CharacterData
         statistics.CurrentHealth += Health;
         statistics.CurrentHealth = Mathf.Clamp(statistics.CurrentHealth, 0, statistics.MaxHealth);
     }
+
+
+
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.GetComponent<PlayerData>() && other.GetComponent<PlayerData>().Alive)
+        {
+            CanLoot = true;
+            other.GetComponent<PlayerData>().AbleToLoot = CanLoot;
+            MessageManager.instance.DisplayMessage("Press L to Loot", 5);
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.GetComponent<PlayerData>() && other.GetComponent<PlayerData>().Alive)
+        {
+            CanLoot = false;
+            other.GetComponent<PlayerData>().AbleToLoot = CanLoot;
+            if(LootInventory.visible)
+                LootInventory.HideInventory();
+
+            MessageManager.instance.KillMessage();
+        }
+    }
+
+    public bool IsLooting()
+    {
+        return CanLoot;
+    }
+
+
+
+
+
+
 }

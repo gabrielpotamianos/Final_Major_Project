@@ -1474,10 +1474,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Alive: 0
-  Name: 
+  Name: Gabriel
   animator: {fileID: 0}
   statistics:
-    CurrentHealth: 0.3
+    CurrentHealth: 1000
     MaxHealth: 1000
     HealthRegenerationPercentage: 33
     AttackPower: 1.7
@@ -1493,14 +1493,15 @@ MonoBehaviour:
     CriticalStrike: 0
     AttackSpeed: 0
     Parry: 0
-    CurrentSpellResource: 0
-    MaxSpellResource: 0
-    AbilityRegenerationRate: 0
+    CurrentSpellResource: 100
+    MaxSpellResource: 100
+    AbilityRegenerationRate: 3
   AbleToLoot: 0
   Spell1: {fileID: 0}
   Spell2: {fileID: 0}
   Spell3: {fileID: 0}
   Spell4: {fileID: 0}
+  gold: 0
 --- !u!114 &7240421209867532293
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1634,25 +1635,27 @@ MonoBehaviour:
   ChargeSprite: {fileID: 21300000, guid: fd6ab744a13821741bae075ba578bce0, type: 3}
   ChargeAbilityTime: 16
   ChargeCooldownTime: 5
-  ChargeDamageMultiplier: 10
+  ChargeDamageMultiplier: 70
   AddUpRage: 25
   ChargeRange: 36
   ChargeOnCooldown: 0
   MortalStrikeSprite: {fileID: 21300000, guid: 4873aa989d5fcd546b28025805f15ee8, type: 3}
   MortalStrikeCooldownTime: 7
-  MortalStrikeDamageMultiplier: 30
+  MortalStrikeDamageMultiplier: 130
   MortalStrikeAbilityCost: 10
   MortalStrikeOnCooldown: 0
   BladestormSprite: {fileID: 21300000, guid: 0c136515f7aa49e43ba0840df48c1f4d, type: 3}
   BladestormCooldownTime: 13
   BladestormAbilityTime: 5
-  BladestormDamageMultiplier: 30
+  BladestormDamageMultiplier: 100
   BladestormAbilityCost: 10
   BladestormRadius: 6.5
   BladestormLayers:
     serializedVersion: 2
     m_Bits: 1024
   BladestormOnCooldown: 0
+  Test: {fileID: 0}
+  Test1: {fileID: 0}
 --- !u!1 &5269214549182791908
 GameObject:
   m_ObjectHideFlags: 0

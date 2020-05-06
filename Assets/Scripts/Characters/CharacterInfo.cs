@@ -9,6 +9,7 @@ public class CharacterInfo
 
     public Race race;
     public Breed breed;
+    public string name;
 
     //[HideInInspector]
     [System.NonSerialized]     

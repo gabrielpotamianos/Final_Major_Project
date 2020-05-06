@@ -1,10 +1,18 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+//C#
+using System.Runtime.InteropServices;
+// 
 
 public class CameraMovement : MonoBehaviour
 {
+    [DllImport("user32.dll")]
+    static extern bool SetCursorPos(int X, int Y);
+
     public Transform target;
+    public Slider AnghelSlider;
 
     float mouseX;
     float mouseY;
@@ -18,6 +26,11 @@ public class CameraMovement : MonoBehaviour
     public Vector3 velocity = Vector3.zero;
     [Range(0, 1)]
     public float CameraSpeed = 120;
+
+    public Text TestResoultion;
+
+
+    int xPos = 30, yPos = 1000;
 
     public CameraCollision CameraCollision
     {
@@ -45,6 +58,7 @@ public class CameraMovement : MonoBehaviour
 
     }
 
+    bool onRotation = false;
     /// <summary>
     /// This function is called every fixed framerate frame, if the MonoBehaviour is enabled.
     /// </summary>
@@ -52,16 +66,22 @@ public class CameraMovement : MonoBehaviour
     {
         #region Camera Rotation
 
+        TestResoultion.text = Screen.height + " x " + Screen.width;
         if (Input.GetMouseButton(1))
         {
-
+            if (!onRotation)
+            {
+                xPos = (int)Input.mousePosition.x;
+                yPos = (int)Input.mousePosition.y;
+                onRotation = true;
+            }
             Cursor.visible = false;
 
             mouseX = Input.GetAxis("Mouse X");
             mouseY = Input.GetAxis("Mouse Y");
 
-            rotY += mouseX * CameraSensitivity * Time.deltaTime;
-            rotX += mouseY * CameraSensitivity * Time.deltaTime;
+            rotY += mouseX * CameraSensitivity * AnghelSlider.value;
+            rotX += mouseY * CameraSensitivity * AnghelSlider.value;
 
             rotX = Mathf.Clamp(rotX, -ClampX, ClampX);
 
@@ -70,9 +90,11 @@ public class CameraMovement : MonoBehaviour
             transform.rotation = rotation;
 
         }
-        else if (Input.GetMouseButtonUp(1))
+        else if (Input.GetMouseButtonUp(1) || !Input.GetMouseButtonDown(0) && !Cursor.visible)
         {
             Cursor.visible = true;
+            SetCursorPos(xPos, Screen.height - yPos);//Call this when you want to set the mouse position
+            onRotation = false;
         }
         #endregion
 

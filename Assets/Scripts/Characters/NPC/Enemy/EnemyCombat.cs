@@ -121,7 +121,7 @@ public class EnemyCombat : Combat
         //Shrinks the colliders size so you can select other targets with accuracy
         collider.center= new Vector3(collider.center.x,0,collider.center.z);
         collider.size= new Vector3(collider.size.x,1,collider.size.z);
-        GetComponent<Looting>().enabled = true;
+      //  GetComponent<Looting>().enabled = true;
     }
 
     public override void ResetCombatCoroutine()

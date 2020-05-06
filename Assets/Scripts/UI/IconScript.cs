@@ -59,7 +59,7 @@ public class IconScript : MonoBehaviour, /*IBeginDragHandler, IDragHandler, IEnd
         //Remove all Icon results so it won't interfere our process
         results.RemoveAll(x => x.gameObject.tag.Equals("Icon"));
 
-        if (results.Count <= 0)
+        if (results.Count <= 0 && !ParentSlot.transform.parent.name.Equals(Constants.VENDOR_INVENTORY) &&!ParentSlot.transform.parent.name.Equals(Constants.LOOT_INVENTORY))
         {
             ConfirmationPanel.instance.CurrentState=ConfirmationPanel.ConfirmationPanelState.Delete;
             ConfirmationPanel.instance.DisplayConfirmationPanel(ParentSlot);
@@ -77,7 +77,7 @@ public class IconScript : MonoBehaviour, /*IBeginDragHandler, IDragHandler, IEnd
                 if (ParentSlot.transform.parent.name.Equals(Constants.LOOT_INVENTORY))
                 {
                     PlayerInventory.instance.AddItem(ParentSlot.item, resultSlot);
-                    Looting.CurrentEnemy.LootInventory.RemoveItem(ParentSlot);
+                    EnemyData.CurrentEnemy.LootInventory.RemoveItem(ParentSlot, ref EnemyData.CurrentEnemy.AllPossibleItems, ref EnemyData.CurrentEnemy.ChanceOfItemDrop);
                     ParentSlot.EmptySlot();
                 }
                 else if (ParentSlot.transform.parent.name.Equals(Constants.VENDOR_INVENTORY))

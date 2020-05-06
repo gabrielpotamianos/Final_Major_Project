@@ -44,6 +44,9 @@ public class ConfirmationPanel : MonoBehaviour
     public void DisplayConfirmationPanel(Slot slot)
     {
         PlayerMovement.instance.enabled = false;
+        PlayerData.instance.animator.SetFloat("SpeedMovement", 0);
+
+        PlayerMovement.instance.gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
         GameObject.FindObjectOfType<PlayerCombat>().enabled = false;
         Message.text = "Would you like to ";
         canvas.blocksRaycasts = true;
