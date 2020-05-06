@@ -71,7 +71,8 @@ public class WarriorCombatSystem : PlayerCombat
     /// </summary>
     void Charge()
     {
-        if (SpellChecks.CheckSpell(Target.instance.GetCurrentTarget(), playerData, ChargeRange, ChargeOnCooldown, SpellCheckAssigned))
+        if (SpellChecks.CheckSpell(Target.instance.GetCurrentTarget(), playerData, ChargeRange, ChargeOnCooldown, 
+        SpellCheckAssigned, PlayerMovement.instance.grounded))
         {
             StartCoroutine(ChargeCoroutine());
         }
@@ -79,7 +80,8 @@ public class WarriorCombatSystem : PlayerCombat
 
     void MortalStrike()
     {
-        if (SpellChecks.CheckSpell(Target.instance.GetCurrentTarget(), playerData, Target.instance.MeleeAttackRange, MortalStrikeOnCooldown, MortalStrikeAbilityCost, SpellCheckAssigned))
+        if (SpellChecks.CheckSpell(Target.instance.GetCurrentTarget(), playerData, Target.instance.MeleeAttackRange,
+         MortalStrikeOnCooldown, MortalStrikeAbilityCost, SpellCheckAssigned, PlayerMovement.instance.grounded))
         {
             MortalStrikeStart();
         }
@@ -87,7 +89,7 @@ public class WarriorCombatSystem : PlayerCombat
 
     void Bladestorm()
     {
-        if (SpellChecks.CheckSpell(playerData, BladestormOnCooldown, BladestormAbilityCost, SpellCheckAssigned))
+        if (SpellChecks.CheckSpell(playerData, BladestormOnCooldown, BladestormAbilityCost, SpellCheckAssigned, PlayerMovement.instance.grounded))
         {
             SpellResourceRegen = true;
             StartCoroutine(BladestormStart());

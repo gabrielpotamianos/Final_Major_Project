@@ -1459,8 +1459,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   camera: {fileID: 0}
+  JumpForce: 10
+  JumpRayDistance: 2.8
   rayLength: 0.001
   speed: 300
+  grounded: 0
 --- !u!114 &-5307785774160209262
 MonoBehaviour:
   m_ObjectHideFlags: 0

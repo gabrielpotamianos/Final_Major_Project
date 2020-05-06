@@ -76,7 +76,8 @@ public class RogueCombatSystem : PlayerCombat
 
     void SinisterStrike()
     {
-        if (SpellChecks.CheckSpell(Target.instance.GetCurrentTarget(), playerData, Target.instance.MeleeAttackRange, SinisterStrikeOnCooldown, SinisterStrikeEnergyCost, SpellCheckAssigned))
+        if (SpellChecks.CheckSpell(Target.instance.GetCurrentTarget(), playerData, Target.instance.MeleeAttackRange, 
+        SinisterStrikeOnCooldown, SinisterStrikeEnergyCost, SpellCheckAssigned, PlayerMovement.instance.grounded))
         {
             SinisterStrikeStart();
             StartCoroutine(SpellCooldown(playerData.Spell1, SinisterStrikeCooldownTime, (x) => { SinisterStrikeOnCooldown = x; }));
@@ -85,7 +86,8 @@ public class RogueCombatSystem : PlayerCombat
 
     void Eviscerate()
     {
-        if (SpellChecks.CheckSpell(Target.instance.GetCurrentTarget(), playerData, Target.instance.MeleeAttackRange, EviscerateOnCooldown, EviscerateEnergyCost, SpellCheckAssigned, ComboPoints))
+        if (SpellChecks.CheckSpell(Target.instance.GetCurrentTarget(), playerData, Target.instance.MeleeAttackRange, 
+        EviscerateOnCooldown, EviscerateEnergyCost, SpellCheckAssigned, PlayerMovement.instance.grounded, ComboPoints))
         {
             EviscerateStart();
             StartCoroutine(SpellCooldown(playerData.Spell2, EviscerateCooldownTime, (x) => { EviscerateOnCooldown = x; }));
@@ -97,7 +99,8 @@ public class RogueCombatSystem : PlayerCombat
         if (SpellChecks.CheckSpell(VanishOnCooldown, "Spell on cooldown!") &&
         SpellChecks.CheckSpell(InCombat, "You cannot use this in combat!")
         && SpellChecks.CheckSpell(stealth, "You are invisible already!")
-        && SpellChecks.CheckSpell(SpellCheckAssigned, "You cannot use that now!"))
+        && SpellChecks.CheckSpell(SpellCheckAssigned, "You cannot use that now!")
+        && SpellChecks.CheckSpell(!PlayerMovement.instance.grounded,"You cannot do that now!"))
         {
             StartCoroutine(VanishStart());
             StartCoroutine(SpellCooldown(playerData.Spell3, VanishCooldownTime, (x) => { VanishOnCooldown = x; }));
@@ -106,7 +109,9 @@ public class RogueCombatSystem : PlayerCombat
 
     void Backstab()
     {
-        if (SpellChecks.CheckSpell(Target.instance.GetCurrentTarget(), playerData, DirectionDotProductThreshold, PositionDotProductThreshold, BackstabDistanceTreshold, BackstabOnCooldown, BackstabEnergyCost, stealth, SpellCheckAssigned))
+        if (SpellChecks.CheckSpell(Target.instance.GetCurrentTarget(), playerData, DirectionDotProductThreshold,
+         PositionDotProductThreshold, BackstabDistanceTreshold, BackstabOnCooldown, BackstabEnergyCost, stealth, SpellCheckAssigned, 
+         PlayerMovement.instance.grounded))
         {
             BackstabStart();
             StartCoroutine(SpellCooldown(playerData.Spell4, BackstabCooldownTime, (x) => { BackstabOnCooldown = x; }));

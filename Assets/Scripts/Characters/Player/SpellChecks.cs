@@ -19,14 +19,14 @@ public static class SpellChecks
         return false;
     }
 
-    public static bool CheckSpell(CharacterData enemy, PlayerData playerData, float range, bool SpellAssigned)
+    public static bool CheckSpell(CharacterData enemy, PlayerData playerData, float range, bool SpellAssigned, bool grounded)
     {
 
         if (enemy == null)
             MessageManager.instance.DisplayMessage(Constants.NO_TARGET_SELECTED);
         else if (!enemy.GetComponent<EnemyCombat>())
             MessageManager.instance.DisplayMessage("You cannot do that!");
-        else if (SpellAssigned)
+        else if (SpellAssigned || !grounded)
             MessageManager.instance.DisplayMessage("You cannot use that now!");
         else if (!enemy.GetComponent<EnemyCombat>().enemyData.Alive)
             MessageManager.instance.DisplayMessage(Constants.NO_TARGET_SELECTED);
@@ -39,7 +39,7 @@ public static class SpellChecks
         return false;
     }
 
-    public static bool CheckSpell(CharacterData enemy, bool cooldown, bool SpellAssigned)
+    public static bool CheckSpell(CharacterData enemy, bool cooldown, bool SpellAssigned, bool grounded)
     {
         if (CheckSpell(cooldown, "Spell on cooldown!"))
         {
@@ -47,7 +47,7 @@ public static class SpellChecks
                 MessageManager.instance.DisplayMessage(Constants.NO_TARGET_SELECTED);
             else if (!enemy.GetComponent<EnemyCombat>())
                 MessageManager.instance.DisplayMessage("You cannot do that!");
-            else if (SpellAssigned)
+            else if (SpellAssigned || !grounded)
                 MessageManager.instance.DisplayMessage("You cannot use that now!");
             else if (!enemy.GetComponent<EnemyCombat>().enemyData.Alive)
                 MessageManager.instance.DisplayMessage(Constants.NO_TARGET_SELECTED);
@@ -58,13 +58,13 @@ public static class SpellChecks
         return false;
     }
 
-    public static bool CheckSpell(PlayerData playerData, bool cooldown, float AbilityCost, bool SpellAssigned)
+    public static bool CheckSpell(PlayerData playerData, bool cooldown, float AbilityCost, bool SpellAssigned, bool grounded)
     {
         if (CheckSpell(cooldown, "Spell on cooldown!"))
         {
             if (AbilityCost > playerData.statistics.CurrentSpellResource)
                 MessageManager.instance.DisplayMessage("Not enough " + "Rage");
-            else if (SpellAssigned)
+            else if (SpellAssigned || !grounded)
                 MessageManager.instance.DisplayMessage("You cannot use that now!");
             else return true;
         }
@@ -73,9 +73,9 @@ public static class SpellChecks
 
     }
 
-    public static bool CheckSpell(CharacterData enemy, PlayerData playerData, float range, bool cooldown, bool SpellAssigned)
+    public static bool CheckSpell(CharacterData enemy, PlayerData playerData, float range, bool cooldown, bool SpellAssigned, bool grounded)
     {
-        if (CheckSpell(enemy, cooldown, SpellAssigned))
+        if (CheckSpell(enemy, cooldown, SpellAssigned, grounded))
         {
             if (Vector3.Distance(playerData.transform.position, enemy.transform.position) > range)
                 MessageManager.instance.DisplayMessage(Constants.OUT_OF_RANGE);
@@ -84,9 +84,9 @@ public static class SpellChecks
         return false;
     }
 
-    public static bool CheckSpell(CharacterData enemy, PlayerData playerData, float range, bool cooldown, float AbilityCost, bool SpellAssigned)
+    public static bool CheckSpell(CharacterData enemy, PlayerData playerData, float range, bool cooldown, float AbilityCost, bool SpellAssigned, bool grounded)
     {
-        if (CheckSpell(enemy, playerData, range, cooldown, SpellAssigned))
+        if (CheckSpell(enemy, playerData, range, cooldown, SpellAssigned, grounded))
         {
             if (AbilityCost > playerData.statistics.CurrentSpellResource)
                 MessageManager.instance.DisplayMessage("Not enough" + "Ability Resource");
@@ -95,9 +95,9 @@ public static class SpellChecks
         return false;
     }
 
-    public static bool CheckSpell(CharacterData enemy, PlayerData playerData, bool cooldown, float AbilityCost, bool SpellAssigned)
+    public static bool CheckSpell(CharacterData enemy, PlayerData playerData, bool cooldown, float AbilityCost, bool SpellAssigned, bool grounded)
     {
-        if (CheckSpell(enemy, cooldown, SpellAssigned))
+        if (CheckSpell(enemy, cooldown, SpellAssigned, grounded))
         {
             if (AbilityCost > playerData.statistics.CurrentSpellResource)
                 MessageManager.instance.DisplayMessage("Not enough" + "Ability Resource");
@@ -106,9 +106,9 @@ public static class SpellChecks
         return false;
     }
 
-    public static bool CheckSpell(CharacterData enemy, PlayerData playerData, float range, bool cooldown, float AbilityCost,bool SpellAssigned, float ComboPoints = 0)
+    public static bool CheckSpell(CharacterData enemy, PlayerData playerData, float range, bool cooldown, float AbilityCost, bool SpellAssigned, bool grounded, float ComboPoints = 0)
     {
-        if (CheckSpell(enemy, playerData, range, cooldown, AbilityCost, SpellAssigned))
+        if (CheckSpell(enemy, playerData, range, cooldown, AbilityCost, SpellAssigned, grounded))
         {
             if (ComboPoints <= 0)
                 MessageManager.instance.DisplayMessage("You need combo points to cast that!");
@@ -117,9 +117,9 @@ public static class SpellChecks
         return false;
     }
 
-    public static bool CheckSpell(CharacterData enemy, PlayerData playerData, float DirectionDotProductTreshold, float PositionDotProductThreshold, float Distance, bool cooldown, float AbilityCost, bool SpellAssigned)
+    public static bool CheckSpell(CharacterData enemy, PlayerData playerData, float DirectionDotProductTreshold, float PositionDotProductThreshold, float Distance, bool cooldown, float AbilityCost, bool SpellAssigned, bool grounded)
     {
-        if (CheckSpell(enemy, playerData, cooldown, AbilityCost, SpellAssigned))
+        if (CheckSpell(enemy, playerData, cooldown, AbilityCost, SpellAssigned, grounded))
         {
             float DirectionDotProduct = Vector3.Dot(enemy.transform.forward, playerData.transform.forward);
             float PositionDotProduct = Vector3.Dot((enemy.transform.position - playerData.transform.position).normalized, playerData.transform.forward);
@@ -138,9 +138,9 @@ public static class SpellChecks
     }
 
 
-    public static bool CheckSpell(CharacterData enemy, PlayerData playerData, float DirectionDotProductTreshold, float PositionDotProductThreshold, float Distance, bool cooldown, float AbilityCost, bool Stealth, bool SpellAssigned)
+    public static bool CheckSpell(CharacterData enemy, PlayerData playerData, float DirectionDotProductTreshold, float PositionDotProductThreshold, float Distance, bool cooldown, float AbilityCost, bool Stealth, bool SpellAssigned, bool grounded)
     {
-        if (CheckSpell(enemy, playerData, DirectionDotProductTreshold, PositionDotProductThreshold, Distance, cooldown, AbilityCost, SpellAssigned))
+        if (CheckSpell(enemy, playerData, DirectionDotProductTreshold, PositionDotProductThreshold, Distance, cooldown, AbilityCost, SpellAssigned, grounded))
         {
             if (!Stealth)
                 MessageManager.instance.DisplayMessage("You must be invisible for that!");

@@ -110,7 +110,8 @@ public class MageCombatSystem : PlayerCombat
 
     void Fireball()
     {
-        if (SpellChecks.CheckSpell(Target.instance.GetCurrentTarget(), playerData, FireballRange, FireballOnCooldown, FireballManaCost, SpellCheckAssigned))
+        if (SpellChecks.CheckSpell(Target.instance.GetCurrentTarget(), playerData, FireballRange, FireballOnCooldown, 
+        FireballManaCost, SpellCheckAssigned, PlayerMovement.instance.grounded))
         {
             Missiles.CurrTarger = Target.instance.getCurrEnemy();
             StartCoroutine(CastSpell(FireballStart, FireballStop, FireballCastTime, CastBar, "Fireball"));
@@ -119,13 +120,14 @@ public class MageCombatSystem : PlayerCombat
 
     void Blizzard()
     {
-        if (SpellChecks.CheckSpell(playerData, BlizzardOnCooldown, BlizzardManaCost, SpellCheckAssigned))
+        if (SpellChecks.CheckSpell(playerData, BlizzardOnCooldown, BlizzardManaCost, SpellCheckAssigned, PlayerMovement.instance.grounded))
             StartCoroutine(BlizzardStart());
     }
 
     void DeathsBreath()
     {
-        if (SpellChecks.CheckSpell(playerData, DeathsBreathOnCooldown, playerData.statistics.CurrentSpellResource * 4 / 100, SpellCheckAssigned))
+        if (SpellChecks.CheckSpell(playerData, DeathsBreathOnCooldown, playerData.statistics.CurrentSpellResource * 4 / 100, 
+        SpellCheckAssigned, PlayerMovement.instance.grounded))
         {
             StartCoroutine(SpellCooldown(playerData.Spell3, DeathsBreathCooldownTime, (x) => { DeathsBreathOnCooldown = x; }));
             StartCoroutine(DeathsBreathStart(DeathsBreathDuration));

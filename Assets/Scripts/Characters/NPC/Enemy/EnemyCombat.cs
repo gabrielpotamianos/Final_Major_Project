@@ -24,10 +24,10 @@ public class EnemyCombat : Combat
             enemyData.FSMMachine.UpdateFSM();
             if (InCombat && InCombatCoroutine == null)
             {
-                InCombatCoroutine = CombatCooldown(5);
+                InCombatCoroutine = CombatCooldown(CombatCooldownTime);
                 StartCoroutine(InCombatCoroutine);
             }
-            else if (IsRegenHealth && HealthRegenCoroutine == null)
+            else if (IsRegenHealth && !InCombat && HealthRegenCoroutine == null)
             {
                 HealthRegenCoroutine = HealthRegen();
                 StartCoroutine(HealthRegenCoroutine);
@@ -65,6 +65,8 @@ public class EnemyCombat : Combat
 
     public override void TakeDamage(float damage)
     {
+        print("Damage taken no: " + ++test);
+
         ResetCombatCoroutine();
         DisplayDamageText(damage);
         enemyData.UpdateCurrentHealth(-damage);
@@ -75,7 +77,7 @@ public class EnemyCombat : Combat
             enemyData.FSMMachine.ChangeState(FiniteStateMachine.GoTo.Instance);
         }
     }
-
+    public static int test = 0;
     public override void DisplayDamageText(float Damage)
     {
         Vector3 TextPosition = Camera.main.WorldToScreenPoint(transform.position + transform.up * 2) + new Vector3(UnityEngine.Random.Range(-300, 300), 0, 0);
@@ -83,6 +85,7 @@ public class EnemyCombat : Combat
         Text DamageText = DamageTextGameObject.transform.GetChild(0).GetComponent<Text>();
         DamageText.text = Damage.ToString();
         DamageText.color = Color.yellow;
+
     }
 
 
@@ -119,9 +122,9 @@ public class EnemyCombat : Combat
         collider.isTrigger = true;
 
         //Shrinks the colliders size so you can select other targets with accuracy
-        collider.center= new Vector3(collider.center.x,0,collider.center.z);
-        collider.size= new Vector3(collider.size.x,1,collider.size.z);
-      //  GetComponent<Looting>().enabled = true;
+        collider.center = new Vector3(collider.center.x, 0, collider.center.z);
+        collider.size = new Vector3(collider.size.x, 1, collider.size.z);
+        //  GetComponent<Looting>().enabled = true;
     }
 
     public override void ResetCombatCoroutine()

@@ -13,6 +13,7 @@ public class PlayerMovement : MonoBehaviour
     [Range(0, 1)]
     public float rayLength;
     public float speed = 5;
+    public bool grounded;
 
     public static PlayerMovement instance;
     #endregion
@@ -27,18 +28,13 @@ public class PlayerMovement : MonoBehaviour
     Vector3 direction;
     PlayerData playerData;
     Quaternion lastRotation;
-    #endregion
     RaycastHit hit;
+    #endregion
 
-    bool grounded;
 
 
     private void Awake()
     {
-        // if (instance == null)
-        //     instance = this;
-        // else Debug.LogError("More than One Player Movement instances!");
-
         rigid = GetComponent<Rigidbody>();
         playerData = GetComponent<PlayerData>();
     }
@@ -57,30 +53,14 @@ public class PlayerMovement : MonoBehaviour
     {
         if (camera == null)
             camera = Camera.main.gameObject;
-
-
-
     }
-
 
     private void FixedUpdate()
     {
-
         if (playerData.Alive)
         {
-            print(grounded);
-            grounded = Physics.Raycast(transform.position - new Vector3(0, -0.5f, 0), Vector3.down, out hit, JumpRayDistance, 1 << LayerMask.NameToLayer("Ground"));
-            if (Input.GetKeyDown(KeyCode.Space) && grounded && !jumping)
-                Jump();
-            if (jumping &&  Mathf.Round(rigid.velocity.y) < 0 && grounded)
-                StartLanding();
-
-            playerData.animator.SetBool("Jump", jumping);
-
-            Debug.DrawRay(transform.position - new Vector3(0, -0.5f, 0), Vector3.down * JumpRayDistance, Color.yellow);
-
+            Jump();
             Rotate();
-
             Move();
         }
     }
@@ -134,29 +114,34 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    private void StartLanding()
-    {
-        playerData.animator.SetBool("Land", true);
-    }
     private void Jump()
     {
-        jumping = true;
+        grounded = Physics.Raycast(transform.position - new Vector3(0, -0.5f, 0), Vector3.down, out hit, JumpRayDistance);
+
+        //Jump if on the ground and space bar was hit
+        if (Input.GetKeyDown(KeyCode.Space) && grounded && !jumping)
+            playerData.animator.SetBool("Jump", true);
+
+        //Land if velocity is on negative Y and raycast detected ground
+        if (jumping && Mathf.Round(rigid.velocity.y) < 0 && grounded)
+            playerData.animator.SetBool("Land", true);
+
     }
 
     private void JumpAnimationEvent()
     {
-        //rigid.AddForce(new Vector3(0, 1, 0) * JumpForce * Time.deltaTime, ForceMode.VelocityChange);
+        jumping = true;
+
+        //Reset Y or will create a bug on declined zone or a valley ( creates negative Y and plays the Land animation)
         rigid.velocity = new Vector3(rigid.velocity.x, 0, rigid.velocity.z);
         rigid.velocity = new Vector3(rigid.velocity.x, JumpForce, rigid.velocity.z);
     }
 
     private void Land()
     {
-        rigid.velocity = new Vector3(rigid.velocity.x, 0, rigid.velocity.z);
-
         jumping = false;
         playerData.animator.SetBool("Land", false);
-
+        playerData.animator.SetBool("Jump", jumping);
     }
 
 

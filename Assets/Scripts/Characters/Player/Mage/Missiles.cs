@@ -19,14 +19,17 @@ public class Missiles : MonoBehaviour
 
     public static EnemyCombat CurrTarger;
 
+    bool collided=false;
+
 
     private void OnEnable()
     {
-
+        //test=0;
         if (IceMissiles)
             Physics.IgnoreLayerCollision(gameObject.layer, LayerMask.NameToLayer("Enemy"), true);
         else Physics.IgnoreLayerCollision(gameObject.layer, LayerMask.NameToLayer("Enemy"), false);
         time = 0;
+        collided=false;
     }
 
     void Update()
@@ -46,14 +49,16 @@ public class Missiles : MonoBehaviour
         }
     }
 
-
+public static int test1=0;
     private void OnCollisionEnter(Collision collision)
     {
-        if (IceMissiles && collision.gameObject.layer.Equals(LayerMask.NameToLayer("Ground")))
+        if (IceMissiles && collision.gameObject.layer.Equals(LayerMask.NameToLayer("Ground")) && !collided)
         {
-            print(collision.gameObject.name);
             transform.GetChild(0).gameObject.SetActive(false);
             transform.GetChild(1).gameObject.SetActive(true);
+            print("Missiles: " + ++test1);
+            print(collision.collider.name);
+            collided=true;
 
             if (AOEDamage)
                 AOEDamage.AOE_Damage(BlizzardDamage);
@@ -67,6 +72,7 @@ public class Missiles : MonoBehaviour
             transform.GetChild(1).gameObject.SetActive(true);
 
             CurrTarger.TakeDamage(GameObject.FindObjectOfType<PlayerData>().statistics.AttackPower * FireballMultiplier);
+
             GetComponent<Collider>().enabled = false;
             StartCoroutine(Explode());
         }
