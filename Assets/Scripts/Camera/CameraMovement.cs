@@ -79,6 +79,8 @@ public class CameraMovement : MonoBehaviour
 
             mouseX = Input.GetAxis("Mouse X");
             mouseY = Input.GetAxis("Mouse Y");
+            
+            AnghelSlider.value= Mathf.Clamp(AnghelSlider.value,0.05f,1);
 
             rotY += mouseX * CameraSensitivity * AnghelSlider.value;
             rotX += mouseY * CameraSensitivity * AnghelSlider.value;

@@ -13170,17 +13170,17 @@ PrefabInstance:
     - target: {fileID: 2791628901684255203, guid: 5b527e5d4087e7444934ad3d49e45790,
         type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2791628901684255203, guid: 5b527e5d4087e7444934ad3d49e45790,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2791628901684255203, guid: 5b527e5d4087e7444934ad3d49e45790,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -31.213333
       objectReference: {fileID: 0}
     - target: {fileID: 2791628901684255203, guid: 5b527e5d4087e7444934ad3d49e45790,
         type: 3}
@@ -32709,6 +32709,7 @@ MonoBehaviour:
   offsetCameraBase: {x: 0, y: 1, z: 0}
   velocity: {x: 0, y: 0, z: 0}
   CameraSpeed: 0
+  TestResoultion: {fileID: 0}
 --- !u!1001 &683843634
 PrefabInstance:
   m_ObjectHideFlags: 0

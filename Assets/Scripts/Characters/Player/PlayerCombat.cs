@@ -11,6 +11,7 @@ public class PlayerCombat : Combat
     protected bool SpellResourceRegen = true;
     IEnumerator SpellResourceRegenCoroutine;
     public PlayerData playerData;
+    public float CombatAngle;
 
     Button BasicAttackButton;
     Button Spell1Button;
@@ -22,7 +23,7 @@ public class PlayerCombat : Combat
     protected override void Start()
     {
 
-
+        SpellChecks.CombatAngle = CombatAngle;
         base.Start();
         playerData = GetComponent<PlayerData>();
     }
@@ -54,7 +55,7 @@ public class PlayerCombat : Combat
 
             if (InCombat && InCombatCoroutine == null)
             {
-                InCombatCoroutine = CombatCooldown(CombatCooldownTime);
+                InCombatCoroutine = this.CombatCooldown(CombatCooldownTime);
                 StartCoroutine(InCombatCoroutine);
             }
             else if (IsRegenHealth && !InCombat && HealthRegenCoroutine == null)
@@ -64,6 +65,8 @@ public class PlayerCombat : Combat
             }
         }
         else Die();
+
+        print(gameObject.name + "is in combat = " + this.InCombat);
     }
 
 
@@ -159,8 +162,7 @@ public class PlayerCombat : Combat
 
     protected void BasicAttack()
     {
-        if (SpellChecks.CheckSpell(Target.instance.GetCurrentTarget(), playerData, Target.instance.MeleeAttackRange,
-        SpellCheckAssigned, PlayerMovement.instance.grounded))
+        if (SpellChecks.CheckSpell(Target.instance.GetCurrentTarget(), playerData, Target.instance.MeleeAttackRange))
         {
             playerData.animator.SetBool("BasicAttack", true);
             SpellCheckAssigned = true;
@@ -197,6 +199,8 @@ public class PlayerCombat : Combat
             CurrAbility = Spell3;
         else if (Spell4 != null && Input.GetKeyDown(KeyCode.Alpha5) && CurrAbility == null && !SpellCheckAssigned)
             CurrAbility = Spell4;
+
+        SpellChecks.SpellAssigned = SpellCheckAssigned;
 
     }
 
@@ -256,5 +260,10 @@ public class PlayerCombat : Combat
         if (!IsItWarrior)
             spellRegen = spellResource < MaxSpellResource;
         else spellRegen = spellResource > 0;
+    }
+
+    public bool IsPlayerCastingSpell()
+    {
+        return CurrAbility == null;
     }
 }

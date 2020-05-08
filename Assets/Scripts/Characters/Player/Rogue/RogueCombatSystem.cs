@@ -77,7 +77,7 @@ public class RogueCombatSystem : PlayerCombat
     void SinisterStrike()
     {
         if (SpellChecks.CheckSpell(Target.instance.GetCurrentTarget(), playerData, Target.instance.MeleeAttackRange, 
-        SinisterStrikeOnCooldown, SinisterStrikeEnergyCost, SpellCheckAssigned, PlayerMovement.instance.grounded))
+        SinisterStrikeOnCooldown, SinisterStrikeEnergyCost))
         {
             SinisterStrikeStart();
             StartCoroutine(SpellCooldown(playerData.Spell1, SinisterStrikeCooldownTime, (x) => { SinisterStrikeOnCooldown = x; }));
@@ -87,7 +87,7 @@ public class RogueCombatSystem : PlayerCombat
     void Eviscerate()
     {
         if (SpellChecks.CheckSpell(Target.instance.GetCurrentTarget(), playerData, Target.instance.MeleeAttackRange, 
-        EviscerateOnCooldown, EviscerateEnergyCost, SpellCheckAssigned, PlayerMovement.instance.grounded, ComboPoints))
+        EviscerateOnCooldown, EviscerateEnergyCost, ComboPoints))
         {
             EviscerateStart();
             StartCoroutine(SpellCooldown(playerData.Spell2, EviscerateCooldownTime, (x) => { EviscerateOnCooldown = x; }));
@@ -100,7 +100,7 @@ public class RogueCombatSystem : PlayerCombat
         SpellChecks.CheckSpell(InCombat, "You cannot use this in combat!")
         && SpellChecks.CheckSpell(stealth, "You are invisible already!")
         && SpellChecks.CheckSpell(SpellCheckAssigned, "You cannot use that now!")
-        && SpellChecks.CheckSpell(!PlayerMovement.instance.grounded,"You cannot do that now!"))
+        && SpellChecks.CheckSpell(!PlayerMovement.instance.OnGround,"You cannot do that now!"))
         {
             StartCoroutine(VanishStart());
             StartCoroutine(SpellCooldown(playerData.Spell3, VanishCooldownTime, (x) => { VanishOnCooldown = x; }));
@@ -110,8 +110,7 @@ public class RogueCombatSystem : PlayerCombat
     void Backstab()
     {
         if (SpellChecks.CheckSpell(Target.instance.GetCurrentTarget(), playerData, DirectionDotProductThreshold,
-         PositionDotProductThreshold, BackstabDistanceTreshold, BackstabOnCooldown, BackstabEnergyCost, stealth, SpellCheckAssigned, 
-         PlayerMovement.instance.grounded))
+         PositionDotProductThreshold, BackstabDistanceTreshold, BackstabOnCooldown, BackstabEnergyCost, stealth))
         {
             BackstabStart();
             StartCoroutine(SpellCooldown(playerData.Spell4, BackstabCooldownTime, (x) => { BackstabOnCooldown = x; }));

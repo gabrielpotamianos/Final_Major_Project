@@ -127,11 +127,6 @@ public class Target : MonoBehaviour
                 }
                 
             }
-            if (hit.collider)
-            {
-                print(hit.collider.gameObject.layer);
-                print(LayerMask.NameToLayer("UI"));
-            }
 
         }
     }

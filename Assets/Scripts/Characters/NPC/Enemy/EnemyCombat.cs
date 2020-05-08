@@ -24,7 +24,7 @@ public class EnemyCombat : Combat
             enemyData.FSMMachine.UpdateFSM();
             if (InCombat && InCombatCoroutine == null)
             {
-                InCombatCoroutine = CombatCooldown(CombatCooldownTime);
+                InCombatCoroutine = this.CombatCooldown(CombatCooldownTime);
                 StartCoroutine(InCombatCoroutine);
             }
             else if (IsRegenHealth && !InCombat && HealthRegenCoroutine == null)
@@ -65,7 +65,6 @@ public class EnemyCombat : Combat
 
     public override void TakeDamage(float damage)
     {
-        print("Damage taken no: " + ++test);
 
         ResetCombatCoroutine();
         DisplayDamageText(damage);

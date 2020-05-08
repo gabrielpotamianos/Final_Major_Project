@@ -6,7 +6,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 
 public static class SaveSystem
 {
-    static string path = Application.persistentDataPath + "/data.zocc";
+    public static string path = Application.persistentDataPath + "/data.zocc";
     static int currCharacters = 0;
 
 
@@ -117,6 +117,12 @@ public static class SaveSystem
         return currCharacters>=Constants.MAXIMUM_CHARACTERS;
     }
 
+    public static bool HasSave()
+    {
+        if(File.Exists(path))
+            return true;
+        return false;
+    }
 
 
 }

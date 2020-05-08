@@ -42,13 +42,9 @@ public class WarriorCombatSystem : PlayerCombat
 
     [HideInInspector]
     public static int BladestormSeconds = 0;
-    public Text Test;
-    public Text Test1;
     // Start is called before the first frame update
     protected override void Start()
     {
-        Test = GameObject.Find("Text (1)").GetComponent<Text>();
-        Test1 = GameObject.Find("Text (2)").GetComponent<Text>();
 
         base.Start();
         playerData.SetSpellsUI(ChargeSprite, MortalStrikeSprite, BladestormSprite);
@@ -58,8 +54,6 @@ public class WarriorCombatSystem : PlayerCombat
     // Update is called once per frame
     protected override void Update()
     {
-        Test.text = BladestormSeconds.ToString();
-        Test1.text = playerData.animator.GetBool("BladeStormStart").ToString();
         GetInput(Charge, MortalStrike, Bladestorm);
         base.Update();
     }
@@ -71,8 +65,7 @@ public class WarriorCombatSystem : PlayerCombat
     /// </summary>
     void Charge()
     {
-        if (SpellChecks.CheckSpell(Target.instance.GetCurrentTarget(), playerData, ChargeRange, ChargeOnCooldown, 
-        SpellCheckAssigned, PlayerMovement.instance.grounded))
+        if (SpellChecks.CheckSpell(Target.instance.GetCurrentTarget(), playerData, ChargeRange, ChargeOnCooldown))
         {
             StartCoroutine(ChargeCoroutine());
         }
@@ -81,7 +74,7 @@ public class WarriorCombatSystem : PlayerCombat
     void MortalStrike()
     {
         if (SpellChecks.CheckSpell(Target.instance.GetCurrentTarget(), playerData, Target.instance.MeleeAttackRange,
-         MortalStrikeOnCooldown, MortalStrikeAbilityCost, SpellCheckAssigned, PlayerMovement.instance.grounded))
+         MortalStrikeOnCooldown, MortalStrikeAbilityCost))
         {
             MortalStrikeStart();
         }
@@ -89,7 +82,7 @@ public class WarriorCombatSystem : PlayerCombat
 
     void Bladestorm()
     {
-        if (SpellChecks.CheckSpell(playerData, BladestormOnCooldown, BladestormAbilityCost, SpellCheckAssigned, PlayerMovement.instance.grounded))
+        if (SpellChecks.CheckSpell(playerData, BladestormOnCooldown, BladestormAbilityCost))
         {
             SpellResourceRegen = true;
             StartCoroutine(BladestormStart());

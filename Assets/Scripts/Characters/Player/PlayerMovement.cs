@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-
+using UnityEngine.UI;
 public class PlayerMovement : MonoBehaviour
 {
     //
@@ -13,8 +13,7 @@ public class PlayerMovement : MonoBehaviour
     [Range(0, 1)]
     public float rayLength;
     public float speed = 5;
-    public bool grounded;
-
+    public bool OnGround = true;
     public static PlayerMovement instance;
     #endregion
 
@@ -29,9 +28,13 @@ public class PlayerMovement : MonoBehaviour
     PlayerData playerData;
     Quaternion lastRotation;
     RaycastHit hit;
+    bool grounded;
+
     #endregion
 
-
+    public Text Test;
+    public Text Test1;
+    public Text Test2;
 
     private void Awake()
     {
@@ -44,6 +47,9 @@ public class PlayerMovement : MonoBehaviour
         if (instance == null)
             instance = this;
         else Debug.LogError("More than One Player Movement instances!");
+        Test = GameObject.Find("Text (1)").GetComponent<Text>();
+        Test1 = GameObject.Find("Text (2)").GetComponent<Text>();
+        Test2 = GameObject.Find("Text (3)").GetComponent<Text>();
 
         camera = Camera.main.gameObject;
     }
@@ -53,13 +59,18 @@ public class PlayerMovement : MonoBehaviour
     {
         if (camera == null)
             camera = Camera.main.gameObject;
+        grounded = Physics.Raycast(transform.position - new Vector3(0, -0.5f, 0), Vector3.down, out hit, JumpRayDistance);
+        Jump();
+
+        OnGround = !playerData.animator.GetBool("Jump") && !playerData.animator.GetBool("Land");
+        SpellChecks.Grounded = OnGround;
     }
 
     private void FixedUpdate()
     {
         if (playerData.Alive)
         {
-            Jump();
+
             Rotate();
             Move();
         }
@@ -68,7 +79,7 @@ public class PlayerMovement : MonoBehaviour
     private void Move()
     {
 
-        Vector2 axisInput = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
+        Vector2 axisInput = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")).normalized;
 
         if (axisInput.x != 0 || axisInput.y != 0)
         {
@@ -116,11 +127,15 @@ public class PlayerMovement : MonoBehaviour
 
     private void Jump()
     {
-        grounded = Physics.Raycast(transform.position - new Vector3(0, -0.5f, 0), Vector3.down, out hit, JumpRayDistance);
+        Test.text = grounded.ToString();
+        Test1.text = "This is jumping " + jumping.ToString();
 
         //Jump if on the ground and space bar was hit
         if (Input.GetKeyDown(KeyCode.Space) && grounded && !jumping)
+        {
+            MageCombatSystem.InteruptCast = true;
             playerData.animator.SetBool("Jump", true);
+        }
 
         //Land if velocity is on negative Y and raycast detected ground
         if (jumping && Mathf.Round(rigid.velocity.y) < 0 && grounded)
@@ -142,6 +157,8 @@ public class PlayerMovement : MonoBehaviour
         jumping = false;
         playerData.animator.SetBool("Land", false);
         playerData.animator.SetBool("Jump", jumping);
+        MageCombatSystem.InteruptCast = false;
+
     }
 
 

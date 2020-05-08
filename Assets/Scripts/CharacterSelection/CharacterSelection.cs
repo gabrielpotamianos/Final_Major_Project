@@ -22,7 +22,16 @@ public class CharacterSelection : MonoBehaviour
 
     private void Awake()
     {
+    }
+
+    /// <summary>
+    /// Start is called on the frame when a script is enabled just before
+    /// any of the Update methods is called the first time.
+    /// </summary>
+    void Start()
+    {
         InitScene();
+
     }
 
     public void InitScene()
@@ -56,7 +65,11 @@ public class CharacterSelection : MonoBehaviour
         }
         //Define a default first character (GameObject)
         if (SelectedCharacter == null)
+        {
             SelectedCharacter = allCharacters[0];
+            CharacterInfoUIButtons[0].transform.GetChild(2).GetComponent<Button>().Select();
+            print(CharacterInfoUIButtons[0].transform.GetChild(2).GetComponent<Button>().colors.selectedColor);
+        }
 
         //Enables Character GameObject in the scene based on the selected character (default - first one)
         DisplaySelectedCharacter();
@@ -136,7 +149,7 @@ public class CharacterSelection : MonoBehaviour
             {
                 DisplayCharacterInfo(CharacterInfoUIButtons[i], allCharacters[i]);
                 SelectedCharacter = allCharacters[0];
-
+                CharacterInfoUIButtons[0].transform.GetChild(2).GetComponent<Button>().Select();
             }
         }
 
