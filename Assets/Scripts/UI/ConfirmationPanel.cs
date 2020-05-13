@@ -58,7 +58,7 @@ public class ConfirmationPanel : MonoBehaviour
                 break;
 
             case ConfirmationPanelState.Sell:
-                Message.text += "buy " + slot.item.name + " for " + slot.item.SellingPrice + " G?";
+                Message.text += "sell " + slot.item.name + " for " + slot.item.SellingPrice + " G?";
                 break;
 
             case ConfirmationPanelState.Delete:
@@ -83,15 +83,21 @@ public class ConfirmationPanel : MonoBehaviour
             case ConfirmationPanelState.Buy:
                 if (PlayerData.instance.IsItemAffordable(CurrentItemSlot.item.BuyingPrice))
                 {
-                    PlayerData.instance.UpdateGold(-CurrentItemSlot.item.BuyingPrice);
-                    PlayerInventory.instance.AddItem(CurrentItemSlot.item);
-                    Cancel();
+                    if (PlayerInventory.instance.CanAddItem(CurrentItemSlot.item))
+                    {
+                        PlayerData.instance.UpdateGold(-CurrentItemSlot.item.BuyingPrice);
+                        PlayerInventory.instance.AddItem(CurrentItemSlot.item);
+                        Cancel();
+                    }
+                    else
+                    {
+                        ActivateOK_Button(true);
+                        Message.text = "You don't have enough space!";
+                    }
                 }
                 else
                 {
-                    buttonNo.gameObject.SetActive(false);
-                    buttonYes.gameObject.SetActive(false);
-                    buttonOk.gameObject.SetActive(true);
+                    ActivateOK_Button(true);
                     Message.text = "You don't have enough gold!";
                 }
 
@@ -125,9 +131,23 @@ public class ConfirmationPanel : MonoBehaviour
         canvas.blocksRaycasts = false;
         CurrentItemSlot = null;
         CurrentState = ConfirmationPanelState.None;
-        buttonNo.gameObject.SetActive(true);
-        buttonYes.gameObject.SetActive(true);
-        buttonOk.gameObject.SetActive(false);
+        ActivateOK_Button(false);
+    }
 
+    private void ActivateOK_Button(bool enable)
+    {
+        if (enable)
+        {
+            buttonNo.gameObject.SetActive(false);
+            buttonYes.gameObject.SetActive(false);
+            buttonOk.gameObject.SetActive(true);
+        }
+        else
+        {
+            buttonNo.gameObject.SetActive(true);
+            buttonYes.gameObject.SetActive(true);
+            buttonOk.gameObject.SetActive(false);
+
+        }
     }
 }

@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 309032a596951b448a66901fe5bd7d91, type: 3}
-  m_Name: Test4
+  m_Name: Item 15
   m_EditorClassIdentifier: 
-  name: test 4
-  InventoryIcon: {fileID: 21300000, guid: ce7519d0d0e102c4b8e156ba8c7f9e88, type: 3}
+  name: Bracer 2
+  InventoryIcon: {fileID: 21300000, guid: d3fa53114afdcd147b95f65d2b5026cd, type: 3}
   SellingPrice: 5
   BuyingPrice: 15

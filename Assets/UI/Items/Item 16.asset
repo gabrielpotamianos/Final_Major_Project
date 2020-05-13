@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 309032a596951b448a66901fe5bd7d91, type: 3}
-  m_Name: SecondItem
+  m_Name: Item 16
   m_EditorClassIdentifier: 
-  name: SecondItem
-  InventoryIcon: {fileID: 21300000, guid: 7140c686292792a4abfe218b90b2ae90, type: 3}
+  name: Cloak 2
+  InventoryIcon: {fileID: 21300000, guid: 6d7f4412ddb491e45895e500f991b1b0, type: 3}
   SellingPrice: 5
   BuyingPrice: 15

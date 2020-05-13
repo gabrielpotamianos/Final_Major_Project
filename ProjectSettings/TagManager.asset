@@ -9,12 +9,12 @@ TagManager:
   - Warrior
   - Enemy
   - Slot
-  - Inventory
   - Icon
   - Water
   - SpellBar
   - EnemyInventory
   - VendorInventory
+  - PlayerInventory
   layers:
   - Default
   - TransparentFX

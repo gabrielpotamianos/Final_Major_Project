@@ -22,7 +22,7 @@ public class EnemyData : CharacterData
 
     bool CanLoot = false;
 
-    public static EnemyData CurrentEnemy;
+    public static EnemyData CurrentLootingEnemy;
 
     protected override void Awake()
     {
@@ -48,10 +48,10 @@ public class EnemyData : CharacterData
 
         if (Input.GetKeyDown(KeyCode.L) && CanLoot)
         {
-            if (this != CurrentEnemy)
+            if (this != CurrentLootingEnemy)
             {
                 LootInventory.AddLootingItems(ref AllPossibleItems, ref ChanceOfItemDrop);
-                CurrentEnemy = this;
+                CurrentLootingEnemy = this;
             }
             if (LootInventory.visible) LootInventory.HideInventory();
             else if (!LootInventory.visible) LootInventory.ShowInventory();

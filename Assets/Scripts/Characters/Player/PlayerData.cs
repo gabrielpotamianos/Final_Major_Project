@@ -54,7 +54,7 @@ public class PlayerData : CharacterData
                 PlayerData.instance.GetAbilityResouce().transform.GetChild(1).GetChild(0).GetComponent<Image>().color = Color.blue + new Color(0.4f, 0.4f, 0);
                 PlayerData.instance.GetAbilityResouceText().text = "Mana";
 
-                
+
                 break;
             case CharacterInfo.Breed.Rogue:
                 PlayerData.instance.GetAbilityResouce().transform.GetChild(1).GetChild(0).GetComponent<Image>().color = Color.yellow;
@@ -100,9 +100,9 @@ public class PlayerData : CharacterData
     public void ToogleLoot(bool looting)
     {
         AbleToLoot = looting;
+        animator.SetBool("Looting", AbleToLoot);
         if (AbleToLoot)
         {
-            animator.SetBool("Looting", AbleToLoot);
             GetComponent<Rigidbody>().velocity = Vector3.zero;
             PlayerInventory.instance.ShowInventory();
         }

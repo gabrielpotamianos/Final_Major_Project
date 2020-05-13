@@ -33,31 +33,40 @@ public class InventoryBaseClass : MonoBehaviour
     }
 
     //Quantities update
-    public virtual void AddItem(Item item)
+    public virtual bool AddItem(Item item)
     {
         if (items.ContainsKey(item))
         {
             items[item] += 1;
             UpdateSlots(item);
+            return true;
         }
-        else
+        else if (CanAddItem(item))
         {
             items.Add(item, 1);
             AddInSlot(item);
+            return true;
         }
+        else MessageManager.instance.DisplayMessage("Not Enough Space in Inventory");
+        return false;
     }
-    public void AddItem(Item item, Slot slot)
+
+    public bool AddItem(Item item, Slot slot)
     {
         if (items.ContainsKey(item))
         {
             items[item] += 1;
             UpdateSlots(item);
+            return true;
         }
-        else
+        else if (CanAddItem(item))
         {
             items.Add(item, 1);
             AddInSlot(item, slot);
+            return true;
         }
+        else MessageManager.instance.DisplayMessage("Not Enough Space in Inventory");
+        return false;
     }
 
     public virtual void RemoveItem(Slot slot)
@@ -124,6 +133,18 @@ public class InventoryBaseClass : MonoBehaviour
         canvasGroup.alpha = 0;
         canvasGroup.blocksRaycasts = false;
         visible = false;
+    }
+
+    public List<Slot> GetAllSlots()
+    {
+        return slots;
+    }
+
+    public bool CanAddItem(Item item)
+    {
+        if(items.ContainsKey(item))
+            return true;
+        else return items.Keys.Count < slots.Count;
     }
 
 

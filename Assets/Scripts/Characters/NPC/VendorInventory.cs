@@ -25,9 +25,10 @@ public class VendorInventory : InventoryBaseClass
         }
     }
 
-    public override void AddItem(Item item)
+    public override bool AddItem(Item item)
     {
         this.AddInSlot(item);
         occupiedSlots++;
+        return true;
     }
 }

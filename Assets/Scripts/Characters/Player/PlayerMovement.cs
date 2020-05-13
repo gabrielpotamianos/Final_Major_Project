@@ -47,9 +47,9 @@ public class PlayerMovement : MonoBehaviour
         if (instance == null)
             instance = this;
         else Debug.LogError("More than One Player Movement instances!");
-        Test = GameObject.Find("Text (1)").GetComponent<Text>();
-        Test1 = GameObject.Find("Text (2)").GetComponent<Text>();
-        Test2 = GameObject.Find("Text (3)").GetComponent<Text>();
+        // Test = GameObject.Find("Text (1)").GetComponent<Text>();
+        // Test1 = GameObject.Find("Text (2)").GetComponent<Text>();
+        // Test2 = GameObject.Find("Text (3)").GetComponent<Text>();
 
         camera = Camera.main.gameObject;
     }
@@ -127,8 +127,8 @@ public class PlayerMovement : MonoBehaviour
 
     private void Jump()
     {
-        Test.text = grounded.ToString();
-        Test1.text = "This is jumping " + jumping.ToString();
+       // Test.text = grounded.ToString();
+       // Test1.text = "This is jumping " + jumping.ToString();
 
         //Jump if on the ground and space bar was hit
         if (Input.GetKeyDown(KeyCode.Space) && grounded && !jumping)

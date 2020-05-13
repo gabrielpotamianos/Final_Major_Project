@@ -8,6 +8,7 @@ public class Vendor : NPC
     bool InsideTrigger = false;
     VendorInventory inventory;
 
+    GameObject player;
 
     void Start()
     {
@@ -20,9 +21,10 @@ public class Vendor : NPC
         {
             if (!inventory.visible)
             {
-                if(inventory.occupiedSlots!=items.Count)
+                if (inventory.occupiedSlots != items.Count)
                     AddItemsOnInventory();
                 inventory.ShowInventory();
+                transform.LookAt(player.transform, transform.up);
                 PlayerInventory.instance.ShowInventory();
             }
             else
@@ -39,6 +41,7 @@ public class Vendor : NPC
     {
         if (other.gameObject.layer == LayerMask.NameToLayer("Player"))
         {
+            player = other.gameObject;
             MessageManager.instance.DisplayMessage("Press E to Open Shop");
             InsideTrigger = true;
         }
@@ -53,8 +56,8 @@ public class Vendor : NPC
             inventory.HideInventory();
             PlayerInventory.instance.HideInventory();
             inventory.EmptyAllSlots();
-            inventory.occupiedSlots=0;
-
+            inventory.occupiedSlots = 0;
+            player = null;
         }
     }
 

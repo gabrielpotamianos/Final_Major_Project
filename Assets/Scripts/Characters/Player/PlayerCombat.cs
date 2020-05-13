@@ -65,8 +65,6 @@ public class PlayerCombat : Combat
             }
         }
         else Die();
-
-        print(gameObject.name + "is in combat = " + this.InCombat);
     }
 
 

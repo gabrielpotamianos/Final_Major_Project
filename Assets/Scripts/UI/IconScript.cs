@@ -12,21 +12,30 @@ public class IconScript : MonoBehaviour, /*IBeginDragHandler, IDragHandler, IEnd
     Slot ParentSlot;
     Canvas canvas;
     bool isDragging;
+    Image image;
+    InventoryBaseClass parentInventory;
 
     private void Awake()
     {
         ParentSlot = transform.parent.GetComponent<Slot>();
         canvas = GetComponent<Canvas>();
+        parentInventory = GetComponentInParent<InventoryBaseClass>();
+        image = GetComponent<Image>();
     }
 
-
-
-    void FixedUpdate()
+    /// <summary>
+    /// Update is called every frame, if the MonoBehaviour is enabled.
+    /// </summary>
+    void Update()
     {
         if (isDragging)
-            gameObject.transform.position = Input.mousePosition;
+            if (parentInventory.visible)
+                gameObject.transform.position = Input.mousePosition;
+            else ResetItemPosition();
+        image.raycastTarget = parentInventory.visible;
 
     }
+
 
 
     public void OnPointerClick(PointerEventData eventData)
@@ -59,60 +68,83 @@ public class IconScript : MonoBehaviour, /*IBeginDragHandler, IDragHandler, IEnd
         //Remove all Icon results so it won't interfere our process
         results.RemoveAll(x => x.gameObject.tag.Equals("Icon"));
 
-        if (results.Count <= 0 && !ParentSlot.transform.parent.name.Equals(Constants.VENDOR_INVENTORY) &&!ParentSlot.transform.parent.name.Equals(Constants.LOOT_INVENTORY))
+        if (results.Count <= 0 && !ParentSlot.transform.parent.name.Equals(Constants.VENDOR_INVENTORY) && !ParentSlot.transform.parent.name.Equals(Constants.LOOT_INVENTORY))
         {
-            ConfirmationPanel.instance.CurrentState=ConfirmationPanel.ConfirmationPanelState.Delete;
+            ConfirmationPanel.instance.CurrentState = ConfirmationPanel.ConfirmationPanelState.Delete;
             ConfirmationPanel.instance.DisplayConfirmationPanel(ParentSlot);
-            
-        }
 
-        var possibleSlot = results.FirstOrDefault(x => x.gameObject.tag.Equals("Slot"));
-
-        Slot resultSlot;
-        if (possibleSlot.gameObject && !possibleSlot.gameObject.transform.parent.name.Equals(Constants.LOOT_INVENTORY) && possibleSlot.gameObject.GetComponent<Slot>().IsSlotEmpty())
-        {
-            resultSlot = possibleSlot.gameObject.GetComponent<Slot>();
-            if (resultSlot.transform.parent.name.Equals(Constants.PLAYER_INVENTORY))
-            {
-                if (ParentSlot.transform.parent.name.Equals(Constants.LOOT_INVENTORY))
-                {
-                    PlayerInventory.instance.AddItem(ParentSlot.item, resultSlot);
-                    EnemyData.CurrentEnemy.LootInventory.RemoveItem(ParentSlot, ref EnemyData.CurrentEnemy.AllPossibleItems, ref EnemyData.CurrentEnemy.ChanceOfItemDrop);
-                    ParentSlot.EmptySlot();
-                }
-                else if (ParentSlot.transform.parent.name.Equals(Constants.VENDOR_INVENTORY))
-                {
-                    ConfirmationPanel.instance.CurrentState = ConfirmationPanel.ConfirmationPanelState.Buy;
-                    ConfirmationPanel.instance.DisplayConfirmationPanel(ParentSlot);
-                }
-                else
-                {
-                    resultSlot.FillSlot(ParentSlot.item, ParentSlot.quantity.text);
-
-                    if (!ParentSlot.IsSlotEmpty())
-                        ParentSlot.EmptySlot();
-                }
-
-            }
-            else if (resultSlot.transform.parent.name.Equals(Constants.VENDOR_INVENTORY))
-            {
-                if (ParentSlot.transform.parent.name.Equals(Constants.PLAYER_INVENTORY))
-                {
-                    ConfirmationPanel.instance.CurrentState = ConfirmationPanel.ConfirmationPanelState.Sell;
-                    ConfirmationPanel.instance.DisplayConfirmationPanel(ParentSlot);
-                }
-            }
         }
         else
         {
-            isDragging = false;
-            gameObject.transform.position = ParentSlot.transform.position;
+            var DropTarget = results.Where((x) => x.gameObject.tag.Equals("VendorInventory") || x.gameObject.tag.Equals("PlayerInventory") || x.gameObject.tag.Equals("Slot")).FirstOrDefault();
+
+            if (DropTarget.gameObject)
+                if (!DropTarget.gameObject.GetComponentInParent<Looting>())
+                {
+
+                    if (DropTarget.gameObject.GetComponentInParent<PlayerInventory>())
+                    {
+                        Slot DropSlot = DropTarget.gameObject.GetComponent<Slot>();
+                        if (gameObject.GetComponentInParent<Looting>())
+                        {
+                            //print("Got here");
+                            if (PlayerInventory.instance.CanAddItem(ParentSlot.item))
+                            {
+                                PlayerInventory.instance.AddItem(ParentSlot.item, GetFirstEmptySlot(DropTarget.gameObject.GetComponentInParent<PlayerInventory>()));
+                                EnemyData.CurrentLootingEnemy.LootInventory.RemoveItem(ParentSlot, ref EnemyData.CurrentLootingEnemy.AllPossibleItems, ref EnemyData.CurrentLootingEnemy.ChanceOfItemDrop);
+                                ParentSlot.EmptySlot();
+                            }
+                            else MessageManager.instance.DisplayMessage("Not Enough Space in Inventory");
+                        }
+                        else if (gameObject.GetComponentInParent<VendorInventory>())
+                        {
+                            ConfirmationPanel.instance.CurrentState = ConfirmationPanel.ConfirmationPanelState.Buy;
+                            ConfirmationPanel.instance.DisplayConfirmationPanel(ParentSlot);
+
+                        }
+                        else if (DropSlot && DropSlot.IsSlotEmpty())
+                        {
+                            DropTarget.gameObject.GetComponent<Slot>().FillSlot(ParentSlot.item, ParentSlot.quantity.text);
+
+                            if (!ParentSlot.IsSlotEmpty())
+                                ParentSlot.EmptySlot();
+
+                        }
+                    }
+                    else if (DropTarget.gameObject.GetComponentInParent<VendorInventory>())
+                    {
+                        if (gameObject.GetComponentInParent<PlayerInventory>())
+                        {
+                            ConfirmationPanel.instance.CurrentState = ConfirmationPanel.ConfirmationPanelState.Sell;
+                            ConfirmationPanel.instance.DisplayConfirmationPanel(ParentSlot);
+                        }
+                    }
+                }
+                else ResetItemPosition();
         }
-        gameObject.transform.position = ParentSlot.transform.position;
         if (canvas.sortingOrder >= 2)
             canvas.sortingOrder -= 1;
-        isDragging = false;
+        ResetItemPosition();
 
+    }
+
+
+    private Slot GetFirstEmptySlot(InventoryBaseClass inventory)
+    {
+        List<Slot> slots = inventory.GetAllSlots();
+        foreach (Slot slot in slots)
+        {
+            if (slot.IsSlotEmpty())
+                return slot;
+        }
+
+        return null;
+    }
+
+    private void ResetItemPosition()
+    {
+        isDragging = false;
+        gameObject.transform.position = ParentSlot.transform.position;
 
     }
 }

@@ -50,14 +50,18 @@ public class Looting : InventoryBaseClass
         {
             if (!slots[i].IsSlotEmpty())
             {
-                PlayerInventory.instance.AddItem(slots[i].item);
-
-                if (allItems.Count > 0)
+                if (PlayerInventory.instance.AddItem(slots[i].item))
                 {
-                    allItems.RemoveAt(0);
-                    allDropChances.RemoveAt(0);
+                    if (allItems.Count > 0)
+                    {
+                        allItems.RemoveAt(0);
+                        allDropChances.RemoveAt(0);
+                    }
+                    slots[i].EmptySlot();
                 }
-                slots[i].EmptySlot();
+                else
+                    break;
+
             }
         }
     }

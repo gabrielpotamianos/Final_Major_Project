@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 309032a596951b448a66901fe5bd7d91, type: 3}
-  m_Name: Test Item 3
+  m_Name: Item 2
   m_EditorClassIdentifier: 
-  name: Test Item 3
-  InventoryIcon: {fileID: 21300000, guid: 15ec324b46e10db47b736ff151dd581d, type: 3}
+  name: Boots
+  InventoryIcon: {fileID: 21300000, guid: e16303d70d572154d80e469de476915f, type: 3}
   SellingPrice: 5
   BuyingPrice: 15

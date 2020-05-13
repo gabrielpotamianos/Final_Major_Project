@@ -11,7 +11,7 @@ using System;
 public class PlayerInventory : InventoryBaseClass
 {
     PlayerData playerData;
-    public Item item;
+    public List<Item> item;
 
     Text GoldText;
 
@@ -38,7 +38,8 @@ public class PlayerInventory : InventoryBaseClass
         slots.AddRange(gameObject.transform.GetChild(0).GetComponentsInChildren<Slot>().ToList());
         playerData = GameObject.FindObjectOfType<PlayerData>();
         GoldText=transform.GetChild(2).transform.GetChild(1).GetComponent<Text>();
-        AddItem(item);
+        foreach(Item i in item)
+             AddItem(i);
     }
 
     public void Update()
