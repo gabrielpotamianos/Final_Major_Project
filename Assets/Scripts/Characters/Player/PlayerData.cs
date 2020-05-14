@@ -10,7 +10,7 @@ public class PlayerData : CharacterData
     Text AbilityResourceBarName;
 
 
-    public PlayerStatistics statistics;
+    public Statistics statistics;
     public bool AbleToLoot;
 
     public Image Spell1;

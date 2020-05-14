@@ -9,6 +9,8 @@ public class Item : ScriptableObject
     public float SellingPrice;
     public float BuyingPrice;
 
+    [SerializeField]
+    public Statistics ItemStats;
     //
     //
     //
