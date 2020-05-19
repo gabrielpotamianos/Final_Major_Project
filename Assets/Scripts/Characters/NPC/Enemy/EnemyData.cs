@@ -6,6 +6,7 @@ using System.Collections.Generic;
 public class EnemyData : CharacterData
 {
     public float SightRange;
+    public float MaxCombatDistance;
     public float AttackRange;
     public int PatrolFrequencyTime;
     public List<Item> AllPossibleItems;

@@ -40,7 +40,6 @@ public class AOEDamageScript : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        print("working");
         EnemyCombat currEnemy = other.GetComponent<EnemyCombat>() ? other.GetComponent<EnemyCombat>() : null;
         if (currEnemy && enemiesToHit.Contains(currEnemy))
             enemiesToHit.Remove(currEnemy);

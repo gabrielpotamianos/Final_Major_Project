@@ -39,10 +39,6 @@ public class FiniteStateMachine
         {
             if (enemy.agent.pathStatus == NavMeshPathStatus.PathComplete && enemy.agent.remainingDistance <= enemy.agent.stoppingDistance)
                 enemy.FSMMachine.ChangeState(Idle.Instance);
-
-
-
-            Debug.Log(enemy.agent.velocity.magnitude);
         }
 
         public override void End(EnemyData enemy)
@@ -86,8 +82,8 @@ public class FiniteStateMachine
 
             if (enemy.agent.pathStatus != NavMeshPathStatus.PathComplete && enemy.agent.remainingDistance <= enemy.agent.stoppingDistance)
                 ChasePlayer(enemy);
-            else if (enemy.agent.remainingDistance >= enemy.SightRange)
-                enemy.FSMMachine.ChangeState(Wander.Instance);
+            else if (enemy.agent.remainingDistance >= enemy.SightRange || Vector3.Distance(enemy.transform.position, enemy.CentrePatrolPointPatrol.transform.position) > enemy.MaxCombatDistance)
+                enemy.FSMMachine.ChangeState(ReturnOrigin.Instance);
             else if (enemy.agent.pathStatus == NavMeshPathStatus.PathComplete && enemy.agent.remainingDistance <= enemy.agent.stoppingDistance)
             {
                 enemy.agent.velocity = Vector3.zero;
@@ -105,6 +101,7 @@ public class FiniteStateMachine
             enemy.agent.velocity = Vector3.zero;
             enemy.transform.LookAt(enemy.playerCombat.transform.position);
             enemy.animator.SetFloat("Speed", 1);
+            enemy.agent.SetDestination(enemy.playerCombat.transform.position);
         }
     }
 
@@ -173,7 +170,7 @@ public class FiniteStateMachine
             {
                 enemy.StopCoroutine(IdleCoroutine);
                 IdleCoroutine = null;
-                coroutineRunning=false;
+                coroutineRunning = false;
             }
         }
 
@@ -191,6 +188,46 @@ public class FiniteStateMachine
 
             coroutineRunning = false;
 
+        }
+    }
+
+    public sealed class ReturnOrigin : State
+    {
+        static readonly ReturnOrigin instance = new ReturnOrigin();
+
+        public static ReturnOrigin Instance
+        {
+            get
+            {
+                return instance;
+            }
+        }
+
+        public override void Begin(EnemyData enemy)
+        {
+            name = "ReturnOrigin";
+            enemy.agent.stoppingDistance = 0.5f;
+            Return(enemy);
+            enemy.GetComponent<Combat>().InCombat = false;
+        }
+
+        public override void Execute(EnemyData enemy)
+        {
+            if (enemy.agent.pathStatus != NavMeshPathStatus.PathComplete && enemy.agent.remainingDistance <= enemy.agent.stoppingDistance)
+                enemy.FSMMachine.ChangeState(Wander.Instance);
+        }
+
+        public override void End(EnemyData enemy)
+        {
+            enemy.animator.SetFloat("Speed", 0);
+        }
+
+        private void Return(EnemyData enemy)
+        {
+            enemy.agent.velocity = Vector3.zero;
+            enemy.agent.SetDestination(enemy.CentrePatrolPointPatrol.transform.position);
+            enemy.transform.LookAt(enemy.CentrePatrolPointPatrol.transform.position);
+            enemy.animator.SetFloat("Speed", 1);
         }
     }
 

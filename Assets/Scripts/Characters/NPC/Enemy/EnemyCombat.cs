@@ -39,9 +39,6 @@ public class EnemyCombat : Combat
     }
 
 
-
-
-
     public override void DealDamage()
     {
         if (enemyData.playerCombat)
@@ -55,22 +52,24 @@ public class EnemyCombat : Combat
 
     public override void TakeDamage(float damage)
     {
-        ResetCombatCoroutine();
+        if (enemyData.FSMMachine != null && enemyData.FSMMachine.GetCurrState() != FiniteStateMachine.ReturnOrigin.Instance)
+       {
+            ResetCombatCoroutine();
 
-        if (damage > 0)
-        {
-            damage = damage * (damage / (damage + enemyData.statistics.Armour));
+            if (damage > 0)
+            {
+                damage = damage * (damage / (damage + enemyData.statistics.Armour));
 
-            DisplayDamageText(damage);
-            enemyData.UpdateCurrentHealth(-damage);
-            enemyData.Hostile = true;
-            if (enemyData.FSMMachine != null && enemyData.FSMMachine.GetCurrState() != FiniteStateMachine.Chase.Instance 
-            && enemyData.FSMMachine.GetCurrState() != FiniteStateMachine.AttackState.Instance )
-                enemyData.FSMMachine.ChangeState(FiniteStateMachine.Chase.Instance);
-        }
-        else
-        {
-            DisplayDamageText("Missed");
+                DisplayDamageText(damage);
+                enemyData.UpdateCurrentHealth(-damage);
+                enemyData.Hostile = true;
+                if (enemyData.FSMMachine.GetCurrState() != FiniteStateMachine.Chase.Instance && enemyData.FSMMachine.GetCurrState() != FiniteStateMachine.AttackState.Instance)
+                    enemyData.FSMMachine.ChangeState(FiniteStateMachine.Chase.Instance);
+            }
+            else
+            {
+                DisplayDamageText("Missed");
+            }
         }
     }
 
