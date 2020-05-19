@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8829648060639550590}
   m_Layer: 0
-  m_Name: SpellMarker
+  m_Name: SpellMarkerPrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -28,6 +28,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 7569927952173100874}
+  - {fileID: 1425048432425303265}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -131,7 +132,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    m_TransformParent: {fileID: 7569927952173100874}
+    m_TransformParent: {fileID: 8829648060639550590}
     m_Modifications:
     - target: {fileID: 8848166590777103564, guid: 5597173b88f966e43a6605e56e53fbc6,
         type: 3}
@@ -156,17 +157,17 @@ PrefabInstance:
     - target: {fileID: 8848166590777103565, guid: 5597173b88f966e43a6605e56e53fbc6,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 11.450001
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8848166590777103565, guid: 5597173b88f966e43a6605e56e53fbc6,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0.7071068
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 8848166590777103565, guid: 5597173b88f966e43a6605e56e53fbc6,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 8848166590777103565, guid: 5597173b88f966e43a6605e56e53fbc6,
         type: 3}
@@ -176,12 +177,12 @@ PrefabInstance:
     - target: {fileID: 8848166590777103565, guid: 5597173b88f966e43a6605e56e53fbc6,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.7071068
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8848166590777103565, guid: 5597173b88f966e43a6605e56e53fbc6,
         type: 3}
       propertyPath: m_RootOrder
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8848166590777103565, guid: 5597173b88f966e43a6605e56e53fbc6,
         type: 3}
@@ -210,3 +211,9 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5597173b88f966e43a6605e56e53fbc6, type: 3}
+--- !u!4 &1425048432425303265 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8848166590777103565, guid: 5597173b88f966e43a6605e56e53fbc6,
+    type: 3}
+  m_PrefabInstance: {fileID: 7569927953150142508}
+  m_PrefabAsset: {fileID: 0}

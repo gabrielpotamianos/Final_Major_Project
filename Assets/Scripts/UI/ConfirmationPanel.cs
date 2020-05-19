@@ -43,10 +43,10 @@ public class ConfirmationPanel : MonoBehaviour
 
     public void DisplayConfirmationPanel(Slot slot)
     {
-        PlayerMovement.instance.enabled = false;
-        PlayerData.instance.animator.SetFloat("SpeedMovement", 0);
+        //PlayerMovement.instance.enabled = false;
+        //PlayerData.instance.animator.SetFloat("SpeedMovement", 0);
 
-        PlayerMovement.instance.gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
+        //PlayerMovement.instance.gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
         GameObject.FindObjectOfType<PlayerCombat>().enabled = false;
         Message.text = "Would you like to ";
         canvas.blocksRaycasts = true;
@@ -123,7 +123,7 @@ public class ConfirmationPanel : MonoBehaviour
 
     public void Cancel()
     {
-        PlayerMovement.instance.enabled = true;
+        //PlayerMovement.instance.enabled = true;
         GameObject.FindObjectOfType<PlayerCombat>().enabled = true;
 
         Message.text = " ";

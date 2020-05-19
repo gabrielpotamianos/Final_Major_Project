@@ -77,33 +77,60 @@ public class PlayerCombat : Combat
             Mathf.Clamp(playerData.statistics.CurrentSpellResource, 0, Constants.WARRIOR_MAX_RAGE);
         }
     }
+    public virtual void AddComboPoints()
+    {
+        //I have no access to Rogue's Combo Points from here
+        //Therefore, I created a virutal function to be overriden in order to get rid of the error
+    }
+
+
 
     public void DealDamage(EnemyCombat enemy, float damage)
     {
         if (enemy)
         {
             ResetCombatCoroutine();
-            enemy.TakeDamage(playerData.statistics.AttackPower * damage);
+            if (playerData.statistics.HitChance > Random.Range(0, 100))
+                if (playerData.statistics.CriticalStrike > Random.Range(0, 100))
+                    enemy.TakeDamage(playerData.statistics.AttackPower * damage/100 * 2);
+                else enemy.TakeDamage(playerData.statistics.AttackPower * damage/100);
+            else enemy.TakeDamage(0);
         }
     }
 
     public void DealDamageAnimationEvent()
     {
-        Target.instance.getCurrEnemy().TakeDamage(playerData.statistics.AttackPower);
+        if (playerData.statistics.HitChance > Random.Range(0, 100))
+            if (playerData.statistics.CriticalStrike > Random.Range(0, 100))
+                Target.instance.getCurrEnemy().TakeDamage(playerData.statistics.AttackPower * 2);
+            else Target.instance.getCurrEnemy().TakeDamage(playerData.statistics.AttackPower);
+        else Target.instance.getCurrEnemy().TakeDamage(0);
         ResetCombatCoroutine();
     }
 
     public override void TakeDamage(float damage)
     {
-        ResetCombatCoroutine();
-        DisplayDamageText(damage);
-        playerData.UpdateCurrentHealth(-damage);
+        if (damage > 0)
+            if (playerData.statistics.Dodge < Random.Range(0, 100))
+                if (playerData.statistics.Parry < Random.Range(0, 100))
+                {
+                    damage = damage * (damage / (damage + playerData.statistics.Armour));
+                    ResetCombatCoroutine();
+                    DisplayDamageText(damage);
+                    playerData.UpdateCurrentHealth(-damage);
+                }
+                else DisplayDamageText("Blocked");
+            else DisplayDamageText("Dodged");
+        else DisplayDamageText("Missed");
     }
 
     public override void DealDamage()
     {
-        Target.instance.getCurrEnemy().TakeDamage(playerData.statistics.AttackPower);
+        if (playerData.statistics.HitChance > Random.Range(0, 100))
+            Target.instance.getCurrEnemy().TakeDamage(playerData.statistics.AttackPower);
+        else Target.instance.getCurrEnemy().TakeDamage(0);
         ResetCombatCoroutine();
+
     }
 
     public override void DisplayDamageText(float Damage)
@@ -111,9 +138,19 @@ public class PlayerCombat : Combat
         Vector3 TextPosition = Camera.main.WorldToScreenPoint(transform.position + transform.up * 2) + new Vector3(UnityEngine.Random.Range(-300, 300), 0, 0);
         GameObject DamageTextGameObject = Instantiate(DamageTextPrefab, TextPosition, Quaternion.identity, playerData.GetCanvasRoot().transform);
         Text DamageText = DamageTextGameObject.transform.GetChild(0).GetComponent<Text>();
-        DamageText.text = Damage.ToString();
+        DamageText.text = "-" + Damage.ToString();
         DamageText.color = Color.red;
     }
+
+    public void DisplayDamageText(string Message, Color? color = null)
+    {
+        Vector3 TextPosition = Camera.main.WorldToScreenPoint(transform.position + transform.up * 2) + new Vector3(UnityEngine.Random.Range(-300, 300), 0, 0);
+        GameObject DamageTextGameObject = Instantiate(DamageTextPrefab, TextPosition, Quaternion.identity, playerData.GetCanvasRoot().transform);
+        Text DamageText = DamageTextGameObject.transform.GetChild(0).GetComponent<Text>();
+        DamageText.text = Message;
+        DamageText.color = color ?? Color.red;
+    }
+
 
     public override void ResetCombatCoroutine()
     {
@@ -131,7 +168,6 @@ public class PlayerCombat : Combat
 
     public override void Die()
     {
-        print("I am here");
         playerData.Alive = false;
         GetComponent<Rigidbody>().useGravity = false;
         GetComponent<Rigidbody>().isKinematic = true;
@@ -264,4 +300,6 @@ public class PlayerCombat : Combat
     {
         return CurrAbility == null;
     }
+
+
 }

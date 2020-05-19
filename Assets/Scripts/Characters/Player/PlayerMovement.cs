@@ -32,10 +32,6 @@ public class PlayerMovement : MonoBehaviour
 
     #endregion
 
-    public Text Test;
-    public Text Test1;
-    public Text Test2;
-
     private void Awake()
     {
         rigid = GetComponent<Rigidbody>();
@@ -47,9 +43,6 @@ public class PlayerMovement : MonoBehaviour
         if (instance == null)
             instance = this;
         else Debug.LogError("More than One Player Movement instances!");
-        // Test = GameObject.Find("Text (1)").GetComponent<Text>();
-        // Test1 = GameObject.Find("Text (2)").GetComponent<Text>();
-        // Test2 = GameObject.Find("Text (3)").GetComponent<Text>();
 
         camera = Camera.main.gameObject;
     }
@@ -60,7 +53,8 @@ public class PlayerMovement : MonoBehaviour
         if (camera == null)
             camera = Camera.main.gameObject;
         grounded = Physics.Raycast(transform.position - new Vector3(0, -0.5f, 0), Vector3.down, out hit, JumpRayDistance);
-        Jump();
+        if (playerData.Alive)
+            Jump();
 
         OnGround = !playerData.animator.GetBool("Jump") && !playerData.animator.GetBool("Land");
         SpellChecks.Grounded = OnGround;
@@ -70,9 +64,8 @@ public class PlayerMovement : MonoBehaviour
     {
         if (playerData.Alive)
         {
-
-            Rotate();
             Move();
+            Rotate();
         }
     }
 
@@ -81,7 +74,7 @@ public class PlayerMovement : MonoBehaviour
 
         Vector2 axisInput = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")).normalized;
 
-        if (axisInput.x != 0 || axisInput.y != 0)
+        if (axisInput.y != 0 || axisInput.x != 0)
         {
             MageCombatSystem.InteruptCast = true;
             playerData.animator.SetBool("Looting", false);
@@ -110,6 +103,7 @@ public class PlayerMovement : MonoBehaviour
         axisInput = axisInput.normalized;
         playerData.animator.SetFloat("SpeedMovement", axisInput.magnitude);
 
+
     }
 
     private void Rotate()
@@ -127,9 +121,6 @@ public class PlayerMovement : MonoBehaviour
 
     private void Jump()
     {
-       // Test.text = grounded.ToString();
-       // Test1.text = "This is jumping " + jumping.ToString();
-
         //Jump if on the ground and space bar was hit
         if (Input.GetKeyDown(KeyCode.Space) && grounded && !jumping)
         {

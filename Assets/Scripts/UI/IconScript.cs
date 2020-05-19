@@ -36,6 +36,14 @@ public class IconScript : MonoBehaviour, /*IBeginDragHandler, IDragHandler, IEnd
 
     }
 
+    /// <summary>
+    /// This function is called when the behaviour becomes disabled or inactive.
+    /// </summary>
+    void OnDisable()
+    {
+        ResetItemPosition();
+    }
+
 
 
     public void OnPointerClick(PointerEventData eventData)

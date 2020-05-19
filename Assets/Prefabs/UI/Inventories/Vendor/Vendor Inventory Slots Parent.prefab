@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 5434605076568403574}
   - component: {fileID: 1846861237270979581}
   - component: {fileID: 8415757295157255492}
+  - component: {fileID: 2086376136094951961}
   m_Layer: 5
   m_Name: Slot (16)
   m_TagString: Slot
@@ -92,6 +93,19 @@ MonoBehaviour:
   quantity: {fileID: 0}
   empty: 0
   icon: {fileID: 0}
+--- !u!114 &2086376136094951961
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5086529572331165}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d10c49f297f96444e869f9929c3174a1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Message: 
 --- !u!1 &117915519708131667
 GameObject:
   m_ObjectHideFlags: 0
@@ -265,7 +279,7 @@ GameObject:
   - component: {fileID: 5204188546955102098}
   - component: {fileID: 5204188546955102099}
   m_Layer: 5
-  m_Name: Vendor Inventory 1
+  m_Name: Vendor Inventory Slots Parent
   m_TagString: VendorInventory
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -421,6 +435,7 @@ GameObject:
   - component: {fileID: 5060296682729784740}
   - component: {fileID: 1509566805116389423}
   - component: {fileID: 8761919288649365142}
+  - component: {fileID: 843170402530725485}
   m_Layer: 5
   m_Name: Slot (17)
   m_TagString: Slot
@@ -501,6 +516,19 @@ MonoBehaviour:
   quantity: {fileID: 0}
   empty: 0
   icon: {fileID: 0}
+--- !u!114 &843170402530725485
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 954837525793011023}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d10c49f297f96444e869f9929c3174a1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Message: 
 --- !u!1 &969840031708238210
 GameObject:
   m_ObjectHideFlags: 0
@@ -513,6 +541,7 @@ GameObject:
   - component: {fileID: 5047438904190624105}
   - component: {fileID: 1497126882688740578}
   - component: {fileID: 8767739774051029595}
+  - component: {fileID: 7447289240634763735}
   m_Layer: 5
   m_Name: Slot (7)
   m_TagString: Slot
@@ -593,6 +622,19 @@ MonoBehaviour:
   quantity: {fileID: 0}
   empty: 0
   icon: {fileID: 0}
+--- !u!114 &7447289240634763735
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 969840031708238210}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d10c49f297f96444e869f9929c3174a1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Message: 
 --- !u!1 &1104466592147066068
 GameObject:
   m_ObjectHideFlags: 0
@@ -684,6 +726,7 @@ GameObject:
   - component: {fileID: 6563222600899181236}
   - component: {fileID: 711434781026711359}
   - component: {fileID: 7256457888083593606}
+  - component: {fileID: 130542067185356888}
   m_Layer: 5
   m_Name: Slot (2)
   m_TagString: Slot
@@ -764,6 +807,19 @@ MonoBehaviour:
   quantity: {fileID: 0}
   empty: 0
   icon: {fileID: 0}
+--- !u!114 &130542067185356888
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1183543455666768479}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d10c49f297f96444e869f9929c3174a1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Message: 
 --- !u!1 &1209330059367078279
 GameObject:
   m_ObjectHideFlags: 0
@@ -1062,6 +1118,7 @@ GameObject:
   - component: {fileID: 6703814477793117610}
   - component: {fileID: 1135608288153929761}
   - component: {fileID: 7109465901646100120}
+  - component: {fileID: 4459581925721343405}
   m_Layer: 5
   m_Name: Slot
   m_TagString: Slot
@@ -1142,6 +1199,19 @@ MonoBehaviour:
   quantity: {fileID: 0}
   empty: 0
   icon: {fileID: 0}
+--- !u!114 &4459581925721343405
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1617127693572273473}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d10c49f297f96444e869f9929c3174a1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Message: 
 --- !u!1 &1729447700939799815
 GameObject:
   m_ObjectHideFlags: 0
@@ -1154,6 +1224,7 @@ GameObject:
   - component: {fileID: 6015033577434598892}
   - component: {fileID: 122572645875318887}
   - component: {fileID: 7843281557055717086}
+  - component: {fileID: 4377346562810630203}
   m_Layer: 5
   m_Name: Slot (3)
   m_TagString: Slot
@@ -1234,6 +1305,19 @@ MonoBehaviour:
   quantity: {fileID: 0}
   empty: 0
   icon: {fileID: 0}
+--- !u!114 &4377346562810630203
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1729447700939799815}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d10c49f297f96444e869f9929c3174a1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Message: 
 --- !u!1 &1827481451637752957
 GameObject:
   m_ObjectHideFlags: 0
@@ -1246,6 +1330,7 @@ GameObject:
   - component: {fileID: 5919152801511077014}
   - component: {fileID: 67492541193140509}
   - component: {fileID: 7891520625153902500}
+  - component: {fileID: 1562788430392115528}
   m_Layer: 5
   m_Name: Slot (10)
   m_TagString: Slot
@@ -1326,6 +1411,19 @@ MonoBehaviour:
   quantity: {fileID: 0}
   empty: 0
   icon: {fileID: 0}
+--- !u!114 &1562788430392115528
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1827481451637752957}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d10c49f297f96444e869f9929c3174a1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Message: 
 --- !u!1 &1988729472828978724
 GameObject:
   m_ObjectHideFlags: 0
@@ -1673,6 +1771,7 @@ GameObject:
   - component: {fileID: 7708468433435270007}
   - component: {fileID: 4049647790306219772}
   - component: {fileID: 6149846834469431365}
+  - component: {fileID: 5420181327046457516}
   m_Layer: 5
   m_Name: Slot (11)
   m_TagString: Slot
@@ -1753,6 +1852,19 @@ MonoBehaviour:
   quantity: {fileID: 0}
   empty: 0
   icon: {fileID: 0}
+--- !u!114 &5420181327046457516
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2414054319361895324}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d10c49f297f96444e869f9929c3174a1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Message: 
 --- !u!1 &2690585379538287582
 GameObject:
   m_ObjectHideFlags: 0
@@ -1923,6 +2035,7 @@ GameObject:
   - component: {fileID: 7799375438911451822}
   - component: {fileID: 4536871557588614949}
   - component: {fileID: 6025161600977977756}
+  - component: {fileID: 5192787562055398220}
   m_Layer: 5
   m_Name: Slot (4)
   m_TagString: Slot
@@ -2003,6 +2116,19 @@ MonoBehaviour:
   quantity: {fileID: 0}
   empty: 0
   icon: {fileID: 0}
+--- !u!114 &5192787562055398220
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2829799940334649925}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d10c49f297f96444e869f9929c3174a1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Message: 
 --- !u!1 &2883623888341405708
 GameObject:
   m_ObjectHideFlags: 0
@@ -2094,6 +2220,7 @@ GameObject:
   - component: {fileID: 7119561722343067433}
   - component: {fileID: 3460741080304534178}
   - component: {fileID: 6731928735389252635}
+  - component: {fileID: 4169513593852258757}
   m_Layer: 5
   m_Name: Slot (18)
   m_TagString: Slot
@@ -2174,6 +2301,19 @@ MonoBehaviour:
   quantity: {fileID: 0}
   empty: 0
   icon: {fileID: 0}
+--- !u!114 &4169513593852258757
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3005107134360895426}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d10c49f297f96444e869f9929c3174a1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Message: 
 --- !u!1 &3465125237677765526
 GameObject:
   m_ObjectHideFlags: 0
@@ -2344,6 +2484,7 @@ GameObject:
   - component: {fileID: 8716236365489850462}
   - component: {fileID: 3043462257351591381}
   - component: {fileID: 5140600473748355948}
+  - component: {fileID: 1904658415060088631}
   m_Layer: 5
   m_Name: Slot (9)
   m_TagString: Slot
@@ -2424,6 +2565,19 @@ MonoBehaviour:
   quantity: {fileID: 0}
   empty: 0
   icon: {fileID: 0}
+--- !u!114 &1904658415060088631
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3715399758575433909}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d10c49f297f96444e869f9929c3174a1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Message: 
 --- !u!1 &3880707359988024266
 GameObject:
   m_ObjectHideFlags: 0
@@ -2771,6 +2925,7 @@ GameObject:
   - component: {fileID: 8190846507787167161}
   - component: {fileID: 2549456883345418290}
   - component: {fileID: 5623559621768894091}
+  - component: {fileID: 2969156917815805545}
   m_Layer: 5
   m_Name: Slot (5)
   m_TagString: Slot
@@ -2851,6 +3006,19 @@ MonoBehaviour:
   quantity: {fileID: 0}
   empty: 0
   icon: {fileID: 0}
+--- !u!114 &2969156917815805545
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4238504274915464530}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d10c49f297f96444e869f9929c3174a1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Message: 
 --- !u!1 &4262301229562757639
 GameObject:
   m_ObjectHideFlags: 0
@@ -2863,6 +3031,7 @@ GameObject:
   - component: {fileID: 8097250907905077996}
   - component: {fileID: 2492162727002865511}
   - component: {fileID: 5764159895372874206}
+  - component: {fileID: 5170680241045813316}
   m_Layer: 5
   m_Name: Slot (13)
   m_TagString: Slot
@@ -2943,6 +3112,19 @@ MonoBehaviour:
   quantity: {fileID: 0}
   empty: 0
   icon: {fileID: 0}
+--- !u!114 &5170680241045813316
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4262301229562757639}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d10c49f297f96444e869f9929c3174a1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Message: 
 --- !u!1 &4370088200566141001
 GameObject:
   m_ObjectHideFlags: 0
@@ -4009,6 +4191,7 @@ GameObject:
   - component: {fileID: 2094172129479665690}
   - component: {fileID: 5748062568995743121}
   - component: {fileID: 2499111155713989416}
+  - component: {fileID: 5820209424127156529}
   m_Layer: 5
   m_Name: Slot (19)
   m_TagString: Slot
@@ -4089,6 +4272,19 @@ MonoBehaviour:
   quantity: {fileID: 0}
   empty: 0
   icon: {fileID: 0}
+--- !u!114 &5820209424127156529
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6230295617839569137}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d10c49f297f96444e869f9929c3174a1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Message: 
 --- !u!1 &6255862737341760084
 GameObject:
   m_ObjectHideFlags: 0
@@ -4387,6 +4583,7 @@ GameObject:
   - component: {fileID: 1201633871926847075}
   - component: {fileID: 4785014838300224488}
   - component: {fileID: 3390174289576727889}
+  - component: {fileID: 4228911005927707697}
   m_Layer: 5
   m_Name: Slot2
   m_TagString: Slot
@@ -4467,6 +4664,19 @@ MonoBehaviour:
   quantity: {fileID: 0}
   empty: 0
   icon: {fileID: 0}
+--- !u!114 &4228911005927707697
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6617060047043057288}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d10c49f297f96444e869f9929c3174a1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Message: 
 --- !u!1 &6732269375828195918
 GameObject:
   m_ObjectHideFlags: 0
@@ -4481,6 +4691,7 @@ GameObject:
   - component: {fileID: 5029233310199953393}
   - component: {fileID: 4088283784245041233}
   - component: {fileID: 8543148513494213214}
+  - component: {fileID: 4605277970624644075}
   m_Layer: 5
   m_Name: Icon
   m_TagString: Icon
@@ -4595,6 +4806,19 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &4605277970624644075
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6732269375828195918}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d10c49f297f96444e869f9929c3174a1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Message: 
 --- !u!1 &6831826163499004410
 GameObject:
   m_ObjectHideFlags: 0
@@ -5021,6 +5245,7 @@ GameObject:
   - component: {fileID: 2318938408539105834}
   - component: {fileID: 8278812612052314017}
   - component: {fileID: 2274273953333598488}
+  - component: {fileID: 879782539721338068}
   m_Layer: 5
   m_Name: Slot (15)
   m_TagString: Slot
@@ -5101,6 +5326,19 @@ MonoBehaviour:
   quantity: {fileID: 0}
   empty: 0
   icon: {fileID: 0}
+--- !u!114 &879782539721338068
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7734664750525782721}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d10c49f297f96444e869f9929c3174a1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Message: 
 --- !u!1 &7807441064137657674
 GameObject:
   m_ObjectHideFlags: 0
@@ -5497,6 +5735,7 @@ GameObject:
   - component: {fileID: 4042912931325367139}
   - component: {fileID: 7697084848064044776}
   - component: {fileID: 556777064017928273}
+  - component: {fileID: 345913701497201889}
   m_Layer: 5
   m_Name: Slot (14)
   m_TagString: Slot
@@ -5577,6 +5816,19 @@ MonoBehaviour:
   quantity: {fileID: 0}
   empty: 0
   icon: {fileID: 0}
+--- !u!114 &345913701497201889
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8314424783803769736}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d10c49f297f96444e869f9929c3174a1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Message: 
 --- !u!1 &8341272907049703449
 GameObject:
   m_ObjectHideFlags: 0
@@ -5668,6 +5920,7 @@ GameObject:
   - component: {fileID: 4440740079385481088}
   - component: {fileID: 8028347576052990475}
   - component: {fileID: 144664655543434418}
+  - component: {fileID: 933888043664920685}
   m_Layer: 5
   m_Name: Slot (12)
   m_TagString: Slot
@@ -5748,6 +6001,19 @@ MonoBehaviour:
   quantity: {fileID: 0}
   empty: 0
   icon: {fileID: 0}
+--- !u!114 &933888043664920685
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8563919309178683243}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d10c49f297f96444e869f9929c3174a1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Message: 
 --- !u!1 &8627012689433362246
 GameObject:
   m_ObjectHideFlags: 0
@@ -5760,6 +6026,7 @@ GameObject:
   - component: {fileID: 4377715421283798957}
   - component: {fileID: 7929153375877431846}
   - component: {fileID: 243646096150772895}
+  - component: {fileID: 284771290733136987}
   m_Layer: 5
   m_Name: Slot (6)
   m_TagString: Slot
@@ -5840,6 +6107,19 @@ MonoBehaviour:
   quantity: {fileID: 0}
   empty: 0
   icon: {fileID: 0}
+--- !u!114 &284771290733136987
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8627012689433362246}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d10c49f297f96444e869f9929c3174a1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Message: 
 --- !u!1 &8688325631221266362
 GameObject:
   m_ObjectHideFlags: 0
@@ -6059,6 +6339,7 @@ GameObject:
   - component: {fileID: 3872640635266972718}
   - component: {fileID: 7454763761359516069}
   - component: {fileID: 729367693763825436}
+  - component: {fileID: 4746120812685395407}
   m_Layer: 5
   m_Name: Slot (8)
   m_TagString: Slot
@@ -6139,3 +6420,16 @@ MonoBehaviour:
   quantity: {fileID: 0}
   empty: 0
   icon: {fileID: 0}
+--- !u!114 &4746120812685395407
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9135526064401681605}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d10c49f297f96444e869f9929c3174a1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Message: 

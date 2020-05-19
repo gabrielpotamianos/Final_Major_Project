@@ -2,13 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Linq;
 
 public class PlayerData : CharacterData
 {
     GameObject SpellBar;
     Slider AbilityResourceBar;
     Text AbilityResourceBarName;
-
+    List<Text> StatisticsTextGOs;
+    CanvasGroup StatisticsPanelParent;
 
     public Statistics statistics;
     public bool AbleToLoot;
@@ -25,9 +27,6 @@ public class PlayerData : CharacterData
     protected override void Awake()
     {
         base.Awake();
-
-
-
     }
 
     void Start()
@@ -75,6 +74,17 @@ public class PlayerData : CharacterData
             default:
                 break;
         }
+
+        StatisticsPanelParent = GameObject.FindGameObjectWithTag("StatisticsPanel").GetComponent<CanvasGroup>();
+
+        StatisticsTextGOs = new List<Text>();
+
+        StatisticsTextGOs.AddRange(StatisticsPanelParent.GetComponentsInChildren<Text>().Where(
+            (x) =>
+            x.gameObject.transform.parent == StatisticsPanelParent.transform));
+
+        statistics.RecalculateStats();
+
     }
 
     void Update()
@@ -82,6 +92,18 @@ public class PlayerData : CharacterData
         UpdateBar(AbilityResourceBar, statistics.CurrentSpellResource / statistics.MaxSpellResource);
         UpdateBar(HealthBar, statistics.CurrentHealth / statistics.MaxHealth);
         animator.SetFloat("Health", statistics.CurrentHealth);
+
+
+        if (Input.GetKeyDown(KeyCode.C))
+        {
+            if (IsPlayerStatsPanelOpen())
+                ClosePlayerStatsPanel();
+            else
+            {
+                UpdatePlayerDetailsValues();
+                OpenPlayerStatsPanel();
+            }
+        }
     }
 
     public void UpdateCurrentHealth(float Health)
@@ -153,6 +175,44 @@ public class PlayerData : CharacterData
     public Text GetAbilityResouceText()
     {
         return AbilityResourceBarName;
+    }
+
+
+
+
+
+    private void OpenPlayerStatsPanel()
+    {
+        StatisticsPanelParent.alpha = 1;
+    }
+
+    private void ClosePlayerStatsPanel()
+    {
+        StatisticsPanelParent.alpha = 0;
+    }
+
+    private bool IsPlayerStatsPanelOpen()
+    {
+        return StatisticsPanelParent.alpha == 1;
+    }
+
+
+    private void UpdatePlayerDetailsValues()
+    {
+        var StatisticsDictionary = statistics.GetStatisticsDictionary();
+
+        for (int i = 0; i < StatisticsTextGOs.Count; i++)
+        {
+            if (StatisticsDictionary.ContainsKey(StatisticsTextGOs[i].name.ToString()))
+                StatisticsTextGOs[i].transform.GetChild(0).GetComponent<Text>().text = StatisticsDictionary[StatisticsTextGOs[i].name.ToString()].ToString();
+
+            if (StatisticsTextGOs[i].name.Equals("Health Regen") || StatisticsTextGOs[i].name.Equals("Hit Chance")
+                || StatisticsTextGOs[i].name.Equals("Dodge") || StatisticsTextGOs[i].name.Equals("Critical Strike")
+                || StatisticsTextGOs[i].name.Equals("Attack Speed") || StatisticsTextGOs[i].name.Equals("Maximum Spell Resource")
+                || StatisticsTextGOs[i].name.Equals("Parry") || StatisticsTextGOs[i].name.Equals("Spell Resource Regen"))
+                StatisticsTextGOs[i].transform.GetChild(0).GetComponent<Text>().text += "%";
+
+        }
     }
 
 }

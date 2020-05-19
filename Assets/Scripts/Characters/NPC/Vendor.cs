@@ -58,6 +58,7 @@ public class Vendor : NPC
             inventory.EmptyAllSlots();
             inventory.occupiedSlots = 0;
             player = null;
+            ConfirmationPanel.instance.Cancel();
         }
     }
 

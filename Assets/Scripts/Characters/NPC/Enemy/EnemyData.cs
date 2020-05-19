@@ -5,6 +5,8 @@ using System.Collections.Generic;
 
 public class EnemyData : CharacterData
 {
+    public float SightRange;
+    public float AttackRange;
     public List<Item> AllPossibleItems;
     public List<int> ChanceOfItemDrop;
 
@@ -99,7 +101,19 @@ public class EnemyData : CharacterData
     }
 
 
-
+    public void RandomPatrolPoint(Vector3 center, float range, out Vector3 result)
+    {
+        while (true)
+        {
+            Vector3 randomPatrolPoint = center + UnityEngine.Random.insideUnitSphere * range;
+            NavMeshHit hit;
+            if (NavMesh.SamplePosition(randomPatrolPoint, out hit, 1.0f, NavMesh.AllAreas))
+            {
+                result = hit.position;
+                break;
+            }
+        }
+    }
 
 
 

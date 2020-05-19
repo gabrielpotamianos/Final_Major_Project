@@ -150,7 +150,7 @@ public class MageCombatSystem : PlayerCombat
             float timeLeft = 0;
             while (Castbar.value < 1)
             {
-                if(InteruptCast)
+                if (InteruptCast)
                     print(InteruptCast);
 
                 if (InteruptCast)
@@ -226,7 +226,10 @@ public class MageCombatSystem : PlayerCombat
     /// </summary>
     void InitFireball()
     {
-        Vector3 FireballInitPos = (GameObject.Find("Hand_R").transform.position + GameObject.Find("Hand_L").transform.position) / 2;
+        GameObject rightHand=transform.Find("Root/Hips/Spine_01/Spine_02/Spine_03/Clavicle_R/Shoulder_R/Elbow_R/Hand_R").gameObject;
+        GameObject leftHand=transform.Find("Root/Hips/Spine_01/Spine_02/Spine_03/Clavicle_L/Shoulder_L/Elbow_L/Hand_L").gameObject;
+
+        Vector3 FireballInitPos = (rightHand.transform.position + leftHand.transform.position) / 2;
 
         if (!FireballGameObjectRef)
             FireballGameObjectRef = Instantiate(FireballPrefab, FireballInitPos, Quaternion.identity);
@@ -236,7 +239,7 @@ public class MageCombatSystem : PlayerCombat
             FireballGameObjectRef.transform.position = FireballInitPos;
         }
 
-        FireballGameObjectRef.transform.parent = GameObject.Find("Hand_R").gameObject.transform;
+        FireballGameObjectRef.transform.parent =rightHand.gameObject.transform;
 
     }
 
@@ -369,8 +372,8 @@ public class MageCombatSystem : PlayerCombat
                     var temp = Instantiate(IceMissle, new Vector3(pos.x, SpellIndicatorGameObject.transform.GetChild(0).transform.position.y, pos.y), Quaternion.identity);
                     activeMissiles++;
                     temp.GetComponent<Missiles>().enabled = true;
-                    temp.GetComponent<Missiles>().BlizzardDamage = 10 * playerData.statistics.AttackPower;
-                    temp.GetComponent<Missiles>().AOEDamage = SpellIndicatorGameObject.transform.GetChild(0).transform.GetChild(0).gameObject.GetComponent<AOEDamageScript>();
+                    temp.GetComponent<Missiles>().BlizzardDamage = BlizzardDamageMultiplier;
+                    temp.GetComponent<Missiles>().AOEDamage = SpellIndicatorGameObject.transform.GetChild(1).gameObject.GetComponent<AOEDamageScript>();
                     BlizzardMissiles.Add(temp);
                 }
                 else
@@ -471,7 +474,7 @@ public class MageCombatSystem : PlayerCombat
         {
             //If any of the objects on that Layer Mask are Enemies then Hit them if they are alive
             if (hit.collider.GetComponent<EnemyCombat>() && hit.collider.GetComponent<EnemyCombat>().enemyData.Alive)
-                hit.collider.GetComponent<EnemyCombat>().TakeDamage(playerData.statistics.AttackPower * DeathsBreathDamageMultiplier);
+                DealDamage(hit.collider.GetComponent<EnemyCombat>(),DeathsBreathDamageMultiplier);
         }
 
         //Wait for Half of the Skull Particle Effect to play

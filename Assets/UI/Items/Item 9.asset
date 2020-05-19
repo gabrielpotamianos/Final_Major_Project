@@ -20,11 +20,11 @@ MonoBehaviour:
     CurrentHealth: 0
     MaxHealth: 10
     HealthRegenerationPercentage: 0
-    AttackPower: 30
+    AttackPower: 0
     HitChance: 0
     Defence: 0
-    Armour: 0
-    Dodge: 0
+    Armour: 10
+    Dodge: 15
     Strength: 0
     Agility: 0
     Intellect: 0
@@ -32,7 +32,7 @@ MonoBehaviour:
     Spirit: 0
     CriticalStrike: 0
     AttackSpeed: 0
-    Parry: 0
+    Parry: 15
     CurrentSpellResource: 0
     MaxSpellResource: 0
     AbilityRegenerationRate: 0

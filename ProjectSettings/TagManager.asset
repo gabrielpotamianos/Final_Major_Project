@@ -17,6 +17,7 @@ TagManager:
   - PlayerInventory
   - Inventory
   - ToolTip
+  - StatisticsPanel
   layers:
   - Default
   - TransparentFX

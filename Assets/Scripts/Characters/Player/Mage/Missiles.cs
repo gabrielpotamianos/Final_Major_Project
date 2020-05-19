@@ -56,8 +56,6 @@ public static int test1=0;
         {
             transform.GetChild(0).gameObject.SetActive(false);
             transform.GetChild(1).gameObject.SetActive(true);
-            print("Missiles: " + ++test1);
-            print(collision.collider.name);
             collided=true;
 
             if (AOEDamage)
@@ -71,7 +69,8 @@ public static int test1=0;
             transform.GetChild(0).gameObject.SetActive(false);
             transform.GetChild(1).gameObject.SetActive(true);
 
-            CurrTarger.TakeDamage(GameObject.FindObjectOfType<PlayerData>().statistics.AttackPower * FireballMultiplier);
+            //CurrTarger.TakeDamage(PlayerData.instance.statistics.AttackPower * FireballMultiplier);
+            CharacterSelection.ChosenCharacter.Character.GetComponent<PlayerCombat>().DealDamage(CurrTarger,FireballMultiplier);
 
             GetComponent<Collider>().enabled = false;
             StartCoroutine(Explode());

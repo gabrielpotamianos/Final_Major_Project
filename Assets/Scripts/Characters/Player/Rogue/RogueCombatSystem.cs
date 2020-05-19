@@ -76,7 +76,7 @@ public class RogueCombatSystem : PlayerCombat
 
     void SinisterStrike()
     {
-        if (SpellChecks.CheckSpell(Target.instance.GetCurrentTarget(), playerData, Target.instance.MeleeAttackRange, 
+        if (SpellChecks.CheckSpell(Target.instance.GetCurrentTarget(), playerData, Target.instance.MeleeAttackRange,
         SinisterStrikeOnCooldown, SinisterStrikeEnergyCost))
         {
             SinisterStrikeStart();
@@ -86,7 +86,7 @@ public class RogueCombatSystem : PlayerCombat
 
     void Eviscerate()
     {
-        if (SpellChecks.CheckSpell(Target.instance.GetCurrentTarget(), playerData, Target.instance.MeleeAttackRange, 
+        if (SpellChecks.CheckSpell(Target.instance.GetCurrentTarget(), playerData, Target.instance.MeleeAttackRange,
         EviscerateOnCooldown, EviscerateEnergyCost, ComboPoints))
         {
             EviscerateStart();
@@ -100,7 +100,7 @@ public class RogueCombatSystem : PlayerCombat
         SpellChecks.CheckSpell(InCombat, "You cannot use this in combat!")
         && SpellChecks.CheckSpell(stealth, "You are invisible already!")
         && SpellChecks.CheckSpell(SpellCheckAssigned, "You cannot use that now!")
-        && SpellChecks.CheckSpell(!PlayerMovement.instance.OnGround,"You cannot do that now!"))
+        && SpellChecks.CheckSpell(!PlayerMovement.instance.OnGround, "You cannot do that now!"))
         {
             StartCoroutine(VanishStart());
             StartCoroutine(SpellCooldown(playerData.Spell3, VanishCooldownTime, (x) => { VanishOnCooldown = x; }));
@@ -150,6 +150,10 @@ public class RogueCombatSystem : PlayerCombat
     void SinisterStrikeDamage()
     {
         DealDamage(Target.instance.getCurrEnemy(), SinisterStrikeDamageMultiplier);
+        ComboPoints += SinisterStrikeComboPointsToAdd;
+        ComboPoints = Mathf.Clamp(ComboPoints, 0, MaxComboPoints);
+
+        DisplayDamageText(ComboPoints.ToString() + " Combo", Color.yellow);
     }
 
     /// <summary>
@@ -158,7 +162,6 @@ public class RogueCombatSystem : PlayerCombat
     void SinisterStrikeEnd()
     {
         playerData.animator.SetBool("SinisterStrike", false);
-        ComboPoints += ComboPoints < MaxComboPoints ? SinisterStrikeComboPointsToAdd : 0;
         SpellCheckAssigned = false;
     }
 
@@ -185,6 +188,8 @@ public class RogueCombatSystem : PlayerCombat
     void EviscerateDamage()
     {
         DealDamage(Target.instance.getCurrEnemy(), EviscerateDamageMultiplier * ComboPoints);
+        DisplayDamageText(ComboPoints.ToString() + " Combo used", Color.yellow);
+        ComboPoints = 0;
     }
 
     /// <summary>
@@ -193,7 +198,6 @@ public class RogueCombatSystem : PlayerCombat
     void EviscerateEnd()
     {
         playerData.animator.SetBool("Eviscerate", false);
-        ComboPoints = 0;
         SpellCheckAssigned = false;
     }
 
@@ -253,16 +257,25 @@ public class RogueCombatSystem : PlayerCombat
 
     void BackstabDamage()
     {
-        DealDamage(Target.instance.getCurrEnemy(), VanishDamageMultiplier * BackstabDamageMultiplier);
+        DealDamage(Target.instance.getCurrEnemy(), VanishDamageMultiplier + BackstabDamageMultiplier);
+        ComboPoints += BackstabComboPointsToAdd;
+        ComboPoints = Mathf.Clamp(ComboPoints, 0, MaxComboPoints);
+        DisplayDamageText(ComboPoints.ToString() + " Combo", Color.yellow);
+
     }
 
     void BackstabEnd()
     {
-        ComboPoints += BackstabComboPointsToAdd;
         playerData.animator.SetBool("Backstab", false);
         SpellCheckAssigned = false;
     }
 
     #endregion
+
+    public override void AddComboPoints()
+    {
+        ComboPoints++;
+        DisplayDamageText(ComboPoints.ToString() + " Combo",Color.yellow);
+    }
 
 }

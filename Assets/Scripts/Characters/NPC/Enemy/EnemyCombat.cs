@@ -12,7 +12,7 @@ public class EnemyCombat : Combat
     protected void Awake()
     {
         enemyData = GetComponent<EnemyData>();
-        enemyData.FSMMachine = new FiniteStateMachine(this, new FiniteStateMachine.GoTo());
+        enemyData.FSMMachine = new FiniteStateMachine(enemyData, new FiniteStateMachine.Wander());
 
     }
 
@@ -40,43 +40,40 @@ public class EnemyCombat : Combat
 
 
 
-    public void RandomPatrolPoint(Vector3 center, float range, out Vector3 result)
-    {
-        while (true)
-        {
-            Vector3 randomPatrolPoint = center + UnityEngine.Random.insideUnitSphere * range;
-            NavMeshHit hit;
-            if (NavMesh.SamplePosition(randomPatrolPoint, out hit, 1.0f, NavMesh.AllAreas))
-            {
-                result = hit.position;
-                break;
-            }
-        }
-    }
+
 
     public override void DealDamage()
     {
         if (enemyData.playerCombat)
         {
-            enemyData.playerCombat.TakeDamage(enemyData.statistics.AttackPower);
+            if (enemyData.statistics.HitChance > Random.Range(0, 100))
+                enemyData.playerCombat.TakeDamage(enemyData.statistics.AttackPower);
+            else enemyData.playerCombat.TakeDamage(0);
             ResetCombatCoroutine();
         }
     }
 
     public override void TakeDamage(float damage)
     {
-
         ResetCombatCoroutine();
-        DisplayDamageText(damage);
-        enemyData.UpdateCurrentHealth(-damage);
-        enemyData.Hostile = true;
-        if (enemyData.FSMMachine != null && enemyData.FSMMachine.GetCurrState() != FiniteStateMachine.GoTo.Instance)
+
+        if (damage > 0)
         {
-            transform.LookAt(enemyData.playerCombat.playerData.transform);
-            enemyData.FSMMachine.ChangeState(FiniteStateMachine.GoTo.Instance);
+            damage = damage * (damage / (damage + enemyData.statistics.Armour));
+
+            DisplayDamageText(damage);
+            enemyData.UpdateCurrentHealth(-damage);
+            enemyData.Hostile = true;
+            if (enemyData.FSMMachine != null && enemyData.FSMMachine.GetCurrState() != FiniteStateMachine.Chase.Instance 
+            && enemyData.FSMMachine.GetCurrState() != FiniteStateMachine.AttackState.Instance )
+                enemyData.FSMMachine.ChangeState(FiniteStateMachine.Chase.Instance);
+        }
+        else
+        {
+            DisplayDamageText("Missed");
         }
     }
-    public static int test = 0;
+
     public override void DisplayDamageText(float Damage)
     {
         Vector3 TextPosition = Camera.main.WorldToScreenPoint(transform.position + transform.up * 2) + new Vector3(UnityEngine.Random.Range(-300, 300), 0, 0);
@@ -84,9 +81,17 @@ public class EnemyCombat : Combat
         Text DamageText = DamageTextGameObject.transform.GetChild(0).GetComponent<Text>();
         DamageText.text = Damage.ToString();
         DamageText.color = Color.yellow;
-
     }
 
+    public void DisplayDamageText(string Message)
+    {
+        Vector3 TextPosition = Camera.main.WorldToScreenPoint(transform.position + transform.up * 2) + new Vector3(UnityEngine.Random.Range(-300, 300), 0, 0);
+        GameObject DamageTextGameObject = Instantiate(DamageTextPrefab, TextPosition, Quaternion.identity, enemyData.GetCanvasRoot().transform);
+        Text DamageText = DamageTextGameObject.transform.GetChild(0).GetComponent<Text>();
+        DamageText.text = Message;
+        DamageText.color = Color.yellow;
+
+    }
 
     public override IEnumerator HealthRegen()
     {
@@ -138,6 +143,18 @@ public class EnemyCombat : Combat
             StopCoroutine(InCombatCoroutine);
         InCombatCoroutine = CombatCooldown(CombatCooldownTime);
         StartCoroutine(InCombatCoroutine);
+    }
+
+    public void idlecoroutine()
+    {
+        StartCoroutine(thiscoroutine());
+    }
+
+    IEnumerator thiscoroutine()
+    {
+
+        yield return new WaitForSeconds(3);
+        print("working");
     }
 
 

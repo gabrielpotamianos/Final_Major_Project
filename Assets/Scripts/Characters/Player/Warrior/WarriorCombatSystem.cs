@@ -244,7 +244,7 @@ public class WarriorCombatSystem : PlayerCombat
         foreach (RaycastHit result in results)
         {
             if (result.collider.GetComponent<EnemyData>().Alive)
-                result.collider.GetComponent<EnemyCombat>().TakeDamage(playerData.statistics.AttackPower * BladestormDamageMultiplier);
+                result.collider.GetComponent<EnemyCombat>().TakeDamage(playerData.statistics.AttackPower * BladestormDamageMultiplier / 100);
         }
 
     }

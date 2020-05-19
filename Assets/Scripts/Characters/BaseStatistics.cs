@@ -10,7 +10,6 @@ public class BaseStatistics
     public float AttackPower;
     public float HitChance;
 
-    public float Defence;
     public float Armour;
     public float Dodge;
 

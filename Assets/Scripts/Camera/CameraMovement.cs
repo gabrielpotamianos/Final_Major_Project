@@ -27,7 +27,6 @@ public class CameraMovement : MonoBehaviour
     [Range(0, 1)]
     public float CameraSpeed = 120;
 
-    public Text TestResoultion;
 
 
     int xPos = 30, yPos = 1000;
@@ -66,7 +65,6 @@ public class CameraMovement : MonoBehaviour
     {
         #region Camera Rotation
 
-        TestResoultion.text = Screen.height + " x " + Screen.width;
         if (Input.GetMouseButton(1))
         {
             if (!onRotation)

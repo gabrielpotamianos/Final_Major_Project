@@ -90,7 +90,7 @@ public static class SpellChecks
         {
             if (Vector3.Distance(playerData.transform.position, enemy.transform.position) > range)
                 MessageManager.instance.DisplayMessage(Constants.OUT_OF_RANGE);
-            if (!FacingEnemy(enemy, playerData, CombatAngle))
+            else if (!FacingEnemy(enemy, playerData, CombatAngle))
                 MessageManager.instance.DisplayMessage("You must look at the enemy!");
             else return true;
         }

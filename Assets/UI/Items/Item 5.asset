@@ -16,3 +16,23 @@ MonoBehaviour:
   InventoryIcon: {fileID: 21300000, guid: 570c1cd35c26c7c4b9d1e5565dc45826, type: 3}
   SellingPrice: 5
   BuyingPrice: 15
+  ItemStats:
+    CurrentHealth: 0
+    MaxHealth: 0
+    HealthRegenerationPercentage: 3
+    AttackPower: 0
+    HitChance: 0
+    Defence: 0
+    Armour: 0
+    Dodge: 0
+    Strength: 0
+    Agility: 15
+    Intellect: 0
+    Stamina: 0
+    Spirit: 0
+    CriticalStrike: 0
+    AttackSpeed: 0
+    Parry: 9
+    CurrentSpellResource: 0
+    MaxSpellResource: 0
+    AbilityRegenerationRate: 0

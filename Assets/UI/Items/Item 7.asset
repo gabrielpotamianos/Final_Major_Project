@@ -14,5 +14,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Helmet
   InventoryIcon: {fileID: 21300000, guid: 5864877babd5f5e4dadca18b64c737db, type: 3}
-  SellingPrice: 5
-  BuyingPrice: 15
+  SellingPrice: 25
+  BuyingPrice: 35
+  ItemStats:
+    CurrentHealth: 0
+    MaxHealth: 0
+    HealthRegenerationPercentage: 0
+    AttackPower: 0
+    HitChance: 0
+    Defence: 0
+    Armour: 25
+    Dodge: 0
+    Strength: 0
+    Agility: 0
+    Intellect: 0
+    Stamina: 80
+    Spirit: 0
+    CriticalStrike: 0
+    AttackSpeed: 0
+    Parry: 10
+    CurrentSpellResource: 0
+    MaxSpellResource: 0
+    AbilityRegenerationRate: 0

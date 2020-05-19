@@ -20,6 +20,8 @@ public class SceneInit : MonoBehaviour
 
         CharacterSelection.ChosenCharacter = new CharacterInfo();
         CharacterSelection.ChosenCharacter.breed = (CharacterInfo.Breed)Enum.Parse(typeof(CharacterInfo.Breed), player.tag);
+        CharacterSelection.ChosenCharacter.Character=GameObject.FindGameObjectWithTag(CharacterSelection.ChosenCharacter.breed.ToString());
+        CharacterSelection.ChosenCharacter.Character.GetComponent<Rigidbody>().isKinematic=false;
         GameObject.FindGameObjectWithTag(CharacterSelection.ChosenCharacter.breed.ToString()).GetComponent<PlayerData>().enabled = true;
 
         GameObject.FindGameObjectWithTag(CharacterSelection.ChosenCharacter.breed.ToString()).GetComponent<PlayerMovement>().enabled = true;
