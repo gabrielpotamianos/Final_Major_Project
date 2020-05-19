@@ -16,7 +16,10 @@ public class FiniteStateMachine
 
     public sealed class Wander : State
     {
+        Vector3 randomPoint;
+
         static readonly Wander instance = new Wander();
+
         public static Wander Instance
         {
             get
@@ -25,7 +28,6 @@ public class FiniteStateMachine
             }
         }
 
-        Vector3 randomPoint;
         public override void Begin(EnemyData enemy)
         {
             name = "Wander";
@@ -36,7 +38,11 @@ public class FiniteStateMachine
         public override void Execute(EnemyData enemy)
         {
             if (enemy.agent.pathStatus == NavMeshPathStatus.PathComplete && enemy.agent.remainingDistance <= enemy.agent.stoppingDistance)
-                GetRandomPoint(enemy);
+                enemy.FSMMachine.ChangeState(Idle.Instance);
+
+
+
+            Debug.Log(enemy.agent.velocity.magnitude);
         }
 
         public override void End(EnemyData enemy)
@@ -50,15 +56,15 @@ public class FiniteStateMachine
             enemy.agent.velocity = Vector3.zero;
             enemy.agent.SetDestination(randomPoint);
             enemy.transform.LookAt(randomPoint);
-            enemy.animator.SetFloat("Speed", enemy.agent.velocity.magnitude);
+            enemy.animator.SetFloat("Speed", 1);
         }
-
-
     }
+
 
     public sealed class Chase : State
     {
         static readonly Chase instance = new Chase();
+
         public static Chase Instance
         {
             get
@@ -67,7 +73,6 @@ public class FiniteStateMachine
             }
         }
 
-        Vector3 randomPoint;
         public override void Begin(EnemyData enemy)
         {
             name = "Chase";
@@ -99,14 +104,15 @@ public class FiniteStateMachine
         {
             enemy.agent.velocity = Vector3.zero;
             enemy.transform.LookAt(enemy.playerCombat.transform.position);
-            enemy.animator.SetFloat("Speed", enemy.agent.velocity.magnitude);
+            enemy.animator.SetFloat("Speed", 1);
         }
-
-
     }
+
+
     public sealed class AttackState : State
     {
         static readonly AttackState instance = new AttackState();
+
         public static AttackState Instance
         {
             get
@@ -114,12 +120,12 @@ public class FiniteStateMachine
                 return instance;
             }
         }
+
         public override void Begin(EnemyData enemy)
         {
             name = "Attack";
             enemy.animator.SetBool("Attack", true);
         }
-
 
         public override void End(EnemyData enemy)
         {
@@ -128,23 +134,63 @@ public class FiniteStateMachine
 
         public override void Execute(EnemyData enemy)
         {
-            //CHANGE THIS
-            //
-            //
-            //
-            //
-            //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-            //
-            //
-            //
-            //
-            if (Vector3.Distance(enemy.playerCombat.transform.position, enemy.transform.position) > enemy.AttackRange)
-            {
-                Debug.Log(Vector3.Distance(enemy.playerCombat.transform.position, enemy.transform.position) > enemy.AttackRange);
-                Debug.Log(Vector3.Distance(enemy.playerCombat.transform.position, enemy.transform.position));
-            }
             if (Vector3.Distance(enemy.playerCombat.transform.position, enemy.transform.position) > enemy.AttackRange || !PlayerData.instance.Alive)
                 enemy.FSMMachine.ChangeState(Chase.Instance);
+        }
+    }
+
+    public sealed class Idle : State
+    {
+        bool coroutineRunning = false;
+        IEnumerator IdleCoroutine;
+        static readonly Idle instance = new Idle();
+
+        public static Idle Instance
+        {
+            get
+            {
+                return instance;
+            }
+        }
+
+        public override void Begin(EnemyData enemy)
+        {
+            name = "Idle";
+            enemy.animator.SetFloat("Speed", 0);
+            enemy.agent.velocity = Vector3.zero;
+            if (!coroutineRunning)
+            {
+                if (IdleCoroutine != null) enemy.StopCoroutine(IdleCoroutine);
+                IdleCoroutine = IdleFor(enemy.PatrolFrequencyTime, enemy);
+                enemy.StartCoroutine(IdleCoroutine);
+                coroutineRunning = true;
+            }
+        }
+
+        public override void End(EnemyData enemy)
+        {
+            if (coroutineRunning)
+            {
+                enemy.StopCoroutine(IdleCoroutine);
+                IdleCoroutine = null;
+                coroutineRunning=false;
+            }
+        }
+
+        public override void Execute(EnemyData enemy)
+        {
+        }
+
+        private IEnumerator IdleFor(float time, EnemyData enemy)
+        {
+            yield return new WaitForSeconds(time);
+
+            if (enemy.FSMMachine.GetCurrState() == Idle.instance)
+                enemy.FSMMachine.ChangeState(Wander.Instance);
+            else yield break;
+
+            coroutineRunning = false;
+
         }
     }
 

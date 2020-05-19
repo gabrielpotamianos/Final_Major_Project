@@ -7,6 +7,7 @@ public class EnemyData : CharacterData
 {
     public float SightRange;
     public float AttackRange;
+    public int PatrolFrequencyTime;
     public List<Item> AllPossibleItems;
     public List<int> ChanceOfItemDrop;
 
