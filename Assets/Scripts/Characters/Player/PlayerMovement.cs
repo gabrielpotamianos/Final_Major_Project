@@ -14,6 +14,7 @@ public class PlayerMovement : MonoBehaviour
     public float rayLength;
     public float speed = 5;
     public bool OnGround = true;
+    public LayerMask JumpLayerMask;
     public static PlayerMovement instance;
     #endregion
 
@@ -52,7 +53,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if (camera == null)
             camera = Camera.main.gameObject;
-        grounded = Physics.Raycast(transform.position - new Vector3(0, -0.5f, 0), Vector3.down, out hit, JumpRayDistance);
+        grounded = Physics.Raycast(transform.position - new Vector3(0, -0.5f, 0), Vector3.down, out hit, JumpRayDistance,JumpLayerMask);
         if (playerData.Alive)
             Jump();
 
@@ -73,6 +74,7 @@ public class PlayerMovement : MonoBehaviour
     {
 
         Vector2 axisInput = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")).normalized;
+
 
         if (axisInput.y != 0 || axisInput.x != 0)
         {
@@ -98,6 +100,7 @@ public class PlayerMovement : MonoBehaviour
         {
             MageCombatSystem.InteruptCast = false;
             rigid.velocity = new Vector3(0, rigid.velocity.y, 0);
+
         }
 
         axisInput = axisInput.normalized;

@@ -204,7 +204,7 @@ public class PlayerData : CharacterData
         for (int i = 0; i < StatisticsTextGOs.Count; i++)
         {
             if (StatisticsDictionary.ContainsKey(StatisticsTextGOs[i].name.ToString()))
-                StatisticsTextGOs[i].transform.GetChild(0).GetComponent<Text>().text = StatisticsDictionary[StatisticsTextGOs[i].name.ToString()].ToString();
+                StatisticsTextGOs[i].transform.GetChild(0).GetComponent<Text>().text = ((int)(StatisticsDictionary[StatisticsTextGOs[i].name.ToString()])).ToString();
 
             if (StatisticsTextGOs[i].name.Equals("Health Regen") || StatisticsTextGOs[i].name.Equals("Hit Chance")
                 || StatisticsTextGOs[i].name.Equals("Dodge") || StatisticsTextGOs[i].name.Equals("Critical Strike")

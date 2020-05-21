@@ -25,8 +25,8 @@ public class HooverOver : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         ToolTipText = tooltip.GetComponentInChildren<Text>();
         canvasGroup = tooltip.GetComponent<CanvasGroup>();
         slot = gameObject.GetComponent<Slot>();
-        canvasGroup.alpha = 0;
         parentInventory = GetComponentInParent<InventoryBaseClass>();
+        canvasGroup.alpha = 0;
     }
 
     /// <summary>
@@ -36,7 +36,7 @@ public class HooverOver : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     {
         if (currentSelectedObject == gameObject)
         {
-            if (!parentInventory.visible && canvasGroup.alpha == 1)
+            if (parentInventory && slot && !parentInventory.visible && canvasGroup.alpha == 1)
                 TurnOffToolTip();
 
             if (tooltip && tooltip.activeSelf)
@@ -47,7 +47,7 @@ public class HooverOver : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 
     void IPointerEnterHandler.OnPointerEnter(PointerEventData eventData)
     {
-        if (parentInventory.visible && !slot.IsSlotEmpty())
+        if (parentInventory && slot && parentInventory.visible && !slot.IsSlotEmpty())
         {
             currentSelectedObject = gameObject;
             canvasGroup.GetComponent<Canvas>().sortingOrder += 1;
@@ -58,11 +58,22 @@ public class HooverOver : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
             GetItemStats(slot.item, IsThisVendor);
             canvasGroup.alpha = 1;
         }
+        else
+        {
+            print(gameObject.name);
+            currentSelectedObject = gameObject;
+            canvasGroup.GetComponent<Canvas>().sortingOrder += 1;
+            ToolTipText.text = Message;
+            canvasGroup.alpha = 1;
+
+        }
     }
 
     void IPointerExitHandler.OnPointerExit(PointerEventData eventData)
     {
-        if (parentInventory.visible && !slot.IsSlotEmpty())
+        if (parentInventory && slot && parentInventory.visible && !slot.IsSlotEmpty())
+            TurnOffToolTip();
+        else if(ToolTipText.text==Message)
             TurnOffToolTip();
     }
 

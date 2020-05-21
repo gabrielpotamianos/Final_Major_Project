@@ -78,16 +78,43 @@ public class FiniteStateMachine
 
         public override void Execute(EnemyData enemy)
         {
-            enemy.agent.SetDestination(enemy.playerCombat.transform.position);
-
-            if (enemy.agent.pathStatus != NavMeshPathStatus.PathComplete && enemy.agent.remainingDistance <= enemy.agent.stoppingDistance)
-                ChasePlayer(enemy);
-            else if (enemy.agent.remainingDistance >= enemy.SightRange || Vector3.Distance(enemy.transform.position, enemy.CentrePatrolPointPatrol.transform.position) > enemy.MaxCombatDistance)
-                enemy.FSMMachine.ChangeState(ReturnOrigin.Instance);
-            else if (enemy.agent.pathStatus == NavMeshPathStatus.PathComplete && enemy.agent.remainingDistance <= enemy.agent.stoppingDistance)
+            if (CharacterSelection.ChosenCharacter.breed == CharacterInfo.Breed.Rogue)
             {
-                enemy.agent.velocity = Vector3.zero;
-                enemy.FSMMachine.ChangeState(AttackState.Instance);
+                if (!RogueCombatSystem.stealth)
+                {
+                    enemy.agent.SetDestination(enemy.playerCombat.transform.position);
+
+                    enemy.GetComponent<Combat>().InCombat = true;
+
+                    if (enemy.agent.pathStatus != NavMeshPathStatus.PathComplete && enemy.agent.remainingDistance <= enemy.agent.stoppingDistance)
+                        ChasePlayer(enemy);
+                    else if (enemy.agent.remainingDistance >= enemy.SightRange || Vector3.Distance(enemy.transform.position, enemy.CentrePatrolPointPatrol.transform.position) > enemy.MaxCombatDistance)
+                        enemy.FSMMachine.ChangeState(ReturnOrigin.Instance);
+                    else if (enemy.agent.pathStatus == NavMeshPathStatus.PathComplete && enemy.agent.remainingDistance <= enemy.agent.stoppingDistance)
+                    {
+                        enemy.agent.velocity = Vector3.zero;
+                        enemy.FSMMachine.ChangeState(AttackState.Instance);
+                    }
+
+                }
+                else enemy.FSMMachine.ChangeState(Wander.Instance);
+            }
+            else
+            {
+                enemy.agent.SetDestination(enemy.playerCombat.transform.position);
+
+                enemy.GetComponent<Combat>().InCombat = true;
+
+                if (enemy.agent.pathStatus != NavMeshPathStatus.PathComplete && enemy.agent.remainingDistance <= enemy.agent.stoppingDistance)
+                    ChasePlayer(enemy);
+                else if (enemy.agent.remainingDistance >= enemy.SightRange || Vector3.Distance(enemy.transform.position, enemy.CentrePatrolPointPatrol.transform.position) > enemy.MaxCombatDistance)
+                    enemy.FSMMachine.ChangeState(ReturnOrigin.Instance);
+                else if (enemy.agent.pathStatus == NavMeshPathStatus.PathComplete && enemy.agent.remainingDistance <= enemy.agent.stoppingDistance)
+                {
+                    enemy.agent.velocity = Vector3.zero;
+                    enemy.FSMMachine.ChangeState(AttackState.Instance);
+                }
+
             }
         }
 
@@ -131,8 +158,15 @@ public class FiniteStateMachine
 
         public override void Execute(EnemyData enemy)
         {
+
             if (Vector3.Distance(enemy.playerCombat.transform.position, enemy.transform.position) > enemy.AttackRange || !PlayerData.instance.Alive)
                 enemy.FSMMachine.ChangeState(Chase.Instance);
+
+            if (CharacterSelection.ChosenCharacter.breed == CharacterInfo.Breed.Rogue)
+                if (RogueCombatSystem.stealth)
+                    enemy.FSMMachine.ChangeState(Wander.Instance);
+
+
         }
     }
 
@@ -155,23 +189,15 @@ public class FiniteStateMachine
             name = "Idle";
             enemy.animator.SetFloat("Speed", 0);
             enemy.agent.velocity = Vector3.zero;
-            if (!coroutineRunning)
-            {
-                if (IdleCoroutine != null) enemy.StopCoroutine(IdleCoroutine);
-                IdleCoroutine = IdleFor(enemy.PatrolFrequencyTime, enemy);
-                enemy.StartCoroutine(IdleCoroutine);
-                coroutineRunning = true;
-            }
+            if (IdleCoroutine != null) enemy.StopCoroutine(IdleCoroutine);
+            IdleCoroutine = IdleFor(enemy.PatrolFrequencyTime, enemy);
+            enemy.StartCoroutine(IdleCoroutine);
         }
 
         public override void End(EnemyData enemy)
         {
-            if (coroutineRunning)
-            {
-                enemy.StopCoroutine(IdleCoroutine);
-                IdleCoroutine = null;
-                coroutineRunning = false;
-            }
+            if (IdleCoroutine != null) enemy.StopCoroutine(IdleCoroutine);
+            IdleCoroutine = null;
         }
 
         public override void Execute(EnemyData enemy)
@@ -182,11 +208,11 @@ public class FiniteStateMachine
         {
             yield return new WaitForSeconds(time);
 
-            if (enemy.FSMMachine.GetCurrState() == Idle.instance)
+            Debug.Log(enemy.FSMMachine.GetCurrState() == this);
+            if (enemy.FSMMachine.GetCurrState() == this)
                 enemy.FSMMachine.ChangeState(Wander.Instance);
             else yield break;
 
-            coroutineRunning = false;
 
         }
     }
@@ -213,7 +239,7 @@ public class FiniteStateMachine
 
         public override void Execute(EnemyData enemy)
         {
-            if (enemy.agent.pathStatus != NavMeshPathStatus.PathComplete && enemy.agent.remainingDistance <= enemy.agent.stoppingDistance)
+            if (enemy.agent.pathStatus == NavMeshPathStatus.PathComplete && enemy.agent.remainingDistance <= enemy.agent.stoppingDistance)
                 enemy.FSMMachine.ChangeState(Wander.Instance);
         }
 

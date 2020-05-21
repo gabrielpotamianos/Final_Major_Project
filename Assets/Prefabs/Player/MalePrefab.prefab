@@ -1475,34 +1475,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c8e96ac9d86d1c4a983fb46b77783c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Alive: 0
+  Alive: 1
   Name: Gabriel
   animator: {fileID: 0}
   statistics:
-    CurrentHealth: 1000
+    CurrentHealth: 500
     MaxHealth: 1000
     HealthRegenerationPercentage: 33
-    AttackPower: 1.7
-    HitChance: 0
+    AttackPower: 69.92
+    HitChance: 86
     Armour: 0
-    Dodge: 0
+    Dodge: 5
     Strength: 0
     Agility: 0
-    Intellect: 0
-    Stamina: 0
-    Spirit: 0
+    Intellect: 13.5
+    Stamina: 22.28
+    Spirit: 24.15
     CriticalStrike: 0
     AttackSpeed: 0
-    Parry: 0
+    Parry: 3
     CurrentSpellResource: 100
     MaxSpellResource: 100
-    AbilityRegenerationRate: 3
+    AbilityRegenerationRate: 1.75
   AbleToLoot: 0
   Spell1: {fileID: 0}
   Spell2: {fileID: 0}
   Spell3: {fileID: 0}
   Spell4: {fileID: 0}
-  gold: 0
+  gold: 15
 --- !u!114 &7240421209867532293
 MonoBehaviour:
   m_ObjectHideFlags: 0

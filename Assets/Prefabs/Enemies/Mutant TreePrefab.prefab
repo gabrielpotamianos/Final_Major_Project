@@ -811,6 +811,9 @@ MonoBehaviour:
   Name: The warlking tree geeeeeeeeez
   animator: {fileID: 0}
   SightRange: 25
+  MaxCombatDistance: 50
+  AttackRange: 3
+  PatrolFrequencyTime: 10
   AllPossibleItems:
   - {fileID: 11400000, guid: e97d7483f71f98d46a34f8786fb72d70, type: 2}
   - {fileID: 11400000, guid: 94f7f719b7c621747888b9f3ae6a5282, type: 2}
@@ -824,7 +827,7 @@ MonoBehaviour:
   statistics:
     CurrentHealth: 1000
     MaxHealth: 1000
-    HealthRegenerationPercentage: 10
+    HealthRegenerationPercentage: 33
     AttackPower: 20
     HitChance: 90
     Armour: 0

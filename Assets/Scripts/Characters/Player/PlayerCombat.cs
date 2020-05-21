@@ -92,8 +92,8 @@ public class PlayerCombat : Combat
             ResetCombatCoroutine();
             if (playerData.statistics.HitChance > Random.Range(0, 100))
                 if (playerData.statistics.CriticalStrike > Random.Range(0, 100))
-                    enemy.TakeDamage(playerData.statistics.AttackPower * damage/100 * 2);
-                else enemy.TakeDamage(playerData.statistics.AttackPower * damage/100);
+                    enemy.TakeDamage(playerData.statistics.AttackPower * damage / 100 * 2);
+                else enemy.TakeDamage(playerData.statistics.AttackPower * damage / 100);
             else enemy.TakeDamage(0);
         }
     }
@@ -244,6 +244,24 @@ public class PlayerCombat : Combat
         Spell2Button = playerData.Spell2.transform.parent.GetComponent<Button>();
         Spell3Button = playerData.Spell3.transform.parent.GetComponent<Button>();
         Spell4Button = playerData.Spell4.transform.parent.GetComponent<Button>();
+
+        Spell1Button.onClick.AddListener(() => Spell1());
+        Spell2Button.onClick.AddListener(() => Spell2());
+        Spell3Button.onClick.AddListener(() => Spell3());
+        Spell4Button.onClick.AddListener(() => Spell4());
+    }
+
+    protected void AssignSpellsOnButtons(Ability Spell1, string Spell1Description, Ability Spell2, string Spell2Description, Ability Spell3, string Spell3Description, Ability Spell4 = null, string Spell4Description = null)
+    {
+        Spell1Button = playerData.Spell1.transform.parent.GetComponent<Button>();
+        Spell2Button = playerData.Spell2.transform.parent.GetComponent<Button>();
+        Spell3Button = playerData.Spell3.transform.parent.GetComponent<Button>();
+        Spell4Button = playerData.Spell4.transform.parent.GetComponent<Button>();
+
+        playerData.Spell1.transform.parent.GetComponent<HooverOver>().Message = Spell1Description;
+        playerData.Spell2.transform.parent.GetComponent<HooverOver>().Message = Spell2Description;
+        playerData.Spell3.transform.parent.GetComponent<HooverOver>().Message = Spell3Description;
+        playerData.Spell4.transform.parent.GetComponent<HooverOver>().Message = Spell4Description;
 
         Spell1Button.onClick.AddListener(() => Spell1());
         Spell2Button.onClick.AddListener(() => Spell2());

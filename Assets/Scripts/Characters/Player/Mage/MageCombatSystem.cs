@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System;
 
 public class MageCombatSystem : PlayerCombat
 {
@@ -26,6 +27,8 @@ public class MageCombatSystem : PlayerCombat
     public float FireballCastTime;
     public bool FireballOnCooldown = false;
     GameObject FireballGameObjectRef;
+    [TextArea]
+    public string FireballDescription;
 
 
 
@@ -50,6 +53,8 @@ public class MageCombatSystem : PlayerCombat
     public float BlizzardCooldownTime;
     public bool BlizzardOnCooldown = false;
 
+    [TextArea]
+    public string BlizzardDescription;
 
     Projector BlizzardProjector;
     IEnumerator BlizzardCoroutine;
@@ -82,6 +87,9 @@ public class MageCombatSystem : PlayerCombat
 
     GameObject DeathsBreathGameObject;
 
+    [TextArea]
+    public string DeathsBreathDescription;
+
     // Start is called before the first frame update
     protected override void Start()
     {
@@ -91,8 +99,19 @@ public class MageCombatSystem : PlayerCombat
         BlizzardMissiles = new List<GameObject>();
 
 
+        FireballDescription = FireballDescription.Replace("AmountOfDamage", ((int)FireballDamageMultiplier).ToString());
+        FireballDescription = FireballDescription.Replace("AmountOfCost", FireballManaCost.ToString());
+
+        BlizzardDescription = BlizzardDescription.Replace("AmountOfDamage", ((int)BlizzardDamageMultiplier).ToString());
+        BlizzardDescription = BlizzardDescription.Replace("AmountOfCost", BlizzardManaCost.ToString());
+
+        DeathsBreathDescription = DeathsBreathDescription.Replace("AmountOfDamage", ((int)DeathsBreathDamageMultiplier).ToString());
+        DeathsBreathDescription = DeathsBreathDescription.Replace("AmountOfCost", ((int)(playerData.statistics.CurrentSpellResource * 4 / 100)).ToString());
+
         playerData.SetSpellsUI(FireballSprite, BlizzardSprite, DeathsBreathSprite);
-        AssignSpellsOnButtons(Fireball, Blizzard, DeathsBreath);
+        AssignSpellsOnButtons(Fireball, FireballDescription, Blizzard, BlizzardDescription, DeathsBreath, DeathsBreathDescription);
+
+
     }
 
     // Update is called once per frame
@@ -226,8 +245,8 @@ public class MageCombatSystem : PlayerCombat
     /// </summary>
     void InitFireball()
     {
-        GameObject rightHand=transform.Find("Root/Hips/Spine_01/Spine_02/Spine_03/Clavicle_R/Shoulder_R/Elbow_R/Hand_R").gameObject;
-        GameObject leftHand=transform.Find("Root/Hips/Spine_01/Spine_02/Spine_03/Clavicle_L/Shoulder_L/Elbow_L/Hand_L").gameObject;
+        GameObject rightHand = transform.Find("Root/Hips/Spine_01/Spine_02/Spine_03/Clavicle_R/Shoulder_R/Elbow_R/Hand_R").gameObject;
+        GameObject leftHand = transform.Find("Root/Hips/Spine_01/Spine_02/Spine_03/Clavicle_L/Shoulder_L/Elbow_L/Hand_L").gameObject;
 
         Vector3 FireballInitPos = (rightHand.transform.position + leftHand.transform.position) / 2;
 
@@ -239,7 +258,7 @@ public class MageCombatSystem : PlayerCombat
             FireballGameObjectRef.transform.position = FireballInitPos;
         }
 
-        FireballGameObjectRef.transform.parent =rightHand.gameObject.transform;
+        FireballGameObjectRef.transform.parent = rightHand.gameObject.transform;
 
     }
 
@@ -474,7 +493,7 @@ public class MageCombatSystem : PlayerCombat
         {
             //If any of the objects on that Layer Mask are Enemies then Hit them if they are alive
             if (hit.collider.GetComponent<EnemyCombat>() && hit.collider.GetComponent<EnemyCombat>().enemyData.Alive)
-                DealDamage(hit.collider.GetComponent<EnemyCombat>(),DeathsBreathDamageMultiplier);
+                DealDamage(hit.collider.GetComponent<EnemyCombat>(), DeathsBreathDamageMultiplier);
         }
 
         //Wait for Half of the Skull Particle Effect to play

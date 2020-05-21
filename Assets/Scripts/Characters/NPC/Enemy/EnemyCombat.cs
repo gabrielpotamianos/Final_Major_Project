@@ -12,7 +12,7 @@ public class EnemyCombat : Combat
     protected void Awake()
     {
         enemyData = GetComponent<EnemyData>();
-        enemyData.FSMMachine = new FiniteStateMachine(enemyData, new FiniteStateMachine.Wander());
+        enemyData.FSMMachine = new FiniteStateMachine(enemyData, new FiniteStateMachine.Idle());
 
     }
 
@@ -53,7 +53,7 @@ public class EnemyCombat : Combat
     public override void TakeDamage(float damage)
     {
         if (enemyData.FSMMachine != null && enemyData.FSMMachine.GetCurrState() != FiniteStateMachine.ReturnOrigin.Instance)
-       {
+        {
             ResetCombatCoroutine();
 
             if (damage > 0)
@@ -113,20 +113,23 @@ public class EnemyCombat : Combat
 
     public override void Die()
     {
-        enemyData.Alive = false;
-        enemyData.agent.isStopped = true;
-        enemyData.agent.velocity = Vector3.zero;
-        enemyData.FSMMachine.ChangeState(null);
-        Rigidbody rigidbody = GetComponent<Rigidbody>();
-        BoxCollider collider = GetComponent<BoxCollider>();
-        rigidbody.useGravity = false;
-        rigidbody.isKinematic = true;
-        rigidbody.velocity = Vector3.zero;
-        collider.isTrigger = true;
+        if (!enemyData.Alive && enemyData.FSMMachine.GetCurrState() != null)
+        {
+            enemyData.Alive = false;
+            enemyData.agent.isStopped = true;
+            enemyData.agent.velocity = Vector3.zero;
+            enemyData.FSMMachine.ChangeState(null);
+            Rigidbody rigidbody = GetComponent<Rigidbody>();
+            BoxCollider collider = GetComponent<BoxCollider>();
+            rigidbody.useGravity = false;
+            rigidbody.isKinematic = true;
+            rigidbody.velocity = Vector3.zero;
+            collider.isTrigger = true;
 
-        //Shrinks the colliders size so you can select other targets with accuracy
-        collider.center = new Vector3(collider.center.x, 0, collider.center.z);
-        collider.size = new Vector3(collider.size.x, 1, collider.size.z);
+            //Shrinks the colliders size so you can select other targets with accuracy
+            collider.center = new Vector3(collider.center.x, 1, -2);
+            collider.size = new Vector3(collider.size.x, collider.size.z, collider.size.y);
+        }
         //  GetComponent<Looting>().enabled = true;
     }
 

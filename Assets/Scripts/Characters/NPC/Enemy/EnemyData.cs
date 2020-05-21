@@ -8,10 +8,6 @@ public class EnemyData : CharacterData
     public float SightRange;
     public float MaxCombatDistance;
     public float AttackRange;
-    public int PatrolFrequencyTime;
-    public List<Item> AllPossibleItems;
-    public List<int> ChanceOfItemDrop;
-
     public BaseStatistics statistics;
     public GameObject CentrePatrolPointPatrol;
     public NavMeshAgent agent;
@@ -24,12 +20,20 @@ public class EnemyData : CharacterData
 
     public Looting LootInventory;
 
+    public List<Item> AllPossibleItems;
+    public List<int> ChanceOfItemDrop;
+    [HideInInspector]
+    public int PatrolFrequencyTime;
+
+
     bool CanLoot = false;
+
 
     public static EnemyData CurrentLootingEnemy;
 
     protected override void Awake()
     {
+        PatrolFrequencyTime = Random.Range(0, 15);
         CanvasRoot = GameObject.Find("CanvasHUD").GetComponent<Canvas>();
         LootInventory = GameObject.FindObjectOfType<Looting>();
         agent = GetComponent<NavMeshAgent>();
@@ -90,7 +94,7 @@ public class EnemyData : CharacterData
         {
             CanLoot = false;
             other.GetComponent<PlayerData>().AbleToLoot = CanLoot;
-            if(LootInventory.visible)
+            if (LootInventory.visible)
                 LootInventory.HideInventory();
 
             MessageManager.instance.KillMessage();

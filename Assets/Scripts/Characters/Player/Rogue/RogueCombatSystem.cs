@@ -23,6 +23,10 @@ public class RogueCombatSystem : PlayerCombat
     public int SinisterStrikeComboPointsToAdd;
     public bool SinisterStrikeOnCooldown = false;
 
+    [TextArea]
+    public string SinisterStrikeDescription;
+
+
     [Space(10)]
 
     public Sprite EviscerateSprite;
@@ -30,6 +34,9 @@ public class RogueCombatSystem : PlayerCombat
     public int EviscerateEnergyCost;
     public float EviscerateCooldownTime;
     public bool EviscerateOnCooldown = false;
+
+    [TextArea]
+    public string EviscerateDescription;
 
 
     [Space(10)]
@@ -40,7 +47,11 @@ public class RogueCombatSystem : PlayerCombat
     public float VanishCooldownTime;
     public bool VanishOnCooldown = false;
     IEnumerator VanishCoroutine;
-    bool stealth = false;
+    public static bool stealth = false;
+
+    [TextArea]
+    public string VanishDescription;
+
 
 
     public float DirectionDotProductThreshold;
@@ -57,12 +68,34 @@ public class RogueCombatSystem : PlayerCombat
     public int BackstabComboPointsToAdd;
     public bool BackstabOnCooldown = false;
 
+    [TextArea]
+    public string BackstabDescription;
+
+
+
+    float stealthDamage = 0;
+
+
     // Start is called before the first frame update
     protected override void Start()
     {
         base.Start();
         playerData.SetSpellsUI(SinisterStrikeSprite, EviscerateSprite, VanishSprite, BackstabSprite);
-        AssignSpellsOnButtons(SinisterStrike, Eviscerate, Vanish, Backstab);
+
+        SinisterStrikeDescription = SinisterStrikeDescription.Replace("AmountOfDamage", ((int)SinisterStrikeDamageMultiplier).ToString());
+        SinisterStrikeDescription = SinisterStrikeDescription.Replace("AmountOfCost", SinisterStrikeEnergyCost.ToString());
+
+        EviscerateDescription = EviscerateDescription.Replace("AmountOfDamage", ((int)EviscerateDamageMultiplier).ToString());
+        EviscerateDescription = EviscerateDescription.Replace("AmountOfCost", EviscerateEnergyCost.ToString());
+
+        VanishDescription = VanishDescription.Replace("AmountOfDamage", ((int)VanishDamageMultiplier).ToString());
+        VanishDescription = VanishDescription.Replace("AmountOfCost", "0");
+
+        BackstabDescription = BackstabDescription.Replace("AmountOfDamage", ((int)BackstabDamageMultiplier).ToString());
+        BackstabDescription = BackstabDescription.Replace("AmountOfCost", BackstabEnergyCost.ToString());
+
+
+        AssignSpellsOnButtons(SinisterStrike, SinisterStrikeDescription, Eviscerate, EviscerateDescription, Vanish, VanishDescription, Backstab, BackstabDescription);
     }
 
     // Update is called once per frame
@@ -96,8 +129,7 @@ public class RogueCombatSystem : PlayerCombat
 
     void Vanish()
     {
-        if (SpellChecks.CheckSpell(VanishOnCooldown, "Spell on cooldown!") &&
-        SpellChecks.CheckSpell(InCombat, "You cannot use this in combat!")
+        if (SpellChecks.CheckSpell(VanishOnCooldown, "Spell on cooldown!")
         && SpellChecks.CheckSpell(stealth, "You are invisible already!")
         && SpellChecks.CheckSpell(SpellCheckAssigned, "You cannot use that now!")
         && SpellChecks.CheckSpell(!PlayerMovement.instance.OnGround, "You cannot do that now!"))
@@ -131,11 +163,14 @@ public class RogueCombatSystem : PlayerCombat
 
     #region Sinister Strike - Body Functions
 
+
     /// <summary>
     /// Starts the Sinister Strike Animation
     /// </summary>
     void SinisterStrikeStart()
     {
+        stealthDamage = stealth ? VanishDamageMultiplier : 0;
+
         if (stealth) ToogleInvisibility();
         SpellCheckAssigned = true;
         playerData.animator.SetBool("SinisterStrike", true);
@@ -149,7 +184,7 @@ public class RogueCombatSystem : PlayerCombat
     /// </summary>
     void SinisterStrikeDamage()
     {
-        DealDamage(Target.instance.getCurrEnemy(), SinisterStrikeDamageMultiplier);
+        DealDamage(Target.instance.getCurrEnemy(), SinisterStrikeDamageMultiplier + stealthDamage);
         ComboPoints += SinisterStrikeComboPointsToAdd;
         ComboPoints = Mathf.Clamp(ComboPoints, 0, MaxComboPoints);
 
@@ -175,6 +210,8 @@ public class RogueCombatSystem : PlayerCombat
     /// </summary>
     void EviscerateStart()
     {
+        stealthDamage = stealth ? VanishDamageMultiplier : 0;
+
         if (stealth) ToogleInvisibility();
         playerData.animator.SetBool("Eviscerate", true);
         playerData.UpdateSpellResource(-EviscerateEnergyCost);
@@ -182,12 +219,13 @@ public class RogueCombatSystem : PlayerCombat
         SpellCheckAssigned = true;
     }
 
+
     /// <summary>
     /// Eviscerate - Deal Damage
     /// </summary>
     void EviscerateDamage()
     {
-        DealDamage(Target.instance.getCurrEnemy(), EviscerateDamageMultiplier * ComboPoints);
+        DealDamage(Target.instance.getCurrEnemy(), EviscerateDamageMultiplier * ComboPoints + stealthDamage);
         DisplayDamageText(ComboPoints.ToString() + " Combo used", Color.yellow);
         ComboPoints = 0;
     }
@@ -249,6 +287,8 @@ public class RogueCombatSystem : PlayerCombat
     void BackstabStart()
     {
         SpellCheckAssigned = true;
+        stealthDamage = stealth ? VanishDamageMultiplier : 0;
+
         if (stealth) ToogleInvisibility();
         playerData.UpdateSpellResource(-BackstabEnergyCost);
         SpellResourceRegen = true;
@@ -257,7 +297,7 @@ public class RogueCombatSystem : PlayerCombat
 
     void BackstabDamage()
     {
-        DealDamage(Target.instance.getCurrEnemy(), VanishDamageMultiplier + BackstabDamageMultiplier);
+        DealDamage(Target.instance.getCurrEnemy(), stealthDamage + BackstabDamageMultiplier);
         ComboPoints += BackstabComboPointsToAdd;
         ComboPoints = Mathf.Clamp(ComboPoints, 0, MaxComboPoints);
         DisplayDamageText(ComboPoints.ToString() + " Combo", Color.yellow);
@@ -275,7 +315,9 @@ public class RogueCombatSystem : PlayerCombat
     public override void AddComboPoints()
     {
         ComboPoints++;
-        DisplayDamageText(ComboPoints.ToString() + " Combo",Color.yellow);
+        ComboPoints = Mathf.Clamp(ComboPoints, 0, MaxComboPoints);
+
+        DisplayDamageText(ComboPoints.ToString() + " Combo", Color.yellow);
     }
 
 }

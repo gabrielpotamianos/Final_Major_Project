@@ -13180,7 +13180,7 @@ PrefabInstance:
     - target: {fileID: 2791628901684255203, guid: 5b527e5d4087e7444934ad3d49e45790,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -31.213333
+      value: -30.11111
       objectReference: {fileID: 0}
     - target: {fileID: 2791628901684255203, guid: 5b527e5d4087e7444934ad3d49e45790,
         type: 3}
@@ -31584,6 +31584,69 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8328299247234856350, guid: 2ae577436e80a444ca17acc4a05fe49f,
+        type: 3}
+      propertyPath: m_Avatar
+      value: 
+      objectReference: {fileID: 9000000, guid: db305ea35a4a00147b625282f9e3e518, type: 3}
+    - target: {fileID: 7855487586998632422, guid: 2ae577436e80a444ca17acc4a05fe49f,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7855487586998632422, guid: 2ae577436e80a444ca17acc4a05fe49f,
+        type: 3}
+      propertyPath: m_Speed
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6934457085767963018, guid: 2ae577436e80a444ca17acc4a05fe49f,
+        type: 3}
+      propertyPath: m_UseGravity
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6934457085767963018, guid: 2ae577436e80a444ca17acc4a05fe49f,
+        type: 3}
+      propertyPath: m_CollisionDetection
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6934457085767963018, guid: 2ae577436e80a444ca17acc4a05fe49f,
+        type: 3}
+      propertyPath: m_IsKinematic
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6934457085767963018, guid: 2ae577436e80a444ca17acc4a05fe49f,
+        type: 3}
+      propertyPath: m_Interpolate
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6934457085767963018, guid: 2ae577436e80a444ca17acc4a05fe49f,
+        type: 3}
+      propertyPath: m_Constraints
+      value: 122
+      objectReference: {fileID: 0}
+    - target: {fileID: 6034257413975000155, guid: 2ae577436e80a444ca17acc4a05fe49f,
+        type: 3}
+      propertyPath: m_RootBone
+      value: 
+      objectReference: {fileID: 859106853}
+    - target: {fileID: 6034257413975000155, guid: 2ae577436e80a444ca17acc4a05fe49f,
+        type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: -4662104731284634478, guid: db305ea35a4a00147b625282f9e3e518,
+        type: 3}
+    - target: {fileID: 4071708054681633804, guid: 2ae577436e80a444ca17acc4a05fe49f,
+        type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: -6136973117586404918, guid: db305ea35a4a00147b625282f9e3e518,
+        type: 3}
+    - target: {fileID: 3873442926492767003, guid: 2ae577436e80a444ca17acc4a05fe49f,
+        type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: -1959337268006894503, guid: db305ea35a4a00147b625282f9e3e518,
+        type: 3}
     - target: {fileID: 6934457085767963019, guid: 2ae577436e80a444ca17acc4a05fe49f,
         type: 3}
       propertyPath: CentrePatrolPointPatrol
@@ -31766,69 +31829,6 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 11400000, guid: e683609fb0f9a0b419438486bb7b4a93,
         type: 2}
-    - target: {fileID: 6934457085767963018, guid: 2ae577436e80a444ca17acc4a05fe49f,
-        type: 3}
-      propertyPath: m_UseGravity
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6934457085767963018, guid: 2ae577436e80a444ca17acc4a05fe49f,
-        type: 3}
-      propertyPath: m_CollisionDetection
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 6934457085767963018, guid: 2ae577436e80a444ca17acc4a05fe49f,
-        type: 3}
-      propertyPath: m_IsKinematic
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6934457085767963018, guid: 2ae577436e80a444ca17acc4a05fe49f,
-        type: 3}
-      propertyPath: m_Interpolate
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6934457085767963018, guid: 2ae577436e80a444ca17acc4a05fe49f,
-        type: 3}
-      propertyPath: m_Constraints
-      value: 122
-      objectReference: {fileID: 0}
-    - target: {fileID: 7855487586998632422, guid: 2ae577436e80a444ca17acc4a05fe49f,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7855487586998632422, guid: 2ae577436e80a444ca17acc4a05fe49f,
-        type: 3}
-      propertyPath: m_Speed
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8328299247234856350, guid: 2ae577436e80a444ca17acc4a05fe49f,
-        type: 3}
-      propertyPath: m_Avatar
-      value: 
-      objectReference: {fileID: 9000000, guid: db305ea35a4a00147b625282f9e3e518, type: 3}
-    - target: {fileID: 6034257413975000155, guid: 2ae577436e80a444ca17acc4a05fe49f,
-        type: 3}
-      propertyPath: m_RootBone
-      value: 
-      objectReference: {fileID: 859106853}
-    - target: {fileID: 6034257413975000155, guid: 2ae577436e80a444ca17acc4a05fe49f,
-        type: 3}
-      propertyPath: m_Mesh
-      value: 
-      objectReference: {fileID: -4662104731284634478, guid: db305ea35a4a00147b625282f9e3e518,
-        type: 3}
-    - target: {fileID: 4071708054681633804, guid: 2ae577436e80a444ca17acc4a05fe49f,
-        type: 3}
-      propertyPath: m_Mesh
-      value: 
-      objectReference: {fileID: -6136973117586404918, guid: db305ea35a4a00147b625282f9e3e518,
-        type: 3}
-    - target: {fileID: 3873442926492767003, guid: 2ae577436e80a444ca17acc4a05fe49f,
-        type: 3}
-      propertyPath: m_Mesh
-      value: 
-      objectReference: {fileID: -1959337268006894503, guid: db305ea35a4a00147b625282f9e3e518,
-        type: 3}
     m_RemovedComponents:
     - {fileID: 6934457085767963019, guid: 2ae577436e80a444ca17acc4a05fe49f, type: 3}
     - {fileID: 7603729633663586610, guid: 2ae577436e80a444ca17acc4a05fe49f, type: 3}
@@ -32709,7 +32709,6 @@ MonoBehaviour:
   offsetCameraBase: {x: 0, y: 1, z: 0}
   velocity: {x: 0, y: 0, z: 0}
   CameraSpeed: 0
-  TestResoultion: {fileID: 0}
 --- !u!1001 &683843634
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -48539,7 +48538,6 @@ MonoBehaviour:
     HealthRegenerationPercentage: 0
     AttackPower: 0
     HitChance: 0
-    Defence: 0
     Armour: 0
     Dodge: 0
   items:
@@ -79184,6 +79182,23 @@ MonoBehaviour:
   Alive: 1
   Name: The warlking tree geeeeeeeeez
   animator: {fileID: 0}
+  SightRange: 0
+  MaxCombatDistance: 0
+  AttackRange: 0
+  statistics:
+    CurrentHealth: 1000
+    MaxHealth: 1000
+    HealthRegenerationPercentage: 10
+    AttackPower: 100
+    HitChance: 0
+    Armour: 0
+    Dodge: 0
+  CentrePatrolPointPatrol: {fileID: 209790721954704124}
+  agent: {fileID: 0}
+  rangeSphere: 10
+  Hostile: 0
+  playerCombat: {fileID: 0}
+  LootInventory: {fileID: 0}
   AllPossibleItems:
   - {fileID: 11400000, guid: e97d7483f71f98d46a34f8786fb72d70, type: 2}
   - {fileID: 11400000, guid: 94f7f719b7c621747888b9f3ae6a5282, type: 2}
@@ -79194,21 +79209,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: f2aee3d3c442df3459aaf24e9f8688b0, type: 2}
   - {fileID: 11400000, guid: e683609fb0f9a0b419438486bb7b4a93, type: 2}
   ChanceOfItemDrop: 6400000064000000640000006400000064000000640000006400000064000000
-  statistics:
-    CurrentHealth: 1000
-    MaxHealth: 1000
-    HealthRegenerationPercentage: 10
-    AttackPower: 100
-    HitChance: 0
-    Defence: 0
-    Armour: 0
-    Dodge: 0
-  CentrePatrolPointPatrol: {fileID: 209790721954704124}
-  agent: {fileID: 0}
-  rangeSphere: 10
-  Hostile: 0
-  playerCombat: {fileID: 0}
-  LootInventory: {fileID: 0}
+  PatrolFrequencyTime: 0
 --- !u!114 &1542428112
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -87688,6 +87689,23 @@ MonoBehaviour:
   Alive: 1
   Name: The warlking tree geeeeeeeeez
   animator: {fileID: 0}
+  SightRange: 0
+  MaxCombatDistance: 0
+  AttackRange: 0
+  statistics:
+    CurrentHealth: 1000
+    MaxHealth: 1000
+    HealthRegenerationPercentage: 10
+    AttackPower: 100
+    HitChance: 0
+    Armour: 0
+    Dodge: 0
+  CentrePatrolPointPatrol: {fileID: 209790721954704124}
+  agent: {fileID: 0}
+  rangeSphere: 10
+  Hostile: 0
+  playerCombat: {fileID: 0}
+  LootInventory: {fileID: 0}
   AllPossibleItems:
   - {fileID: 11400000, guid: e97d7483f71f98d46a34f8786fb72d70, type: 2}
   - {fileID: 11400000, guid: 94f7f719b7c621747888b9f3ae6a5282, type: 2}
@@ -87698,21 +87716,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: f2aee3d3c442df3459aaf24e9f8688b0, type: 2}
   - {fileID: 11400000, guid: e683609fb0f9a0b419438486bb7b4a93, type: 2}
   ChanceOfItemDrop: 6400000064000000640000006400000064000000640000006400000064000000
-  statistics:
-    CurrentHealth: 1000
-    MaxHealth: 1000
-    HealthRegenerationPercentage: 10
-    AttackPower: 100
-    HitChance: 0
-    Defence: 0
-    Armour: 0
-    Dodge: 0
-  CentrePatrolPointPatrol: {fileID: 209790721954704124}
-  agent: {fileID: 0}
-  rangeSphere: 10
-  Hostile: 0
-  playerCombat: {fileID: 0}
-  LootInventory: {fileID: 0}
+  PatrolFrequencyTime: 0
 --- !u!4 &1731763108 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2098136242901391588, guid: 2ae577436e80a444ca17acc4a05fe49f,
@@ -110609,6 +110613,74 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8328299247234856350, guid: 2ae577436e80a444ca17acc4a05fe49f,
+        type: 3}
+      propertyPath: m_Avatar
+      value: 
+      objectReference: {fileID: 9000000, guid: db305ea35a4a00147b625282f9e3e518, type: 3}
+    - target: {fileID: 8328299247234856350, guid: 2ae577436e80a444ca17acc4a05fe49f,
+        type: 3}
+      propertyPath: m_ApplyRootMotion
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7855487586998632422, guid: 2ae577436e80a444ca17acc4a05fe49f,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7855487586998632422, guid: 2ae577436e80a444ca17acc4a05fe49f,
+        type: 3}
+      propertyPath: m_Speed
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6934457085767963018, guid: 2ae577436e80a444ca17acc4a05fe49f,
+        type: 3}
+      propertyPath: m_UseGravity
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6934457085767963018, guid: 2ae577436e80a444ca17acc4a05fe49f,
+        type: 3}
+      propertyPath: m_CollisionDetection
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6934457085767963018, guid: 2ae577436e80a444ca17acc4a05fe49f,
+        type: 3}
+      propertyPath: m_IsKinematic
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6934457085767963018, guid: 2ae577436e80a444ca17acc4a05fe49f,
+        type: 3}
+      propertyPath: m_Interpolate
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6934457085767963018, guid: 2ae577436e80a444ca17acc4a05fe49f,
+        type: 3}
+      propertyPath: m_Constraints
+      value: 122
+      objectReference: {fileID: 0}
+    - target: {fileID: 6034257413975000155, guid: 2ae577436e80a444ca17acc4a05fe49f,
+        type: 3}
+      propertyPath: m_RootBone
+      value: 
+      objectReference: {fileID: 260466291}
+    - target: {fileID: 6034257413975000155, guid: 2ae577436e80a444ca17acc4a05fe49f,
+        type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: -4662104731284634478, guid: db305ea35a4a00147b625282f9e3e518,
+        type: 3}
+    - target: {fileID: 4071708054681633804, guid: 2ae577436e80a444ca17acc4a05fe49f,
+        type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: -6136973117586404918, guid: db305ea35a4a00147b625282f9e3e518,
+        type: 3}
+    - target: {fileID: 3873442926492767003, guid: 2ae577436e80a444ca17acc4a05fe49f,
+        type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: -1959337268006894503, guid: db305ea35a4a00147b625282f9e3e518,
+        type: 3}
     - target: {fileID: 6934457085767963019, guid: 2ae577436e80a444ca17acc4a05fe49f,
         type: 3}
       propertyPath: CentrePatrolPointPatrol
@@ -110791,74 +110863,6 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 11400000, guid: e683609fb0f9a0b419438486bb7b4a93,
         type: 2}
-    - target: {fileID: 6934457085767963018, guid: 2ae577436e80a444ca17acc4a05fe49f,
-        type: 3}
-      propertyPath: m_UseGravity
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6934457085767963018, guid: 2ae577436e80a444ca17acc4a05fe49f,
-        type: 3}
-      propertyPath: m_CollisionDetection
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 6934457085767963018, guid: 2ae577436e80a444ca17acc4a05fe49f,
-        type: 3}
-      propertyPath: m_IsKinematic
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6934457085767963018, guid: 2ae577436e80a444ca17acc4a05fe49f,
-        type: 3}
-      propertyPath: m_Interpolate
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6934457085767963018, guid: 2ae577436e80a444ca17acc4a05fe49f,
-        type: 3}
-      propertyPath: m_Constraints
-      value: 122
-      objectReference: {fileID: 0}
-    - target: {fileID: 7855487586998632422, guid: 2ae577436e80a444ca17acc4a05fe49f,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7855487586998632422, guid: 2ae577436e80a444ca17acc4a05fe49f,
-        type: 3}
-      propertyPath: m_Speed
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8328299247234856350, guid: 2ae577436e80a444ca17acc4a05fe49f,
-        type: 3}
-      propertyPath: m_Avatar
-      value: 
-      objectReference: {fileID: 9000000, guid: db305ea35a4a00147b625282f9e3e518, type: 3}
-    - target: {fileID: 8328299247234856350, guid: 2ae577436e80a444ca17acc4a05fe49f,
-        type: 3}
-      propertyPath: m_ApplyRootMotion
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6034257413975000155, guid: 2ae577436e80a444ca17acc4a05fe49f,
-        type: 3}
-      propertyPath: m_RootBone
-      value: 
-      objectReference: {fileID: 260466291}
-    - target: {fileID: 6034257413975000155, guid: 2ae577436e80a444ca17acc4a05fe49f,
-        type: 3}
-      propertyPath: m_Mesh
-      value: 
-      objectReference: {fileID: -4662104731284634478, guid: db305ea35a4a00147b625282f9e3e518,
-        type: 3}
-    - target: {fileID: 4071708054681633804, guid: 2ae577436e80a444ca17acc4a05fe49f,
-        type: 3}
-      propertyPath: m_Mesh
-      value: 
-      objectReference: {fileID: -6136973117586404918, guid: db305ea35a4a00147b625282f9e3e518,
-        type: 3}
-    - target: {fileID: 3873442926492767003, guid: 2ae577436e80a444ca17acc4a05fe49f,
-        type: 3}
-      propertyPath: m_Mesh
-      value: 
-      objectReference: {fileID: -1959337268006894503, guid: db305ea35a4a00147b625282f9e3e518,
-        type: 3}
     m_RemovedComponents:
     - {fileID: 6934457085767963019, guid: 2ae577436e80a444ca17acc4a05fe49f, type: 3}
     - {fileID: 7603729633663586610, guid: 2ae577436e80a444ca17acc4a05fe49f, type: 3}
