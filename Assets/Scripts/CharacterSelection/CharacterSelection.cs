@@ -58,7 +58,8 @@ public class CharacterSelection : MonoBehaviour
                     break;
             }
 
-
+            if(allCharacters[i].items.Count>0)
+                print(allCharacters[i].items.Count);
             //Translates character information (race, breed, maybe name) to the UI Buttons
             DisplayCharacterInfo(CharacterInfoUIButtons[i], allCharacters[i]);
 
@@ -68,7 +69,6 @@ public class CharacterSelection : MonoBehaviour
         {
             SelectedCharacter = allCharacters[0];
             CharacterInfoUIButtons[0].transform.GetChild(2).GetComponent<Button>().Select();
-            print(CharacterInfoUIButtons[0].transform.GetChild(2).GetComponent<Button>().colors.selectedColor);
         }
 
         //Enables Character GameObject in the scene based on the selected character (default - first one)

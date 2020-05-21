@@ -16,12 +16,12 @@ public class SceneInit : MonoBehaviour
         if (instance == null)
             instance = this;
         else Debug.LogError("many instances going on");
-        player = GameObject.Find("Warrior (2)");
+        // player = GameObject.Find("Warrior (2)");
 
-        CharacterSelection.ChosenCharacter = new CharacterInfo();
-        CharacterSelection.ChosenCharacter.breed = (CharacterInfo.Breed)Enum.Parse(typeof(CharacterInfo.Breed), player.tag);
-        CharacterSelection.ChosenCharacter.Character=GameObject.FindGameObjectWithTag(CharacterSelection.ChosenCharacter.breed.ToString());
-        CharacterSelection.ChosenCharacter.Character.GetComponent<Rigidbody>().isKinematic=false;
+        // CharacterSelection.ChosenCharacter = new CharacterInfo();
+        // CharacterSelection.ChosenCharacter.breed = (CharacterInfo.Breed)Enum.Parse(typeof(CharacterInfo.Breed), player.tag);
+        // CharacterSelection.ChosenCharacter.Character=GameObject.FindGameObjectWithTag(CharacterSelection.ChosenCharacter.breed.ToString());
+        CharacterSelection.ChosenCharacter.Character.GetComponent<Rigidbody>().isKinematic = false;
         GameObject.FindGameObjectWithTag(CharacterSelection.ChosenCharacter.breed.ToString()).GetComponent<PlayerData>().enabled = true;
 
         GameObject.FindGameObjectWithTag(CharacterSelection.ChosenCharacter.breed.ToString()).GetComponent<PlayerMovement>().enabled = true;
@@ -45,6 +45,7 @@ public class SceneInit : MonoBehaviour
 
         }
 
+
     }
 
     /// <summary>
@@ -53,9 +54,14 @@ public class SceneInit : MonoBehaviour
     /// </summary>
     void Start()
     {
-
+        if (CharacterSelection.ChosenCharacter.items.Count > 0)
+            foreach (var a in CharacterSelection.ChosenCharacter.items)
+            {
+                print(a.name);
+                PlayerInventory.instance.AddItem(a);
+            }
     }
 
-    
+
 
 }

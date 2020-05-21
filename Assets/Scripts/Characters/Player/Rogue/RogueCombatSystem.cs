@@ -89,7 +89,7 @@ public class RogueCombatSystem : PlayerCombat
         EviscerateDescription = EviscerateDescription.Replace("AmountOfCost", EviscerateEnergyCost.ToString());
 
         VanishDescription = VanishDescription.Replace("AmountOfDamage", ((int)VanishDamageMultiplier).ToString());
-        VanishDescription = VanishDescription.Replace("AmountOfCost", "0");
+        VanishDescription = VanishDescription.Replace("AmountOfSeconds", VanishTime.ToString());
 
         BackstabDescription = BackstabDescription.Replace("AmountOfDamage", ((int)BackstabDamageMultiplier).ToString());
         BackstabDescription = BackstabDescription.Replace("AmountOfCost", BackstabEnergyCost.ToString());
@@ -184,11 +184,7 @@ public class RogueCombatSystem : PlayerCombat
     /// </summary>
     void SinisterStrikeDamage()
     {
-        DealDamage(Target.instance.getCurrEnemy(), SinisterStrikeDamageMultiplier + stealthDamage);
-        ComboPoints += SinisterStrikeComboPointsToAdd;
-        ComboPoints = Mathf.Clamp(ComboPoints, 0, MaxComboPoints);
-
-        DisplayDamageText(ComboPoints.ToString() + " Combo", Color.yellow);
+        DealDamage(Target.instance.getCurrEnemy(), SinisterStrikeDamageMultiplier + stealthDamage,AddComboPoints,SinisterStrikeComboPointsToAdd);
     }
 
     /// <summary>
@@ -225,9 +221,7 @@ public class RogueCombatSystem : PlayerCombat
     /// </summary>
     void EviscerateDamage()
     {
-        DealDamage(Target.instance.getCurrEnemy(), EviscerateDamageMultiplier * ComboPoints + stealthDamage);
-        DisplayDamageText(ComboPoints.ToString() + " Combo used", Color.yellow);
-        ComboPoints = 0;
+        DealDamage(Target.instance.getCurrEnemy(), EviscerateDamageMultiplier * ComboPoints + stealthDamage,UseComboPoints,ComboPoints);
     }
 
     /// <summary>
@@ -297,11 +291,7 @@ public class RogueCombatSystem : PlayerCombat
 
     void BackstabDamage()
     {
-        DealDamage(Target.instance.getCurrEnemy(), stealthDamage + BackstabDamageMultiplier);
-        ComboPoints += BackstabComboPointsToAdd;
-        ComboPoints = Mathf.Clamp(ComboPoints, 0, MaxComboPoints);
-        DisplayDamageText(ComboPoints.ToString() + " Combo", Color.yellow);
-
+        DealDamage(Target.instance.getCurrEnemy(), stealthDamage + BackstabDamageMultiplier,AddComboPoints,BackstabComboPointsToAdd);
     }
 
     void BackstabEnd()
@@ -312,12 +302,21 @@ public class RogueCombatSystem : PlayerCombat
 
     #endregion
 
-    public override void AddComboPoints()
-    {
-        ComboPoints++;
-        ComboPoints = Mathf.Clamp(ComboPoints, 0, MaxComboPoints);
 
+    public void AddComboPoints(int combopoints)
+    {
+        ComboPoints += combopoints;
+        ComboPoints = Mathf.Clamp(ComboPoints, 0, MaxComboPoints);
         DisplayDamageText(ComboPoints.ToString() + " Combo", Color.yellow);
     }
+
+    public void UseComboPoints(int ComboPointsToUse)
+    {
+        DisplayDamageText(ComboPointsToUse.ToString() + " Combo used", Color.yellow);
+
+        ComboPoints -= ComboPointsToUse;
+        ComboPoints = Mathf.Clamp(ComboPoints, 0, MaxComboPoints);
+    }
+
 
 }

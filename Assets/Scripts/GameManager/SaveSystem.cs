@@ -12,14 +12,15 @@ public static class SaveSystem
 
     public static void SaveNewCharacterCreated(CharacterInfo characterInfo)
     {
-        
         if (!MaximumCharactersReached())
         {
             BinaryFormatter formatter = new BinaryFormatter();
             FileStream stream = new FileStream(path, FileMode.Append);
             CharacterInfo info = characterInfo;
 
-            formatter.Serialize(stream, info);
+            string jsonFile = JsonUtility.ToJson(info);
+
+            formatter.Serialize(stream, jsonFile);
             stream.Close();
             currCharacters++;
         }
@@ -34,12 +35,30 @@ public static class SaveSystem
         for (int i = 0; i < charInfoList.Count; i++)
         {
             CharacterInfo info = charInfoList[i];
+            string jsonFile = JsonUtility.ToJson(info);
 
-            formatter.Serialize(stream, info);
+            formatter.Serialize(stream, jsonFile);
             currCharacters++;
 
         }
         stream.Close();
+
+    }
+
+    public static void SaveCharacterOverwrite(CharacterInfo charInfo)
+    {
+        List<CharacterInfo> CharArray = LoadAllCharacters();
+
+        for (int i = 0; i < CharArray.Count; i++)
+        {
+            if (CharArray[i].IsTheSame(charInfo))
+            {
+                CharArray[i] = charInfo;
+                break;
+            }
+        }
+
+        SaveAllCharactersOverwrite(CharArray);
 
     }
 
@@ -50,16 +69,17 @@ public static class SaveSystem
             BinaryFormatter formatter = new BinaryFormatter();
             FileStream stream = new FileStream(path, FileMode.Open);
 
-            CharacterInfo deserializeInfo = (CharacterInfo)formatter.Deserialize(stream);
+            string JsonFile = (string)formatter.Deserialize(stream);
 
-            CharacterInfo info = new CharacterInfo(deserializeInfo.race, deserializeInfo.breed);
+
+            CharacterInfo info = JsonUtility.FromJson<CharacterInfo>(JsonFile);
             stream.Close();
             return info;
         }
         else
         {
             CharacterInfo info = new CharacterInfo();
-            return info ;
+            return info;
             throw new System.NullReferenceException("LOAD FILE DO NOT EXIST");
 
         }
@@ -74,14 +94,14 @@ public static class SaveSystem
         {
             BinaryFormatter formatter = new BinaryFormatter();
             FileStream stream = new FileStream(path, FileMode.Open);
-            while(stream.Length>stream.Position)
+            while (stream.Length > stream.Position)
             {
-               
-                CharacterInfo deserializeInfo = (CharacterInfo)formatter.Deserialize(stream);
 
-                CharacterInfo temporary = new CharacterInfo(deserializeInfo.race, deserializeInfo.breed);
+                string JsonFile = (string)formatter.Deserialize(stream);
 
-                InfoArray.Add(temporary);
+                CharacterInfo info = JsonUtility.FromJson<CharacterInfo>(JsonFile);
+
+                InfoArray.Add(info);
                 currCharacters++;
 
             }
@@ -108,21 +128,22 @@ public static class SaveSystem
             FileStream stream = new FileStream(path, FileMode.Open);
             while (stream.Length > stream.Position)
             {
-                CharacterInfo deserializeInfo = (CharacterInfo)formatter.Deserialize(stream);
+                string jsonFile = (string)formatter.Deserialize(stream);
                 currCharacters++;
-                Debug.Log(currCharacters);
             }
             stream.Close();
         }
-        return currCharacters>=Constants.MAXIMUM_CHARACTERS;
+        return currCharacters >= Constants.MAXIMUM_CHARACTERS;
     }
 
     public static bool HasSave()
     {
-        if(File.Exists(path))
+        if (File.Exists(path))
             return true;
         return false;
     }
+
+
 
 
 }

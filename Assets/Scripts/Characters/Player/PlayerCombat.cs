@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
+using System;
 
 public class PlayerCombat : Combat
 {
@@ -19,10 +20,10 @@ public class PlayerCombat : Combat
     Button Spell3Button;
     Button Spell4Button;
 
+    public delegate void ComboPointsCallback(int comboPoints);
 
     protected override void Start()
     {
-
         SpellChecks.CombatAngle = CombatAngle;
         base.Start();
         playerData = GetComponent<PlayerData>();
@@ -77,31 +78,34 @@ public class PlayerCombat : Combat
             Mathf.Clamp(playerData.statistics.CurrentSpellResource, 0, Constants.WARRIOR_MAX_RAGE);
         }
     }
-    public virtual void AddComboPoints()
-    {
-        //I have no access to Rogue's Combo Points from here
-        //Therefore, I created a virutal function to be overriden in order to get rid of the error
-    }
 
-
-
-    public void DealDamage(EnemyCombat enemy, float damage)
+    public void DealDamage(EnemyCombat enemy, float damage, Action<int> AddOrUseComboPoints = null, int comboPoints = 0)
     {
         if (enemy)
         {
             ResetCombatCoroutine();
-            if (playerData.statistics.HitChance > Random.Range(0, 100))
-                if (playerData.statistics.CriticalStrike > Random.Range(0, 100))
+            if (playerData.statistics.HitChance > UnityEngine.Random.Range(0, 100))
+                if (playerData.statistics.CriticalStrike > UnityEngine.Random.Range(0, 100))
+                {
                     enemy.TakeDamage(playerData.statistics.AttackPower * damage / 100 * 2);
-                else enemy.TakeDamage(playerData.statistics.AttackPower * damage / 100);
+                    if(AddOrUseComboPoints!=null)
+                        AddOrUseComboPoints.Invoke(comboPoints);
+
+                }
+                else
+                {
+                    enemy.TakeDamage(playerData.statistics.AttackPower * damage / 100);
+                    if(AddOrUseComboPoints!=null)
+                        AddOrUseComboPoints.Invoke(comboPoints);
+                }
             else enemy.TakeDamage(0);
         }
     }
 
     public void DealDamageAnimationEvent()
     {
-        if (playerData.statistics.HitChance > Random.Range(0, 100))
-            if (playerData.statistics.CriticalStrike > Random.Range(0, 100))
+        if (playerData.statistics.HitChance > UnityEngine.Random.Range(0, 100))
+            if (playerData.statistics.CriticalStrike > UnityEngine.Random.Range(0, 100))
                 Target.instance.getCurrEnemy().TakeDamage(playerData.statistics.AttackPower * 2);
             else Target.instance.getCurrEnemy().TakeDamage(playerData.statistics.AttackPower);
         else Target.instance.getCurrEnemy().TakeDamage(0);
@@ -111,8 +115,8 @@ public class PlayerCombat : Combat
     public override void TakeDamage(float damage)
     {
         if (damage > 0)
-            if (playerData.statistics.Dodge < Random.Range(0, 100))
-                if (playerData.statistics.Parry < Random.Range(0, 100))
+            if (playerData.statistics.Dodge < UnityEngine.Random.Range(0, 100))
+                if (playerData.statistics.Parry < UnityEngine.Random.Range(0, 100))
                 {
                     damage = damage * (damage / (damage + playerData.statistics.Armour));
                     ResetCombatCoroutine();
@@ -126,7 +130,7 @@ public class PlayerCombat : Combat
 
     public override void DealDamage()
     {
-        if (playerData.statistics.HitChance > Random.Range(0, 100))
+        if (playerData.statistics.HitChance > UnityEngine.Random.Range(0, 100))
             Target.instance.getCurrEnemy().TakeDamage(playerData.statistics.AttackPower);
         else Target.instance.getCurrEnemy().TakeDamage(0);
         ResetCombatCoroutine();

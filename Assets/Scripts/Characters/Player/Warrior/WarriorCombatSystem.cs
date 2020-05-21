@@ -22,6 +22,10 @@ public class WarriorCombatSystem : PlayerCombat
     public float ChargeRange;
     public bool ChargeOnCooldown = false;
 
+    [TextArea]
+    public string ChargeDescription;
+
+
     [Space(10)]
 
     public Sprite MortalStrikeSprite;
@@ -29,6 +33,10 @@ public class WarriorCombatSystem : PlayerCombat
     public float MortalStrikeDamageMultiplier;
     public float MortalStrikeAbilityCost;
     public bool MortalStrikeOnCooldown = false;
+
+    [TextArea]
+    public string MortalStrikeDescription;
+
 
     [Space(10)]
     public Sprite BladestormSprite;
@@ -40,15 +48,31 @@ public class WarriorCombatSystem : PlayerCombat
     public LayerMask BladestormLayers;
     public bool BladestormOnCooldown = false;
 
+    [TextArea]
+    public string BladestormDescription;
+
     [HideInInspector]
     public static int BladestormSeconds = 0;
     // Start is called before the first frame update
     protected override void Start()
     {
+        ChargeDescription = ChargeDescription.Replace("AmountOfDamage", ((int)ChargeDamageMultiplier).ToString());
+        ChargeDescription = ChargeDescription.Replace("AmountOfCost", "0");
+        ChargeDescription = ChargeDescription.Replace("AmountOfRage", AddUpRage.ToString());
+
+
+        MortalStrikeDescription = MortalStrikeDescription.Replace("AmountOfDamage", ((int)MortalStrikeDamageMultiplier).ToString());
+        MortalStrikeDescription = MortalStrikeDescription.Replace("AmountOfCost", MortalStrikeAbilityCost.ToString());
+
+        BladestormDescription = BladestormDescription.Replace("AmountOfDamage", ((int)BladestormDamageMultiplier).ToString());
+        BladestormDescription = BladestormDescription.Replace("AmountOfSeconds", BladestormAbilityTime.ToString());
+        BladestormDescription = BladestormDescription.Replace("AmountOfCost", BladestormAbilityCost.ToString());
+
+
 
         base.Start();
         playerData.SetSpellsUI(ChargeSprite, MortalStrikeSprite, BladestormSprite);
-        AssignSpellsOnButtons(Charge, MortalStrike, Bladestorm);
+        AssignSpellsOnButtons(Charge, ChargeDescription, MortalStrike, MortalStrikeDescription, Bladestorm, BladestormDescription);
     }
 
     // Update is called once per frame

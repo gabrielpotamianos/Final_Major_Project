@@ -58,9 +58,8 @@ public class HooverOver : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
             GetItemStats(slot.item, IsThisVendor);
             canvasGroup.alpha = 1;
         }
-        else
+        else if(parentInventory==null && slot==null)
         {
-            print(gameObject.name);
             currentSelectedObject = gameObject;
             canvasGroup.GetComponent<Canvas>().sortingOrder += 1;
             ToolTipText.text = Message;
@@ -73,8 +72,9 @@ public class HooverOver : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     {
         if (parentInventory && slot && parentInventory.visible && !slot.IsSlotEmpty())
             TurnOffToolTip();
-        else if(ToolTipText.text==Message)
+        else if (currentSelectedObject == gameObject && ToolTipText.text == Message)
             TurnOffToolTip();
+
     }
 
     void GetItemStats(Item item, bool IsItVendor)

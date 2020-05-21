@@ -208,7 +208,6 @@ public class FiniteStateMachine
         {
             yield return new WaitForSeconds(time);
 
-            Debug.Log(enemy.FSMMachine.GetCurrState() == this);
             if (enemy.FSMMachine.GetCurrState() == this)
                 enemy.FSMMachine.ChangeState(Wander.Instance);
             else yield break;

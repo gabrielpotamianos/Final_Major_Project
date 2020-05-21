@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System.Linq;
 public class InGameMenu : MonoBehaviour
 {
     public GameObject MenuPanel;
@@ -37,7 +38,7 @@ public class InGameMenu : MonoBehaviour
     {
         canvas.alpha = 0;
         canvas.blocksRaycasts = false;
-        canvas.interactable=false;
+        canvas.interactable = false;
         Time.timeScale = 1.0f;
     }
 
@@ -51,6 +52,15 @@ public class InGameMenu : MonoBehaviour
         Time.timeScale = 1;
         canvas.alpha = 0;
         canvas.blocksRaycasts = false;
+    }
+
+    public void SaveCharacter()
+    {
+        CharacterSelection.ChosenCharacter.name = CharacterSelection.ChosenCharacter.Character.GetComponent<PlayerData>().Name;
+        CharacterSelection.ChosenCharacter.items = PlayerInventory.instance.GetItems().Keys.ToList();
+        CharacterSelection.ChosenCharacter.Position = PlayerData.instance.transform.position;
+        CharacterSelection.ChosenCharacter.Rotation= PlayerData.instance.transform.eulerAngles;
+        SaveSystem.SaveCharacterOverwrite(CharacterSelection.ChosenCharacter);
     }
 
     /// <summary>

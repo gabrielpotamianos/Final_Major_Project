@@ -14,6 +14,7 @@ public class CharacterCreationManager : MonoBehaviour
     public static CharacterCreationManager characterCreationManager;
     public void Awake()
     {
+        currCharacterInfo = new CharacterInfo();
         ChooseCharacter();
 
         if (characterCreationManager != null)
