@@ -13,4 +13,14 @@ public class CheckForSave : MonoBehaviour
     {
         gameObject.GetComponent<Button>().interactable = SaveSystem.HasSave();
     }
+
+
+    public void BackToMenuIfNoSave()
+    {
+        var SceneManagement=GetComponent<SceneManagement>();
+
+        if(SaveSystem.HasSave())
+            SceneManagement.LoadScene("CharacterSelection");
+        else SceneManagement.LoadScene("MainMenu");
+    }
 }

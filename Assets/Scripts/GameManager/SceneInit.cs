@@ -7,6 +7,8 @@ public class SceneInit : MonoBehaviour
 {
     public GameObject player;
 
+    bool SaveLoaded = false;
+
     public static SceneInit instance;
     /// <summary>
     /// Awake is called when the script instance is being loaded.
@@ -48,20 +50,27 @@ public class SceneInit : MonoBehaviour
 
     }
 
-    /// <summary>
-    /// Start is called on the frame when a script is enabled just before
-    /// any of the Update methods is called the first time.
-    /// </summary>
-    void Start()
+    void Update()
     {
-        if (CharacterSelection.ChosenCharacter.items.Count > 0)
-            foreach (var a in CharacterSelection.ChosenCharacter.items)
-            {
-                print(a.name);
-                PlayerInventory.instance.AddItem(a);
-            }
+        if (!SaveLoaded)
+        {
+            if (PlayerData.instance && PlayerInventory.instance)
+                LoadSave();
+            SaveLoaded = true;
+        }
+
     }
 
 
-
+    private void LoadSave()
+    {
+        PlayerData.instance.transform.position = CharacterSelection.ChosenCharacter.Position;
+        PlayerData.instance.transform.eulerAngles = CharacterSelection.ChosenCharacter.Rotation;
+        PlayerData.instance.Name = CharacterSelection.ChosenCharacter.name;
+        PlayerData.instance.gold = CharacterSelection.ChosenCharacter.Gold;
+        PlayerInventory.instance.AddItem(CharacterSelection.ChosenCharacter.items, CharacterSelection.ChosenCharacter.itemsQuantities, CharacterSelection.ChosenCharacter.slots);
+        CameraMovement.Instance.transform.position = CharacterSelection.ChosenCharacter.CameraPosition;
+        CameraMovement.Instance.transform.eulerAngles = CharacterSelection.ChosenCharacter.CameraRotation;
+        CameraMovement.Instance.SetRotation(CharacterSelection.ChosenCharacter.CameraRotation.x,CharacterSelection.ChosenCharacter.CameraRotation.y);
+    }
 }

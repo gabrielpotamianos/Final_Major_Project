@@ -69,6 +69,23 @@ public class InventoryBaseClass : MonoBehaviour
         return false;
     }
 
+    public bool AddItem(List<Item> SavedItems, List<int> SavedQuantities, List<int> SavedSlots)
+    {
+        if (SavedItems.Count == SavedQuantities.Count)
+        {
+            int SlotsIncrementer = 0;
+
+            for (int i = 0; i < SavedItems.Count; i++)
+            {
+                for (int j = 0; j < SavedQuantities[i]; j++)
+                    AddItem(SavedItems[i], slots[SavedSlots[SlotsIncrementer]]);
+                SlotsIncrementer++;
+            }
+        }
+
+        return false;
+    }
+
     public virtual void RemoveItem(Slot slot)
     {
         if (items.ContainsKey(slot.item) && items[slot.item] > 1)
@@ -140,9 +157,19 @@ public class InventoryBaseClass : MonoBehaviour
         return slots;
     }
 
+    public List<int> GetAllOccupiedSlots()
+    {
+        List<int> resultSlots = new List<int>();
+        for (int i = 0; i < slots.Count; i++)
+            if (!slots[i].IsSlotEmpty())
+                resultSlots.Add(i);
+
+        return resultSlots;
+    }
+
     public bool CanAddItem(Item item)
     {
-        if(items.ContainsKey(item))
+        if (items.ContainsKey(item))
             return true;
         else return items.Keys.Count < slots.Count;
     }

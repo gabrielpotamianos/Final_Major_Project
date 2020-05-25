@@ -737,8 +737,14 @@ MonoBehaviour:
     race: 0
     breed: 0
     name: 
+    Gold: 0
     items: []
-    characterTransform: {fileID: 0}
+    itemsQuantities: 
+    slots: 
+    Position: {x: 0, y: 0, z: 0}
+    Rotation: {x: 0, y: 0, z: 0}
+    CameraPosition: {x: 0, y: 0, z: 0}
+    CameraRotation: {x: 0, y: 0, z: 0}
 --- !u!4 &101806067
 Transform:
   m_ObjectHideFlags: 0
@@ -2235,6 +2241,24 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 83c74ae0c68b5a74fb93f60e264524c1, type: 3}
+--- !u!1 &490557266 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8019239088996514115, guid: 3686d407b7a0a6f45ae1545f9add475e,
+    type: 3}
+  m_PrefabInstance: {fileID: 8019239088152284553}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &490557271
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 490557266}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 798c958fd5be51f499260de32d9d8f55, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &495495269 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 458542, guid: a3d61384a7c74304bb7688b43a03c395,
@@ -9160,7 +9184,7 @@ PrefabInstance:
     - target: {fileID: 2791628901684255203, guid: 5b527e5d4087e7444934ad3d49e45790,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 15
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2791628901684255203, guid: 5b527e5d4087e7444934ad3d49e45790,
         type: 3}
@@ -10302,6 +10326,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 629871942}
     m_Modifications:
+    - target: {fileID: 7954230164743236204, guid: 3c8b571034a1fa948a2afddc7f58a976,
+        type: 3}
+      propertyPath: m_Name
+      value: Slider
+      objectReference: {fileID: 0}
     - target: {fileID: 7954230164743236211, guid: 3c8b571034a1fa948a2afddc7f58a976,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -10406,11 +10435,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 7954230164743236204, guid: 3c8b571034a1fa948a2afddc7f58a976,
-        type: 3}
-      propertyPath: m_Name
-      value: Slider
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3c8b571034a1fa948a2afddc7f58a976, type: 3}
@@ -10533,9 +10557,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8019239088996514116, guid: 3686d407b7a0a6f45ae1545f9add475e,
         type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8019239088996514116, guid: 3686d407b7a0a6f45ae1545f9add475e,
+        type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 101806066}
+      objectReference: {fileID: 490557271}
+    - target: {fileID: 8019239088996514116, guid: 3686d407b7a0a6f45ae1545f9add475e,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: BackToMenuIfNoSave
+      objectReference: {fileID: 0}
     - target: {fileID: 8019239088996514117, guid: 3686d407b7a0a6f45ae1545f9add475e,
         type: 3}
       propertyPath: FadeInPanel

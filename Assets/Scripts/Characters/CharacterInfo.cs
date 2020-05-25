@@ -12,15 +12,25 @@ public class CharacterInfo
     public Race race;
     public Breed breed;
     public string name;
+    public float Gold;
 
     [SerializeField]
     public List<Item> items;
+    public List<int> itemsQuantities;
+    public List<int> slots;
     
     [SerializeField]
     public Vector3 Position;
 
     [SerializeField]
     public Vector3 Rotation;
+
+    [SerializeField]
+    public Vector3 CameraPosition;
+
+    [SerializeField]
+    public Vector3 CameraRotation;
+
     //[HideInInspector]
     [System.NonSerialized]
     public GameObject Character;
@@ -50,5 +60,6 @@ public class CharacterInfo
             return true;
         return false;
     }
+
 
 }

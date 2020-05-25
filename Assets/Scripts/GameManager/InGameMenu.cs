@@ -21,9 +21,6 @@ public class InGameMenu : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Escape))
             ToogleMenu();
-
-
-
     }
 
     public void ToogleMenu()
@@ -56,10 +53,16 @@ public class InGameMenu : MonoBehaviour
 
     public void SaveCharacter()
     {
-        CharacterSelection.ChosenCharacter.name = CharacterSelection.ChosenCharacter.Character.GetComponent<PlayerData>().Name;
+        CharacterSelection.ChosenCharacter.name = PlayerData.instance.Name;
         CharacterSelection.ChosenCharacter.items = PlayerInventory.instance.GetItems().Keys.ToList();
+        CharacterSelection.ChosenCharacter.itemsQuantities = PlayerInventory.instance.GetItems().Values.ToList();
         CharacterSelection.ChosenCharacter.Position = PlayerData.instance.transform.position;
-        CharacterSelection.ChosenCharacter.Rotation= PlayerData.instance.transform.eulerAngles;
+        CharacterSelection.ChosenCharacter.Rotation = PlayerData.instance.transform.eulerAngles;
+        CharacterSelection.ChosenCharacter.Gold = PlayerData.instance.gold;
+        CharacterSelection.ChosenCharacter.slots = PlayerInventory.instance.GetAllOccupiedSlots();
+        CharacterSelection.ChosenCharacter.CameraPosition = CameraMovement.Instance.transform.position;
+        CharacterSelection.ChosenCharacter.CameraRotation = new Vector3(0,PlayerData.instance.transform.rotation.eulerAngles.y,0);
+
         SaveSystem.SaveCharacterOverwrite(CharacterSelection.ChosenCharacter);
     }
 

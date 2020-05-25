@@ -85,11 +85,6 @@ public class PlayerData : CharacterData
 
         statistics.RecalculateStats();
 
-        if (CharacterSelection.ChosenCharacter.Position != Vector3.zero && CharacterSelection.ChosenCharacter.Rotation != Vector3.zero)
-        {
-            PlayerData.instance.transform.position = CharacterSelection.ChosenCharacter.Position;
-            PlayerData.instance.transform.eulerAngles = CharacterSelection.ChosenCharacter.Rotation;
-        }
 
 
     }

@@ -39,8 +39,13 @@ public class CameraMovement : MonoBehaviour
         }
     }
 
+    public static CameraMovement Instance;
+
     private void Awake()
     {
+        if (Instance != null)
+            Debug.LogError("More than one Camera Movement Scripts!!!");
+        else Instance = this;
         mousePos = Input.mousePosition;
     }
 
@@ -63,6 +68,7 @@ public class CameraMovement : MonoBehaviour
     /// </summary>
     void FixedUpdate()
     {
+
         #region Camera Rotation
 
         if (Input.GetMouseButton(1))
@@ -77,8 +83,8 @@ public class CameraMovement : MonoBehaviour
 
             mouseX = Input.GetAxis("Mouse X");
             mouseY = Input.GetAxis("Mouse Y");
-            
-            AnghelSlider.value= Mathf.Clamp(AnghelSlider.value,0.05f,1);
+
+            AnghelSlider.value = Mathf.Clamp(AnghelSlider.value, 0.05f, 1);
 
             rotY += mouseX * CameraSensitivity * AnghelSlider.value;
             rotX += mouseY * CameraSensitivity * AnghelSlider.value;
@@ -88,7 +94,6 @@ public class CameraMovement : MonoBehaviour
             Quaternion rotation = Quaternion.Euler(rotX, rotY, 0.0f);
 
             transform.rotation = rotation;
-
         }
         else if (Input.GetMouseButtonUp(1) || !Input.GetMouseButtonDown(0) && !Cursor.visible)
         {
@@ -109,7 +114,11 @@ public class CameraMovement : MonoBehaviour
     {
         Vector3 lerp = Vector3.SmoothDamp(transform.position, target.position + offsetCameraBase, ref velocity, CameraSpeed * Time.deltaTime);
         transform.position = lerp;
+    }
 
-
+    public void SetRotation(float x, float y)
+    {
+        rotX = x;
+        rotY = y;
     }
 }
