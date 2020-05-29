@@ -65,8 +65,10 @@ public class EnemyData : CharacterData
             else if (!LootInventory.visible) LootInventory.ShowInventory();
             PlayerData.instance.ToogleLoot(LootInventory.visible);
         }
-        else if (Input.GetKeyDown(KeyCode.R) && !Alive && CanLoot)
+        else if (Input.GetKeyDown(KeyCode.R) && LootInventory.visible && PlayerInventory.instance.visible && !Alive && CanLoot)
             LootInventory.GatherAllItems(ref AllPossibleItems, ref ChanceOfItemDrop);
+        else if(!LootInventory.visible && CanLoot)
+            PlayerData.instance.ToogleLoot(LootInventory.visible);
     }
 
     public void UpdateCurrentHealth(float Health)

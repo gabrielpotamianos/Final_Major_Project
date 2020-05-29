@@ -62,11 +62,7 @@ public class CameraMovement : MonoBehaviour
 
     }
 
-    bool onRotation = false;
-    /// <summary>
-    /// This function is called every fixed framerate frame, if the MonoBehaviour is enabled.
-    /// </summary>
-    void FixedUpdate()
+    private void Update()
     {
 
         #region Camera Rotation
@@ -102,6 +98,16 @@ public class CameraMovement : MonoBehaviour
             onRotation = false;
         }
         #endregion
+
+    }
+
+    bool onRotation = false;
+    /// <summary>
+    /// This function is called every fixed framerate frame, if the MonoBehaviour is enabled.
+    /// </summary>
+    void FixedUpdate()
+    {
+
 
     }
 

@@ -93,7 +93,6 @@ public class Target : MonoBehaviour
 
     private void Update()
     {
-
         GetAllTargets();
         if (Input.GetMouseButtonDown(0))
         {
@@ -125,7 +124,7 @@ public class Target : MonoBehaviour
                     DeselectTarget();
                     HideHUD();
                 }
-                
+
             }
 
         }
@@ -142,15 +141,16 @@ public class Target : MonoBehaviour
             MessageManager.instance.DisplayMessage("You cannot do that!");
             return null;
         }
-        if (currentTarget.GetComponent<EnemyCombat>())
+        if (currentTarget && currentTarget.GetComponent<EnemyCombat>())
             return currentTarget.GetComponent<EnemyCombat>();
         else
         {
             //Cast Sphere forward for an enemy
             Physics.SphereCast(player.transform.position + new Vector3(0, 1, 0), SphereCastRadius, player.transform.forward, out hit, SphereCastDistance, TargetableLayers, QueryTriggerInteraction.UseGlobal);
-            if (hit.collider.GetComponent<EnemyCombat>())
+            if (hit.collider && hit.collider.GetComponent<EnemyCombat>())
             {
                 SelectTarget(hit);
+                ShowHUD();
                 return hit.collider.GetComponent<EnemyCombat>();
             }
             else
@@ -269,6 +269,12 @@ public class Target : MonoBehaviour
 
     public CharacterData GetCurrentTarget()
     {
+        if (!currentTarget)
+        {
+            var IsItEnemy = getCurrEnemy();
+            if (IsItEnemy)
+                currentTarget = getCurrEnemy().enemyData;
+        }
         return currentTarget;
     }
 
