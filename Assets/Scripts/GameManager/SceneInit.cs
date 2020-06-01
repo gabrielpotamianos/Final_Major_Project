@@ -24,25 +24,25 @@ public class SceneInit : MonoBehaviour
         // CharacterSelection.ChosenCharacter.breed = (CharacterInfo.Breed)Enum.Parse(typeof(CharacterInfo.Breed), player.tag);
         // CharacterSelection.ChosenCharacter.Character=GameObject.FindGameObjectWithTag(CharacterSelection.ChosenCharacter.breed.ToString());
         CharacterSelection.ChosenCharacter.Character.GetComponent<Rigidbody>().isKinematic = false;
-        GameObject.FindGameObjectWithTag(CharacterSelection.ChosenCharacter.breed.ToString()).GetComponent<PlayerData>().enabled = true;
+        CharacterSelection.ChosenCharacter.Character.GetComponent<PlayerData>().enabled = true;
 
-        GameObject.FindGameObjectWithTag(CharacterSelection.ChosenCharacter.breed.ToString()).GetComponent<PlayerMovement>().enabled = true;
+        CharacterSelection.ChosenCharacter.Character.GetComponent<PlayerMovement>().enabled = true;
         switch (CharacterSelection.ChosenCharacter.breed)
         {
             case CharacterInfo.Breed.Mage:
-                GameObject.FindObjectOfType<MageCombatSystem>().enabled = true;
-                Destroy(GameObject.FindObjectOfType<RogueCombatSystem>());
-                Destroy(GameObject.FindObjectOfType<WarriorCombatSystem>());
+                CharacterSelection.ChosenCharacter.Character.GetComponent<MageCombatSystem>().enabled = true;
+                Destroy(CharacterSelection.ChosenCharacter.Character.GetComponent<RogueCombatSystem>());
+                Destroy(CharacterSelection.ChosenCharacter.Character.GetComponent<WarriorCombatSystem>());
                 break;
             case CharacterInfo.Breed.Warrior:
-                GameObject.FindObjectOfType<WarriorCombatSystem>().enabled = true;
-                Destroy(GameObject.FindObjectOfType<RogueCombatSystem>());
-                Destroy(GameObject.FindObjectOfType<MageCombatSystem>());
+                CharacterSelection.ChosenCharacter.Character.GetComponent<WarriorCombatSystem>().enabled = true;
+                Destroy(CharacterSelection.ChosenCharacter.Character.GetComponent<RogueCombatSystem>());
+                Destroy(CharacterSelection.ChosenCharacter.Character.GetComponent<MageCombatSystem>());
                 break;
             case CharacterInfo.Breed.Rogue:
-                GameObject.FindObjectOfType<RogueCombatSystem>().enabled = true;
-                Destroy(GameObject.FindObjectOfType<WarriorCombatSystem>());
-                Destroy(GameObject.FindObjectOfType<MageCombatSystem>());
+                CharacterSelection.ChosenCharacter.Character.GetComponent<RogueCombatSystem>().enabled = true;
+                Destroy(CharacterSelection.ChosenCharacter.Character.GetComponent<WarriorCombatSystem>());
+                Destroy(CharacterSelection.ChosenCharacter.Character.GetComponent<MageCombatSystem>());
                 break;
 
         }

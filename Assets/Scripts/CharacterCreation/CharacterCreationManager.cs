@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 public class CharacterCreationManager : MonoBehaviour
 {
@@ -9,6 +11,8 @@ public class CharacterCreationManager : MonoBehaviour
 
     public CharacterInfo currCharacterInfo;
     CharacterToCreate currCharacter;
+    Button buttonRace;
+    Button buttonBreed;
 
     #region Singleton
     public static CharacterCreationManager characterCreationManager;
@@ -63,12 +67,18 @@ public class CharacterCreationManager : MonoBehaviour
 
     public void SetClass(int BREED)
     {
+        if (buttonBreed) buttonBreed.interactable = true;
+        buttonBreed = EventSystem.current.currentSelectedGameObject.GetComponent<Button>();
         currCharacterInfo.breed = (CharacterInfo.Breed)BREED;
+        buttonBreed.interactable = false;
     }
 
     public void SetRace(int RACE)
     {
+        if (buttonRace) buttonRace.interactable = true;
+        buttonRace = EventSystem.current.currentSelectedGameObject.GetComponent<Button>();
         currCharacterInfo.race = (CharacterInfo.Race)RACE;
+        buttonRace.interactable = false;
 
     }
 

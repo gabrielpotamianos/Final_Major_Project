@@ -19,7 +19,7 @@ public class Missiles : MonoBehaviour
 
     public static EnemyCombat CurrTarger;
 
-    bool collided=false;
+    bool collided = false;
 
 
     private void OnEnable()
@@ -29,7 +29,7 @@ public class Missiles : MonoBehaviour
             Physics.IgnoreLayerCollision(gameObject.layer, LayerMask.NameToLayer("Enemy"), true);
         else Physics.IgnoreLayerCollision(gameObject.layer, LayerMask.NameToLayer("Enemy"), false);
         time = 0;
-        collided=false;
+        collided = false;
     }
 
     void Update()
@@ -49,14 +49,13 @@ public class Missiles : MonoBehaviour
         }
     }
 
-public static int test1=0;
     private void OnCollisionEnter(Collision collision)
     {
         if (IceMissiles && collision.gameObject.layer.Equals(LayerMask.NameToLayer("Ground")) && !collided)
         {
             transform.GetChild(0).gameObject.SetActive(false);
             transform.GetChild(1).gameObject.SetActive(true);
-            collided=true;
+            collided = true;
 
             if (AOEDamage)
                 AOEDamage.AOE_Damage(BlizzardDamage);
@@ -69,8 +68,7 @@ public static int test1=0;
             transform.GetChild(0).gameObject.SetActive(false);
             transform.GetChild(1).gameObject.SetActive(true);
 
-            //CurrTarger.TakeDamage(PlayerData.instance.statistics.AttackPower * FireballMultiplier);
-            CharacterSelection.ChosenCharacter.Character.GetComponent<PlayerCombat>().DealDamage(CurrTarger,FireballMultiplier);
+            CharacterSelection.ChosenCharacter.Character.GetComponent<PlayerCombat>().DealDamage(CurrTarger, FireballMultiplier);
 
             GetComponent<Collider>().enabled = false;
             StartCoroutine(Explode());
@@ -82,15 +80,13 @@ public static int test1=0;
     IEnumerator Explode()
     {
         yield return new WaitForSeconds(1);
-        // PlayerCombat.activeMissiles--;
+        gameObject.SetActive(false);
         transform.GetChild(0).gameObject.SetActive(true);
         transform.GetChild(1).gameObject.SetActive(false);
         transform.position = GameObject.FindGameObjectWithTag("Mage").gameObject.transform.position;
 
-        // CurrTarger=null;
         MageCombatSystem.activeMissiles--;
         this.enabled = false;
-        gameObject.SetActive(false);
 
     }
 

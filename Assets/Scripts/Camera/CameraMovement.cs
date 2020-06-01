@@ -11,54 +11,41 @@ public class CameraMovement : MonoBehaviour
     [DllImport("user32.dll")]
     static extern bool SetCursorPos(int X, int Y);
 
-    public Transform target;
-    public Slider AnghelSlider;
-
-    float mouseX;
-    float mouseY;
-    float rotX;
-    float rotY;
-
-    public float CameraSensitivity = 150f;
-    public float ClampX = 70f;
-    public Vector3 offsetCameraBase;
-    Vector3 mousePos;
-    public Vector3 velocity = Vector3.zero;
     [Range(0, 1)]
-    public float CameraSpeed = 120;
+    public float CameraSpeed = Constants.CAMERA_MOVEMENT_SPEED;
+    public Slider RotationSensitivity;
+    public Vector3 OffsetCameraBase;
+    Vector3 Velocity = Vector3.zero;
+    Transform Player;
+    
+    float CameraSensitivity = Constants.CAMERA_SENSITIVITY;
+    float ClampX = Constants.CAMERA_CLAMP_X;
+    float MouseX, MouseY, RotX, RotY;
+    int SavedPosX = 30, SavedPosY = 1000;
+    bool MousePosSaved = false;
 
 
-
-    int xPos = 30, yPos = 1000;
-
-    public CameraCollision CameraCollision
-    {
-        get => default;
-        set
-        {
-        }
-    }
 
     public static CameraMovement Instance;
 
     private void Awake()
     {
+        //Singleton Assignment
         if (Instance != null)
-            Debug.LogError("More than one Camera Movement Scripts!!!");
+            Debug.LogError(Constants.SINGLETON_ERROR + this.name.ToString());
         else Instance = this;
-        mousePos = Input.mousePosition;
     }
 
     // Start is called before the first frame update
     void Start()
     {
+        //Save Starting Rotation
         Vector3 rotation = transform.rotation.eulerAngles;
-        rotX = rotation.x;
-        rotY = rotation.y;
+        RotX = rotation.x;
+        RotY = rotation.y;
 
-
-        target = GameObject.FindGameObjectWithTag(CharacterSelection.ChosenCharacter.breed.ToString()).transform;
-
+        //Get the Player's Transform
+        Player = CharacterSelection.ChosenCharacter.Character.transform;
 
     }
 
@@ -67,49 +54,57 @@ public class CameraMovement : MonoBehaviour
 
         #region Camera Rotation
 
+        //Check for Right Click Input
         if (Input.GetMouseButton(1))
         {
-            if (!onRotation)
+            //Is this the first frame on rotation?
+            if (!MousePosSaved)
             {
-                xPos = (int)Input.mousePosition.x;
-                yPos = (int)Input.mousePosition.y;
-                onRotation = true;
+                //Then Save Mouse Position 
+                SavedPosX = (int)Input.mousePosition.x;
+                SavedPosY = (int)Input.mousePosition.y;
+
+                //Do not enter again until the release of the button
+                MousePosSaved = true;
             }
+
             Cursor.visible = false;
 
-            mouseX = Input.GetAxis("Mouse X");
-            mouseY = Input.GetAxis("Mouse Y");
+            MouseX = Input.GetAxis("Mouse X");
+            MouseY = Input.GetAxis("Mouse Y");
 
-            AnghelSlider.value = Mathf.Clamp(AnghelSlider.value, 0.05f, 1);
+            //Do not allow the slider value to go under 0.015f
+            RotationSensitivity.value = Mathf.Clamp(RotationSensitivity.value, Constants.CAMERA_SLIDER_CLAMP_MIN, Constants.CAMERA_SLIDER_CAMP_MAX);
 
-            rotY += mouseX * CameraSensitivity * AnghelSlider.value;
-            rotX += mouseY * CameraSensitivity * AnghelSlider.value;
+            //Calculate Rotation
+            RotY += MouseX * CameraSensitivity * RotationSensitivity.value;
+            RotX += MouseY * CameraSensitivity * RotationSensitivity.value;
 
-            rotX = Mathf.Clamp(rotX, -ClampX, ClampX);
+            //Limit the X rotation to the clamp boundaries
+            RotX = Mathf.Clamp(RotX, -ClampX, ClampX);
 
-            Quaternion rotation = Quaternion.Euler(rotX, rotY, 0.0f);
+            //Get Quaternion
+            Quaternion rotation = Quaternion.Euler(RotX, RotY, 0.0f);
 
+            //Apply Rotation
             transform.rotation = rotation;
         }
+
+        //If the Right Button has been released 
         else if (Input.GetMouseButtonUp(1) || !Input.GetMouseButtonDown(0) && !Cursor.visible)
         {
             Cursor.visible = true;
-            SetCursorPos(xPos, Screen.height - yPos);//Call this when you want to set the mouse position
-            onRotation = false;
+
+            //Reset Cursor to its initial position on the screen 
+            SetCursorPos(SavedPosX, Screen.height - SavedPosY);
+
+            //Allows to save initial position on rotation beginning again
+            MousePosSaved = false;
         }
         #endregion
 
     }
 
-    bool onRotation = false;
-    /// <summary>
-    /// This function is called every fixed framerate frame, if the MonoBehaviour is enabled.
-    /// </summary>
-    void FixedUpdate()
-    {
-
-
-    }
 
     void LateUpdate()
     {
@@ -118,13 +113,14 @@ public class CameraMovement : MonoBehaviour
 
     void cameraUpdate()
     {
-        Vector3 lerp = Vector3.SmoothDamp(transform.position, target.position + offsetCameraBase, ref velocity, CameraSpeed * Time.deltaTime);
+        //Follows the player
+        Vector3 lerp = Vector3.SmoothDamp(transform.position, Player.position + OffsetCameraBase, ref Velocity, CameraSpeed * Time.deltaTime);
         transform.position = lerp;
     }
 
     public void SetRotation(float x, float y)
     {
-        rotX = x;
-        rotY = y;
+        RotX = x;
+        RotY = y;
     }
 }

@@ -170,9 +170,6 @@ public class MageCombatSystem : PlayerCombat
             while (Castbar.value < 1)
             {
                 if (InteruptCast)
-                    print(InteruptCast);
-
-                if (InteruptCast)
                 {
                     CastBar.value = 0;
                     CastBarCanvasGroup.alpha = 0;
@@ -340,6 +337,7 @@ public class MageCombatSystem : PlayerCombat
                     {
                         SpellIndicatorGameObject.transform.GetChild(0).gameObject.SetActive(false);
                         StartCoroutine(CastSpell(BlizzardLaunch, BlizzardStop, BlizzardCastTime, CastBar, "Blizzard"));
+                        playerData.UpdateSpellResource(-BlizzardManaCost);
 
                         yield break;
                     }

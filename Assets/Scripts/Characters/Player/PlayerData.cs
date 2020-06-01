@@ -106,6 +106,7 @@ public class PlayerData : CharacterData
                 OpenPlayerStatsPanel();
             }
         }
+
     }
 
     public void UpdateCurrentHealth(float Health)
@@ -127,10 +128,16 @@ public class PlayerData : CharacterData
         animator.SetBool("Looting", AbleToLoot);
         if (AbleToLoot)
         {
+            GetComponent<CapsuleCollider>().material.dynamicFriction = 999;
+
             GetComponent<Rigidbody>().velocity = Vector3.zero;
             PlayerInventory.instance.ShowInventory();
         }
-        else PlayerInventory.instance.HideInventory();
+        else
+        {
+            GetComponent<CapsuleCollider>().material.dynamicFriction = 0;
+            PlayerInventory.instance.HideInventory();
+        }
 
     }
 

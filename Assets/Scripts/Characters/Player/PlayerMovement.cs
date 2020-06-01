@@ -2,41 +2,29 @@
 using UnityEngine.UI;
 public class PlayerMovement : MonoBehaviour
 {
-    //
-    //PUBLIC VARIABLES
-    //
-    #region Public Variables
+
 
     public new GameObject camera;
     public float JumpForce;
     public float JumpRayDistance;
-    [Range(0, 1)]
-    public float rayLength;
+
     public float speed = 5;
     public bool OnGround = true;
     public LayerMask JumpLayerMask;
     public static PlayerMovement instance;
-    #endregion
 
-    //
-    //PRIVATE VARIABLES
-    //
-    #region Private Variables
 
-    bool jumping;
+
     Rigidbody rigid;
     Vector3 direction;
-    PlayerData playerData;
     Quaternion lastRotation;
     RaycastHit hit;
     bool grounded;
-
-    #endregion
+    bool jumping;
 
     private void Awake()
     {
         rigid = GetComponent<Rigidbody>();
-        playerData = GetComponent<PlayerData>();
     }
 
     private void Start()
@@ -51,19 +39,21 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
+        print(GetComponent<CapsuleCollider>().material.dynamicFriction);
+
         if (camera == null)
             camera = Camera.main.gameObject;
-        grounded = Physics.Raycast(transform.position - new Vector3(0, -0.5f, 0), Vector3.down, out hit, JumpRayDistance,JumpLayerMask);
-        if (playerData.Alive)
+        grounded = Physics.Raycast(transform.position - new Vector3(0, -0.5f, 0), Vector3.down, out hit, JumpRayDistance, JumpLayerMask);
+        if (PlayerData.instance.Alive)
             Jump();
 
-        OnGround = !playerData.animator.GetBool("Jump") && !playerData.animator.GetBool("Land");
+        OnGround = !PlayerData.instance.animator.GetBool("Jump") && !PlayerData.instance.animator.GetBool("Land");
         SpellChecks.Grounded = OnGround;
     }
 
     private void FixedUpdate()
     {
-        if (playerData.Alive)
+        if (PlayerData.instance.Alive)
         {
             Move();
             Rotate();
@@ -79,7 +69,7 @@ public class PlayerMovement : MonoBehaviour
         if (axisInput.y != 0 || axisInput.x != 0)
         {
             MageCombatSystem.InteruptCast = true;
-            playerData.animator.SetBool("Looting", false);
+            PlayerData.instance.animator.SetBool("Looting", false);
             Looting.instance.HideInventory();
 
             //Get the Input Axis
@@ -104,7 +94,7 @@ public class PlayerMovement : MonoBehaviour
         }
 
         axisInput = axisInput.normalized;
-        playerData.animator.SetFloat("SpeedMovement", axisInput.magnitude);
+        PlayerData.instance.animator.SetFloat("SpeedMovement", axisInput.magnitude);
 
 
     }
@@ -128,12 +118,14 @@ public class PlayerMovement : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space) && grounded && !jumping)
         {
             MageCombatSystem.InteruptCast = true;
-            playerData.animator.SetBool("Jump", true);
+            PlayerData.instance.animator.SetBool("Jump", true);
+            GetComponent<CapsuleCollider>().material.dynamicFriction = 0;
+
         }
 
         //Land if velocity is on negative Y and raycast detected ground
         if (jumping && Mathf.Round(rigid.velocity.y) < 0 && grounded)
-            playerData.animator.SetBool("Land", true);
+            PlayerData.instance.animator.SetBool("Land", true);
 
     }
 
@@ -149,9 +141,11 @@ public class PlayerMovement : MonoBehaviour
     private void Land()
     {
         jumping = false;
-        playerData.animator.SetBool("Land", false);
-        playerData.animator.SetBool("Jump", jumping);
+        PlayerData.instance.animator.SetBool("Land", false);
+        PlayerData.instance.animator.SetBool("Jump", jumping);
         MageCombatSystem.InteruptCast = false;
+        GetComponent<CapsuleCollider>().material.dynamicFriction = 999;
+
 
     }
 

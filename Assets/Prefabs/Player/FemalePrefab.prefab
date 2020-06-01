@@ -47111,7 +47111,6 @@ MonoBehaviour:
   camera: {fileID: 0}
   JumpForce: 10
   JumpRayDistance: 2
-  rayLength: 0.001
   speed: 300
   OnGround: 1
   JumpLayerMask:
@@ -47264,7 +47263,7 @@ MonoBehaviour:
   FireballManaCost: 10
   FireballCooldownTime: 5
   FireballRange: 20
-  FireballCastTime: 2.01
+  FireballCastTime: 1
   FireballOnCooldown: 0
   FireballDescription: "Casts a fire projectile towards \nthe selected target dealing
     AmountOfDamage% \nof the character's Attack Power\n\nCost AmountOfCost Mana"
@@ -47282,12 +47281,12 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 256
   BlizzardSprite: {fileID: 21300000, guid: ec632235b0c01aa41b95997c276b3115, type: 3}
-  BlizzardCastTime: 4
+  BlizzardCastTime: 2
   BlizzardCastRange: 25
   BlizzardAreaAffected: 6
   BlizzardDamageMultiplier: 95
   BlizzardManaCost: 25
-  BlizzardCooldownTime: 10
+  BlizzardCooldownTime: 4
   BlizzardOnCooldown: 0
   BlizzardDescription: "Casts Ice Projectile within the selected area. \n\nDeals AmountOfDamage%
     / per projectile\nof the character's Attack Power.\n\nCosts AmountOfCost Mana."

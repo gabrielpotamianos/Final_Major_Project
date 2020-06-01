@@ -10,7 +10,15 @@ public static class Constants
     public const string VENDOR_INVENTORY = "Vendor Inventory";
     public const string MESSAGE_PANEL = "MessagePanel";
     public const string MAXIMUM_CHARACTERS_MESSAGE = "Character cannot be created! \nPlease delete a character before creating a new one!\n Character will not be saved!";
+    public const string SINGLETON_ERROR = " Too Many Instances of ";
+
     public const float TICK = 2;
+    public const float CAMERA_CLAMP_X = 70f;
+    public const float CAMERA_SENSITIVITY = 150f;
+    public const float CAMERA_MOVEMENT_SPEED = 120f;
+    public const float CAMERA_SLIDER_CLAMP_MIN = 0.015f;
+    public const float CAMERA_SLIDER_CAMP_MAX = 1f;
+
 
 
     #region Spells

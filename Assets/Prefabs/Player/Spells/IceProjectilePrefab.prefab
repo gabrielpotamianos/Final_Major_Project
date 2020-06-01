@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 6324285665450794317}
   - component: {fileID: 1587451084}
   m_Layer: 11
-  m_Name: IceProjectile_SetUp
+  m_Name: IceProjectilePrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -48,7 +48,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IceMissiles: 1
+  AOEDamage: {fileID: 0}
+  Speed: 0
+  time: 0
   FireballMultiplier: 0
+  BlizzardDamage: 0
 --- !u!65 &6324285665450794317
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -141,19 +145,19 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1490749762035822, guid: a17347c42dfc98c4b861a7e41a444d6f, type: 3}
-      propertyPath: m_Layer
-      value: 11
-      objectReference: {fileID: 0}
     - target: {fileID: 1196636205391250, guid: a17347c42dfc98c4b861a7e41a444d6f, type: 3}
       propertyPath: m_Layer
       value: 11
       objectReference: {fileID: 0}
-    - target: {fileID: 1558564245870644, guid: a17347c42dfc98c4b861a7e41a444d6f, type: 3}
+    - target: {fileID: 1490749762035822, guid: a17347c42dfc98c4b861a7e41a444d6f, type: 3}
       propertyPath: m_Layer
       value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 1497584439982096, guid: a17347c42dfc98c4b861a7e41a444d6f, type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 1558564245870644, guid: a17347c42dfc98c4b861a7e41a444d6f, type: 3}
       propertyPath: m_Layer
       value: 11
       objectReference: {fileID: 0}
@@ -235,6 +239,11 @@ PrefabInstance:
     - target: {fileID: 1576351018709242, guid: 112f3db1547c11e4fadfba32f6df1cec, type: 3}
       propertyPath: m_Layer
       value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 114087475645847166, guid: 112f3db1547c11e4fadfba32f6df1cec,
+        type: 3}
+      propertyPath: destroyWhenDone
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 7112616327704062651, guid: 112f3db1547c11e4fadfba32f6df1cec, type: 3}

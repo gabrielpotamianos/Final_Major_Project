@@ -15,8 +15,10 @@ namespace PolygonArsenal
         public float pitchRandomMultiplier = 1f;
 
         // Use this for initialization
-        void Start()
+        private void OnEnable()
         {
+
+            print(gameObject.name);
             //Spawn the sound object
             GameObject m_Sound = Instantiate(prefabSound, transform.position, Quaternion.identity);
             AudioSource m_Source = m_Sound.GetComponent<AudioSource>();
