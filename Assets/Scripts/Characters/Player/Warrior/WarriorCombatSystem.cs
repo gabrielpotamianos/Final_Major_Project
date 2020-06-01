@@ -78,7 +78,8 @@ public class WarriorCombatSystem : PlayerCombat
     // Update is called once per frame
     protected override void Update()
     {
-        GetInput(Charge, MortalStrike, Bladestorm);
+        if (playerData.Alive)
+            GetInput(Charge, MortalStrike, Bladestorm);
         base.Update();
     }
 

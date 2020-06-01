@@ -117,7 +117,8 @@ public class MageCombatSystem : PlayerCombat
     // Update is called once per frame
     protected override void Update()
     {
-        GetInput(Fireball, Blizzard, DeathsBreath);
+        if (playerData.Alive)
+            GetInput(Fireball, Blizzard, DeathsBreath);
         base.Update();
     }
 

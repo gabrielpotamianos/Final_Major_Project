@@ -101,7 +101,8 @@ public class RogueCombatSystem : PlayerCombat
     // Update is called once per frame
     protected override void Update()
     {
-        GetInput(SinisterStrike, Eviscerate, Vanish, Backstab);
+        if (playerData.Alive)
+            GetInput(SinisterStrike, Eviscerate, Vanish, Backstab);
         base.Update();
     }
 
@@ -184,7 +185,7 @@ public class RogueCombatSystem : PlayerCombat
     /// </summary>
     void SinisterStrikeDamage()
     {
-        DealDamage(Target.instance.getCurrEnemy(), SinisterStrikeDamageMultiplier + stealthDamage,AddComboPoints,SinisterStrikeComboPointsToAdd);
+        DealDamage(Target.instance.getCurrEnemy(), SinisterStrikeDamageMultiplier + stealthDamage, AddComboPoints, SinisterStrikeComboPointsToAdd);
     }
 
     /// <summary>
@@ -221,7 +222,7 @@ public class RogueCombatSystem : PlayerCombat
     /// </summary>
     void EviscerateDamage()
     {
-        DealDamage(Target.instance.getCurrEnemy(), EviscerateDamageMultiplier * ComboPoints + stealthDamage,UseComboPoints,ComboPoints);
+        DealDamage(Target.instance.getCurrEnemy(), EviscerateDamageMultiplier * ComboPoints + stealthDamage, UseComboPoints, ComboPoints);
     }
 
     /// <summary>
@@ -291,7 +292,7 @@ public class RogueCombatSystem : PlayerCombat
 
     void BackstabDamage()
     {
-        DealDamage(Target.instance.getCurrEnemy(), stealthDamage + BackstabDamageMultiplier,AddComboPoints,BackstabComboPointsToAdd);
+        DealDamage(Target.instance.getCurrEnemy(), stealthDamage + BackstabDamageMultiplier, AddComboPoints, BackstabComboPointsToAdd);
     }
 
     void BackstabEnd()

@@ -147,18 +147,4 @@ public class EnemyCombat : Combat
         InCombatCoroutine = CombatCooldown(CombatCooldownTime);
         StartCoroutine(InCombatCoroutine);
     }
-
-    public void idlecoroutine()
-    {
-        StartCoroutine(thiscoroutine());
-    }
-
-    IEnumerator thiscoroutine()
-    {
-
-        yield return new WaitForSeconds(3);
-        print("working");
-    }
-
-
 }

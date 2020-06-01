@@ -56,7 +56,6 @@ public class FiniteStateMachine
             enemy.agent.SetDestination(randomPoint);
             enemy.transform.LookAt(randomPoint);
             enemy.animator.SetFloat("Speed", 1);
-            Debug.Log(enemy.agent.velocity);
         }
     }
 

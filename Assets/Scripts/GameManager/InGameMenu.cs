@@ -40,8 +40,6 @@ public class InGameMenu : MonoBehaviour
             //Raycast it
             EventSystem.current.RaycastAll(ped, results);
 
-            foreach(var a in results)
-                print(a.gameObject.name);
         }
     }
 

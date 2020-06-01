@@ -57,8 +57,6 @@ public class CharacterSelection : MonoBehaviour
                     break;
             }
 
-            if (allCharacters[i].items.Count > 0)
-                print(allCharacters[i].items.Count);
             //Translates character information (race, breed, maybe name) to the UI Buttons
             DisplayCharacterInfo(CharacterInfoUIButtons[i], allCharacters[i]);
 

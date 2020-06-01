@@ -14,6 +14,7 @@ public class PlayerCombat : Combat
     public PlayerData playerData;
     public float CombatAngle;
 
+    bool ReviveButtonReleaseCoroutine;
     float Rage = 15;
     Button BasicAttackButton;
     Button Spell1Button;
@@ -28,12 +29,14 @@ public class PlayerCombat : Combat
         SpellChecks.CombatAngle = CombatAngle;
         base.Start();
         playerData = GetComponent<PlayerData>();
+        playerData.ReviveButton.onClick.AddListener(Revive);
     }
 
     protected override void Update()
     {
         if (playerData.IsItAlive(playerData.statistics.CurrentHealth, playerData.statistics.MaxHealth))
         {
+
             playerData.IsHealthRegenNeeded(ref IsRegenHealth, playerData.statistics.CurrentHealth, playerData.statistics.MaxHealth);
             if (SpellResourceRegen)
             {
@@ -66,7 +69,14 @@ public class PlayerCombat : Combat
                 StartCoroutine(HealthRegenCoroutine);
             }
         }
-        else Die();
+        else
+        {
+            if (!ReviveButtonReleaseCoroutine)
+            {
+                StartCoroutine(ReleaseReviveButton());
+                Die();
+            }
+        }
     }
 
 
@@ -326,5 +336,23 @@ public class PlayerCombat : Combat
         return CurrAbility == null;
     }
 
+
+    public void Revive()
+    {
+        playerData.statistics.CurrentHealth = 1;
+        GetComponent<CapsuleCollider>().isTrigger = false;
+        GetComponent<Rigidbody>().isKinematic = false;
+        GetComponent<Rigidbody>().useGravity = true;
+        playerData.ReviveButton.gameObject.SetActive(false);
+        ReviveButtonReleaseCoroutine = false;
+
+    }
+
+    private IEnumerator ReleaseReviveButton()
+    {
+        ReviveButtonReleaseCoroutine = true;
+        yield return new WaitForSeconds(3);
+        playerData.ReviveButton.gameObject.SetActive(true);
+    }
 
 }

@@ -15,6 +15,8 @@ public class PlayerData : CharacterData
     public Statistics statistics;
     public bool AbleToLoot;
 
+    public Button ReviveButton;
+
     public Image Spell1;
     public Image Spell2;
     public Image Spell3;
@@ -49,33 +51,24 @@ public class PlayerData : CharacterData
         {
             case CharacterInfo.Breed.Mage:
                 PlayerData.instance.GetAbilityResouce().transform.GetChild(1).GetChild(0).GetComponent<Image>().color = Color.blue + new Color(0, 0, -0.3f);
-
-                PlayerData.instance.GetAbilityResouce().transform.GetChild(1).GetChild(0).GetComponent<Image>().color = Color.blue + new Color(0, 0, -0.3f);
                 PlayerData.instance.GetAbilityResouceText().text = "Mana";
-
-
                 break;
             case CharacterInfo.Breed.Rogue:
                 PlayerData.instance.GetAbilityResouce().transform.GetChild(1).GetChild(0).GetComponent<Image>().color = Color.yellow + new Color(0, -0.3f, -0.3f);
-                {
-                    PlayerData.instance.GetAbilityResouce().transform.GetChild(1).GetChild(0).GetComponent<Image>().color = Color.yellow + new Color(0, -0.3f, -0.3f);
-                    PlayerData.instance.GetAbilityResouceText().text = "Energy";
-                }
+                PlayerData.instance.GetAbilityResouceText().text = "Energy";
                 break;
             case CharacterInfo.Breed.Warrior:
                 PlayerData.instance.GetAbilityResouce().transform.GetChild(1).GetChild(0).GetComponent<Image>().color = Color.red + new Color(-0.3f, 0, 0);
                 PlayerData.instance.statistics.CurrentSpellResource = 0;
-                {
-                    PlayerData.instance.GetAbilityResouce().transform.GetChild(1).GetChild(0).GetComponent<Image>().color = Color.red + new Color(-0.3f, 0, 0);
-                    PlayerData.instance.statistics.CurrentSpellResource = 0;
-                    PlayerData.instance.GetAbilityResouceText().text = "Rage";
-                }
+                PlayerData.instance.GetAbilityResouceText().text = "Rage";
                 break;
             default:
                 break;
         }
 
         StatisticsPanelParent = GameObject.FindGameObjectWithTag("StatisticsPanel").GetComponent<CanvasGroup>();
+        ReviveButton = GameObject.Find("ReviveButton").GetComponent<Button>();
+        ReviveButton.gameObject.SetActive(false);
 
         StatisticsTextGOs = new List<Text>();
 
@@ -84,6 +77,7 @@ public class PlayerData : CharacterData
             x.gameObject.transform.parent == StatisticsPanelParent.transform));
 
         statistics.RecalculateStats();
+
 
 
 

@@ -14,7 +14,6 @@ public static class SpellChecks
     }
     private static bool FacingEnemy(CharacterData enemy, PlayerData playerData, float Angle)
     {
-        Debug.Log(Mathf.Abs(Vector3.Angle(playerData.transform.forward, enemy.transform.position - playerData.transform.position)) < Angle);
         return Mathf.Abs(Vector3.Angle(playerData.transform.forward, enemy.transform.position - playerData.transform.position)) < Angle;
     }
 
