@@ -22,6 +22,7 @@ public class EnemyCombat : Combat
         {
             enemyData.IsHealthRegenNeeded(ref IsRegenHealth, enemyData.statistics.CurrentHealth, enemyData.statistics.MaxHealth);
             enemyData.FSMMachine.UpdateFSM();
+            
             if (InCombat && InCombatCoroutine == null)
             {
                 InCombatCoroutine = this.CombatCooldown(CombatCooldownTime);

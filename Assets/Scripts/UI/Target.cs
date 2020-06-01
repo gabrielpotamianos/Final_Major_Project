@@ -71,8 +71,8 @@ public class Target : MonoBehaviour
         TargetGameObject = Instantiate(TargetPrefab, TargetPrefab.transform.position, TargetPrefab.transform.rotation);
 
         TargetGameObject.SetActive(false);
-        EnemyAvatar = TargetHUD.transform.GetChild(2).GetComponent<RawImage>();
-        TargetName = TargetHUD.transform.GetChild(3).transform.GetChild(0).GetComponent<Text>();
+        EnemyAvatar = TargetHUD.transform.GetChild(1).GetComponent<RawImage>();
+        TargetName = TargetHUD.transform.GetChild(2).transform.GetChild(0).GetComponent<Text>();
         HideHUD();
 
         //THINK OF IT
@@ -184,6 +184,10 @@ public class Target : MonoBehaviour
 
             //To modify - when implementing for more than just Enemies
             currentTarget.SetHealthBar(TargetHUD.transform.GetChild(0).gameObject.GetComponent<Slider>());
+            if (currentTarget.GetComponent<EnemyData>())
+                TargetHUD.transform.GetChild(0).GetChild(1).GetChild(0).GetComponent<Image>().color = Color.red + new Color(-0.3f, 0, 0);
+            else TargetHUD.transform.GetChild(0).GetChild(1).GetChild(0).GetComponent<Image>().color = Color.green + new Color(0, -0.3f, 0);
+
 
             TargetGameObject.SetActive(true);
             TargetGameObject.transform.position = new Vector3(currentTarget.transform.position.x, TargetGameObject.transform.position.y, currentTarget.transform.position.z);

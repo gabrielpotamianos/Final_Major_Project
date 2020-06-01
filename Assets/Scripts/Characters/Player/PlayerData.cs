@@ -48,25 +48,25 @@ public class PlayerData : CharacterData
         switch (CharacterSelection.ChosenCharacter.breed)
         {
             case CharacterInfo.Breed.Mage:
-                PlayerData.instance.GetAbilityResouce().transform.GetChild(1).GetChild(0).GetComponent<Image>().color = Color.blue + new Color(0.4f, 0.4f, 0);
+                PlayerData.instance.GetAbilityResouce().transform.GetChild(1).GetChild(0).GetComponent<Image>().color = Color.blue + new Color(0, 0, -0.3f);
 
-                PlayerData.instance.GetAbilityResouce().transform.GetChild(1).GetChild(0).GetComponent<Image>().color = Color.blue + new Color(0.4f, 0.4f, 0);
+                PlayerData.instance.GetAbilityResouce().transform.GetChild(1).GetChild(0).GetComponent<Image>().color = Color.blue + new Color(0, 0, -0.3f);
                 PlayerData.instance.GetAbilityResouceText().text = "Mana";
 
 
                 break;
             case CharacterInfo.Breed.Rogue:
-                PlayerData.instance.GetAbilityResouce().transform.GetChild(1).GetChild(0).GetComponent<Image>().color = Color.yellow;
+                PlayerData.instance.GetAbilityResouce().transform.GetChild(1).GetChild(0).GetComponent<Image>().color = Color.yellow + new Color(0, -0.3f, -0.3f);
                 {
-                    PlayerData.instance.GetAbilityResouce().transform.GetChild(1).GetChild(0).GetComponent<Image>().color = Color.yellow;
+                    PlayerData.instance.GetAbilityResouce().transform.GetChild(1).GetChild(0).GetComponent<Image>().color = Color.yellow + new Color(0, -0.3f, -0.3f);
                     PlayerData.instance.GetAbilityResouceText().text = "Energy";
                 }
                 break;
             case CharacterInfo.Breed.Warrior:
-                PlayerData.instance.GetAbilityResouce().transform.GetChild(1).GetChild(0).GetComponent<Image>().color = Color.red;
+                PlayerData.instance.GetAbilityResouce().transform.GetChild(1).GetChild(0).GetComponent<Image>().color = Color.red + new Color(-0.3f, 0, 0);
                 PlayerData.instance.statistics.CurrentSpellResource = 0;
                 {
-                    PlayerData.instance.GetAbilityResouce().transform.GetChild(1).GetChild(0).GetComponent<Image>().color = Color.red;
+                    PlayerData.instance.GetAbilityResouce().transform.GetChild(1).GetChild(0).GetComponent<Image>().color = Color.red + new Color(-0.3f, 0, 0);
                     PlayerData.instance.statistics.CurrentSpellResource = 0;
                     PlayerData.instance.GetAbilityResouceText().text = "Rage";
                 }

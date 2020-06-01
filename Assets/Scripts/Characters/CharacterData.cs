@@ -26,7 +26,8 @@ public class CharacterData : MonoBehaviour
 
     public bool IsItAlive(float health, float MaxHealth)
     {
-        // if (MaxHealth > health && !InCombat) IsRegenHealth = true;
+        if(HealthBar)
+            HealthBar.transform.GetChild(1).gameObject.SetActive(health > 0);
         return Alive = health > 0;
     }
 

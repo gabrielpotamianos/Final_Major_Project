@@ -9,6 +9,7 @@ public class CharacterSelection : MonoBehaviour
     public static CharacterInfo ChosenCharacter;
     public Button CreateCharacterButton;
     public Button DeleteCharacterButton;
+    public Button EnterWorldButton;
 
     public Vector3 Position;
     public GameObject MalePrefab;
@@ -19,10 +20,8 @@ public class CharacterSelection : MonoBehaviour
 
     CharacterInfo SelectedCharacter;
     int MinArrayLength;
+    int SelectedCharacterIndex;
 
-    private void Awake()
-    {
-    }
 
     /// <summary>
     /// Start is called on the frame when a script is enabled just before
@@ -58,7 +57,7 @@ public class CharacterSelection : MonoBehaviour
                     break;
             }
 
-            if(allCharacters[i].items.Count>0)
+            if (allCharacters[i].items.Count > 0)
                 print(allCharacters[i].items.Count);
             //Translates character information (race, breed, maybe name) to the UI Buttons
             DisplayCharacterInfo(CharacterInfoUIButtons[i], allCharacters[i]);
@@ -68,7 +67,8 @@ public class CharacterSelection : MonoBehaviour
         if (SelectedCharacter == null)
         {
             SelectedCharacter = allCharacters[0];
-            CharacterInfoUIButtons[0].transform.GetChild(2).GetComponent<Button>().Select();
+            SelectedCharacterIndex = 0;
+            CharacterInfoUIButtons[0].transform.GetChild(0).GetComponent<Button>().Select();
         }
 
         //Enables Character GameObject in the scene based on the selected character (default - first one)
@@ -85,7 +85,10 @@ public class CharacterSelection : MonoBehaviour
     {
         for (int i = 0; i < MinArrayLength; i++)
             if (CharacterInfoUIButtons[i] == go)
+            {
                 SelectedCharacter = allCharacters[i];
+                SelectedCharacterIndex = i;
+            }
         DisplaySelectedCharacter();
 
     }
@@ -99,6 +102,7 @@ public class CharacterSelection : MonoBehaviour
         {
             SelectedCharacter.Character.tag = SelectedCharacter.breed.ToString();
             SelectedCharacter.Character.layer = LayerMask.NameToLayer("Player");
+            CharacterInfoUIButtons[SelectedCharacterIndex].transform.GetChild(0).GetComponent<Button>().Select();
             ChosenCharacter = SelectedCharacter;
         }
     }
@@ -112,18 +116,21 @@ public class CharacterSelection : MonoBehaviour
     {
         if (allCharacters.Count <= 0)
         {
-            CreateCharacterButton.transform.parent.gameObject.SetActive(true);
-            DeleteCharacterButton.transform.parent.gameObject.SetActive(false);
+            CreateCharacterButton.gameObject.SetActive(true);
+            DeleteCharacterButton.gameObject.SetActive(false);
+            EnterWorldButton.gameObject.SetActive(false);
         }
         else if (allCharacters.Count >= Constants.MAXIMUM_CHARACTERS)
         {
-            CreateCharacterButton.transform.parent.gameObject.SetActive(false);
-            DeleteCharacterButton.transform.parent.gameObject.SetActive(true);
+            CreateCharacterButton.gameObject.SetActive(false);
+            DeleteCharacterButton.gameObject.SetActive(true);
+            EnterWorldButton.gameObject.SetActive(true);
         }
         else
         {
-            CreateCharacterButton.transform.parent.gameObject.SetActive(true);
-            DeleteCharacterButton.transform.parent.gameObject.SetActive(true);
+            CreateCharacterButton.gameObject.SetActive(true);
+            DeleteCharacterButton.gameObject.SetActive(true);
+            EnterWorldButton.gameObject.SetActive(true);
         }
 
     }
@@ -131,8 +138,8 @@ public class CharacterSelection : MonoBehaviour
     private void DisplayCharacterInfo(GameObject character, CharacterInfo info)
     {
         character.GetComponent<CanvasGroup>().alpha = 1;
-        character.transform.GetChild(0).GetComponent<Text>().text = info.race.ToString();
-        character.transform.GetChild(1).GetComponent<Text>().text = info.breed.ToString();
+        character.transform.GetChild(1).GetComponent<Text>().text = info.race.ToString();
+        character.transform.GetChild(2).GetComponent<Text>().text = info.breed.ToString();
 
     }
 
@@ -149,7 +156,8 @@ public class CharacterSelection : MonoBehaviour
             {
                 DisplayCharacterInfo(CharacterInfoUIButtons[i], allCharacters[i]);
                 SelectedCharacter = allCharacters[0];
-                CharacterInfoUIButtons[0].transform.GetChild(2).GetComponent<Button>().Select();
+                SelectedCharacterIndex = 0;
+                CharacterInfoUIButtons[0].transform.GetChild(0).GetComponent<Button>().Select();
             }
         }
 

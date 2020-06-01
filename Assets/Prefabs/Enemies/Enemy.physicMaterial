@@ -7,7 +7,7 @@ PhysicMaterial:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Enemy
-  dynamicFriction: 0
+  dynamicFriction: 134.42
   staticFriction: 0
   bounciness: 0
   frictionCombine: 1

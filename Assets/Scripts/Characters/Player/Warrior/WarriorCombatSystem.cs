@@ -136,7 +136,7 @@ public class WarriorCombatSystem : PlayerCombat
 
         while (Vector3.Distance(gameObject.transform.position, Target.instance.getCurrEnemy().gameObject.transform.position) > Target.instance.MeleeAttackRange)
         {
-            GetComponent<Rigidbody>().position = Vector3.MoveTowards(transform.position, Target.instance.getCurrEnemy().gameObject.transform.position, Time.deltaTime * ChargeAbilityTime);
+            GetComponent<Rigidbody>().position = Vector3.MoveTowards(transform.position, Target.instance.getCurrEnemy().gameObject.transform.position, ChargeAbilityTime);
             gameObject.transform.LookAt(Target.instance.getCurrEnemy().transform, transform.up);
             yield return null;
         }
@@ -229,6 +229,7 @@ public class WarriorCombatSystem : PlayerCombat
     IEnumerator BladestormStart()
     {
         StartCoroutine(SpellCooldown(playerData.Spell3, BladestormCooldownTime, (x) => { BladestormOnCooldown = x; }));
+        playerData.UpdateSpellResource(-BladestormAbilityCost);
         SpellCheckAssigned = true;
         BladestormSeconds = 0;
         playerData.animator.SetBool("BladeStormStart", true);

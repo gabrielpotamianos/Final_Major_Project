@@ -41,9 +41,6 @@ public class EnemyData : CharacterData
 
     }
 
-    void Start()
-    {
-    }
 
     void Update()
     {

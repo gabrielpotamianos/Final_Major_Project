@@ -3,10 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Linq;
+using UnityEngine.EventSystems;
+
 public class InGameMenu : MonoBehaviour
 {
     public GameObject MenuPanel;
-    CanvasGroup canvas;
+    public GameObject SettingsMenu;
+    CanvasGroup MainMenuCanvas;
+    CanvasGroup SettingsMenuCanvas;
     /// <summary>
     /// Start is called on the frame when a script is enabled just before
     /// any of the Update methods is called the first time.
@@ -14,30 +18,70 @@ public class InGameMenu : MonoBehaviour
     void Start()
     {
         MenuPanel = GameObject.Find("MenuPanel");
-        canvas = MenuPanel.GetComponent<CanvasGroup>();
+        SettingsMenu = GameObject.Find("SettingsPanel");
+        MainMenuCanvas = MenuPanel.GetComponent<CanvasGroup>();
+        SettingsMenuCanvas = SettingsMenu.GetComponent<CanvasGroup>();
     }
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.Escape) && SettingsMenuCanvas.alpha != 1)
             ToogleMenu();
+
+        if (Input.GetMouseButton(0))
+        {
+            PointerEventData ped = new PointerEventData(null);
+
+            //Set required parameters, in this case, mouse position
+            ped.position = Input.mousePosition;
+
+            List<RaycastResult> results = new List<RaycastResult>();
+
+            //Raycast it
+            EventSystem.current.RaycastAll(ped, results);
+
+            foreach(var a in results)
+                print(a.gameObject.name);
+        }
     }
 
     public void ToogleMenu()
     {
-        canvas.alpha = canvas.alpha == 1 ? 0 : 1;
-        canvas.blocksRaycasts = canvas.alpha == 1;
-        canvas.interactable = canvas.alpha == 1;
-        Time.timeScale = canvas.alpha == 1 ? 0 : 1;
+        MainMenuCanvas.alpha = MainMenuCanvas.alpha == 1 ? 0 : 1;
+        MainMenuCanvas.blocksRaycasts = MainMenuCanvas.alpha == 1;
+        MainMenuCanvas.interactable = MainMenuCanvas.alpha == 1;
+        Time.timeScale = MainMenuCanvas.alpha == 1 ? 0 : 1;
+    }
+    public void ToogleMenu(bool value)
+    {
+        MainMenuCanvas.alpha = value == true ? 1 : 0;
+        MainMenuCanvas.blocksRaycasts = value;
+        MainMenuCanvas.interactable = value;
     }
 
     public void ResumeGame()
     {
-        canvas.alpha = 0;
-        canvas.blocksRaycasts = false;
-        canvas.interactable = false;
+        MainMenuCanvas.alpha = 0;
+        MainMenuCanvas.blocksRaycasts = false;
+        MainMenuCanvas.interactable = false;
         Time.timeScale = 1.0f;
     }
+
+    public void OpenSettingsMenu()
+    {
+        ToogleMenu(false);
+        SettingsMenuCanvas.alpha = 1;
+        SettingsMenuCanvas.blocksRaycasts = true;
+        SettingsMenuCanvas.interactable = true;
+    }
+    public void CloseSettingsMenu()
+    {
+        SettingsMenuCanvas.alpha = 0;
+        SettingsMenuCanvas.blocksRaycasts = false;
+        SettingsMenuCanvas.interactable = false;
+        ToogleMenu(true);
+    }
+
 
     public void QuitApplication()
     {
@@ -47,8 +91,8 @@ public class InGameMenu : MonoBehaviour
     public void CompleteAction()
     {
         Time.timeScale = 1;
-        canvas.alpha = 0;
-        canvas.blocksRaycasts = false;
+        MainMenuCanvas.alpha = 0;
+        MainMenuCanvas.blocksRaycasts = false;
     }
 
     public void SaveCharacter()
@@ -61,7 +105,7 @@ public class InGameMenu : MonoBehaviour
         CharacterSelection.ChosenCharacter.Gold = PlayerData.instance.gold;
         CharacterSelection.ChosenCharacter.slots = PlayerInventory.instance.GetAllOccupiedSlots();
         CharacterSelection.ChosenCharacter.CameraPosition = CameraMovement.Instance.transform.position;
-        CharacterSelection.ChosenCharacter.CameraRotation = new Vector3(0,PlayerData.instance.transform.rotation.eulerAngles.y,0);
+        CharacterSelection.ChosenCharacter.CameraRotation = new Vector3(0, PlayerData.instance.transform.rotation.eulerAngles.y, 0);
 
         SaveSystem.SaveCharacterOverwrite(CharacterSelection.ChosenCharacter);
     }

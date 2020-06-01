@@ -39,7 +39,6 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
-        print(GetComponent<CapsuleCollider>().material.dynamicFriction);
 
         if (camera == null)
             camera = Camera.main.gameObject;
@@ -107,7 +106,7 @@ public class PlayerMovement : MonoBehaviour
             direction = (Input.GetAxisRaw("Horizontal") * camera.transform.right + Input.GetAxisRaw("Vertical") * camera.transform.forward).normalized;
             Vector3 newDirection = new Vector3(direction.x, 0.0f, direction.z);
             newDirection *= Time.deltaTime;
-            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(newDirection), 0.2f);
+            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(newDirection), 0.4f);
             lastRotation = transform.rotation;
         }
     }
@@ -119,7 +118,6 @@ public class PlayerMovement : MonoBehaviour
         {
             MageCombatSystem.InteruptCast = true;
             PlayerData.instance.animator.SetBool("Jump", true);
-            GetComponent<CapsuleCollider>().material.dynamicFriction = 0;
 
         }
 
@@ -144,7 +142,6 @@ public class PlayerMovement : MonoBehaviour
         PlayerData.instance.animator.SetBool("Land", false);
         PlayerData.instance.animator.SetBool("Jump", jumping);
         MageCombatSystem.InteruptCast = false;
-        GetComponent<CapsuleCollider>().material.dynamicFriction = 999;
 
 
     }

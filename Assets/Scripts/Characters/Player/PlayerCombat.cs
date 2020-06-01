@@ -14,6 +14,7 @@ public class PlayerCombat : Combat
     public PlayerData playerData;
     public float CombatAngle;
 
+    float Rage = 15;
     Button BasicAttackButton;
     Button Spell1Button;
     Button Spell2Button;
@@ -88,14 +89,14 @@ public class PlayerCombat : Combat
                 if (playerData.statistics.CriticalStrike > UnityEngine.Random.Range(0, 100))
                 {
                     enemy.TakeDamage(playerData.statistics.AttackPower * damage / 100 * 2);
-                    if(AddOrUseComboPoints!=null)
+                    if (AddOrUseComboPoints != null)
                         AddOrUseComboPoints.Invoke(comboPoints);
 
                 }
                 else
                 {
                     enemy.TakeDamage(playerData.statistics.AttackPower * damage / 100);
-                    if(AddOrUseComboPoints!=null)
+                    if (AddOrUseComboPoints != null)
                         AddOrUseComboPoints.Invoke(comboPoints);
                 }
             else enemy.TakeDamage(0);
@@ -122,6 +123,8 @@ public class PlayerCombat : Combat
                     ResetCombatCoroutine();
                     DisplayDamageText(damage);
                     playerData.UpdateCurrentHealth(-damage);
+                    playerData.statistics.CurrentSpellResource += Rage / 2
+                    ;
                 }
                 else DisplayDamageText("Blocked");
             else DisplayDamageText("Dodged");
