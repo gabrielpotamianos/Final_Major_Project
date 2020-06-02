@@ -8,20 +8,37 @@ using System.Runtime.InteropServices;
 
 public class CameraMovement : MonoBehaviour
 {
+    //Used dll to maintain cursor position after rotation
     [DllImport("user32.dll")]
     static extern bool SetCursorPos(int X, int Y);
 
     [Range(0, 1)]
     public float CameraSpeed = Constants.CAMERA_MOVEMENT_SPEED;
+
+    //Slider from Settings Menu
     public Slider RotationSensitivity;
+
+    //The camera position offset
     public Vector3 OffsetCameraBase;
+
+    //Velocity needed for SmoothDamp
     Vector3 Velocity = Vector3.zero;
+
+    //Player reference
     Transform Player;
     
+    //Base value of camera sensitivity
     float CameraSensitivity = Constants.CAMERA_SENSITIVITY;
+
+    //Do not allow over rotation
     float ClampX = Constants.CAMERA_CLAMP_X;
+
+    //Mouse Position and Rotations
     float MouseX, MouseY, RotX, RotY;
+
+    //Mouse positions before rotation
     int SavedPosX = 30, SavedPosY = 1000;
+
     bool MousePosSaved = false;
 
 

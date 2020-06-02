@@ -788,7 +788,7 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3117979762607549175}
-  m_Material: {fileID: 13400000, guid: d15716592d71b5941b851eb51365fdfa, type: 2}
+  m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
@@ -809,23 +809,12 @@ MonoBehaviour:
   Alive: 1
   Name: The warlking tree geeeeeeeeez
   animator: {fileID: 0}
+  PatrolFrequencyTime: 10
   SightRange: 25
   MaxCombatDistance: 50
   AttackRange: 3
-  statistics:
-    CurrentHealth: 1000
-    MaxHealth: 1000
-    HealthRegenerationPercentage: 33
-    AttackPower: 20
-    HitChance: 90
-    Armour: 0
-    Dodge: 0
-  CentrePatrolPointPatrol: {fileID: 0}
-  agent: {fileID: 0}
   rangeSphere: 10
   Hostile: 0
-  playerCombat: {fileID: 0}
-  LootInventory: {fileID: 0}
   AllPossibleItems:
   - {fileID: 11400000, guid: e97d7483f71f98d46a34f8786fb72d70, type: 2}
   - {fileID: 11400000, guid: 94f7f719b7c621747888b9f3ae6a5282, type: 2}
@@ -836,7 +825,18 @@ MonoBehaviour:
   - {fileID: 11400000, guid: f2aee3d3c442df3459aaf24e9f8688b0, type: 2}
   - {fileID: 11400000, guid: e683609fb0f9a0b419438486bb7b4a93, type: 2}
   ChanceOfItemDrop: 6400000064000000640000006400000064000000640000006400000064000000
-  PatrolFrequencyTime: 10
+  statistics:
+    CurrentHealth: 1000
+    MaxHealth: 1000
+    HealthRegenerationPercentage: 33
+    AttackPower: 127
+    HitChance: 90
+    Armour: 20
+    Dodge: 5
+  CentrePatrolPointPatrol: {fileID: 0}
+  agent: {fileID: 0}
+  playerCombat: {fileID: 0}
+  LootInventory: {fileID: 0}
 --- !u!114 &1731763101
 MonoBehaviour:
   m_ObjectHideFlags: 0

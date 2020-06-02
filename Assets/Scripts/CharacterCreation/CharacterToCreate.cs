@@ -7,7 +7,7 @@ public class CharacterToCreate : MonoBehaviour
 {
     bool rotateLeft = false;
     bool rotateRight = false;
-    public float RotationSpeed = 2;
+    public float RotationSpeed = Constants.CHARACTER_TO_CREATE_ROTATION_SPEED;
     public CharacterInfo info;
 
     void Update()

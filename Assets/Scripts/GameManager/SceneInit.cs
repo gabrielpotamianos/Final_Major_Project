@@ -5,28 +5,25 @@ using UnityEngine.UI;
 using System;
 public class SceneInit : MonoBehaviour
 {
+    public static SceneInit instance;
     public GameObject player;
-
     bool SaveLoaded = false;
 
-    public static SceneInit instance;
-    /// <summary>
-    /// Awake is called when the script instance is being loaded.
-    /// </summary>
+
     void Awake()
     {
         if (instance == null)
             instance = this;
-        else Debug.LogError("many instances going on");
-        player = GameObject.Find("Warrior (2)");
+        else Debug.LogError(Constants.SCENE_INIT_SINGLETON);
 
-        CharacterSelection.ChosenCharacter = new CharacterInfo();
-        CharacterSelection.ChosenCharacter.breed = (CharacterInfo.Breed)Enum.Parse(typeof(CharacterInfo.Breed), player.tag);
-        CharacterSelection.ChosenCharacter.Character=GameObject.FindGameObjectWithTag(CharacterSelection.ChosenCharacter.breed.ToString());
+        //Disable kinematic because of the Character Selection Scene where the characters must stand still
         CharacterSelection.ChosenCharacter.Character.GetComponent<Rigidbody>().isKinematic = false;
-        CharacterSelection.ChosenCharacter.Character.GetComponent<PlayerData>().enabled = true;
 
+        //Enable character
+        CharacterSelection.ChosenCharacter.Character.GetComponent<PlayerData>().enabled = true;
         CharacterSelection.ChosenCharacter.Character.GetComponent<PlayerMovement>().enabled = true;
+
+        //Enable combat based on the breed
         switch (CharacterSelection.ChosenCharacter.breed)
         {
             case CharacterInfo.Breed.Mage:
@@ -44,18 +41,16 @@ public class SceneInit : MonoBehaviour
                 Destroy(CharacterSelection.ChosenCharacter.Character.GetComponent<WarriorCombatSystem>());
                 Destroy(CharacterSelection.ChosenCharacter.Character.GetComponent<MageCombatSystem>());
                 break;
-
         }
-
-
     }
 
     void Update()
     {
+        //The load is done here because scripts do not get fully initialized in Start Function
         if (!SaveLoaded)
         {
-            // if (PlayerData.instance && PlayerInventory.instance)
-            //     LoadSave();
+            if (PlayerData.instance && PlayerInventory.instance)
+                LoadSave();
             SaveLoaded = true;
         }
 
@@ -71,6 +66,6 @@ public class SceneInit : MonoBehaviour
         PlayerInventory.instance.AddItem(CharacterSelection.ChosenCharacter.items, CharacterSelection.ChosenCharacter.itemsQuantities, CharacterSelection.ChosenCharacter.slots);
         CameraMovement.Instance.transform.position = CharacterSelection.ChosenCharacter.CameraPosition;
         CameraMovement.Instance.transform.eulerAngles = CharacterSelection.ChosenCharacter.CameraRotation;
-        CameraMovement.Instance.SetRotation(CharacterSelection.ChosenCharacter.CameraRotation.x,CharacterSelection.ChosenCharacter.CameraRotation.y);
+        CameraMovement.Instance.SetRotation(CharacterSelection.ChosenCharacter.CameraRotation.x, CharacterSelection.ChosenCharacter.CameraRotation.y);
     }
 }

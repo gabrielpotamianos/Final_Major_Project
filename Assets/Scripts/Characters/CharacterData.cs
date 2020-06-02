@@ -24,7 +24,7 @@ public class CharacterData : MonoBehaviour
         bar.value = value;
     }
 
-    public bool IsItAlive(float health, float MaxHealth)
+    public bool IsItAlive(float health)
     {
         if(HealthBar)
             HealthBar.transform.GetChild(1).gameObject.SetActive(health > 0);

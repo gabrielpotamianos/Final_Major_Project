@@ -5,35 +5,32 @@ using System.Collections.Generic;
 
 public class EnemyData : CharacterData
 {
+    [HideInInspector]
+    public int PatrolFrequencyTime;
     public float SightRange;
     public float MaxCombatDistance;
     public float AttackRange;
-    public BaseStatistics statistics;
-    public GameObject CentrePatrolPointPatrol;
-    public NavMeshAgent agent;
-
-
-    public FiniteStateMachine FSMMachine;
     public float rangeSphere = 10.0f;
     public bool Hostile;
-    public PlayerCombat playerCombat;
-
-    public Looting LootInventory;
 
     public List<Item> AllPossibleItems;
     public List<int> ChanceOfItemDrop;
-    [HideInInspector]
-    public int PatrolFrequencyTime;
+
+    public BaseStatistics statistics;
+    public GameObject CentrePatrolPointPatrol;
+    public NavMeshAgent agent;
+    public FiniteStateMachine FSMMachine;
+    public PlayerCombat playerCombat;
+    public Looting LootInventory;
 
 
     bool CanLoot = false;
-
 
     public static EnemyData CurrentLootingEnemy;
 
     protected override void Awake()
     {
-        PatrolFrequencyTime = Random.Range(0, 15);
+        PatrolFrequencyTime = Random.Range(0, Constants.ENEMY_DATA_PATROL_FREQUENCY_MAX);
         CanvasRoot = GameObject.Find("CanvasHUD").GetComponent<Canvas>();
         LootInventory = GameObject.FindObjectOfType<Looting>();
         agent = GetComponent<NavMeshAgent>();
@@ -44,13 +41,16 @@ public class EnemyData : CharacterData
 
     void Update()
     {
+        //Gather Player reference in update because objects are not initialized yet
         if (playerCombat == null)
             playerCombat = GameObject.FindObjectOfType<PlayerCombat>();
+
+        //If has been targeted by the player update health bar
         if (HealthBar)
             UpdateBar(HealthBar, statistics.CurrentHealth / statistics.MaxHealth);
         animator.SetFloat("Health", statistics.CurrentHealth);
 
-
+        //If has died and 
         if (Input.GetKeyDown(KeyCode.L) && CanLoot)
         {
             if (this != CurrentLootingEnemy)
@@ -64,7 +64,7 @@ public class EnemyData : CharacterData
         }
         else if (Input.GetKeyDown(KeyCode.R) && LootInventory.visible && PlayerInventory.instance.visible && !Alive && CanLoot)
             LootInventory.GatherAllItems(ref AllPossibleItems, ref ChanceOfItemDrop);
-        else if(!LootInventory.visible && CanLoot)
+        else if (!LootInventory.visible && CanLoot)
             PlayerData.instance.ToogleLoot(LootInventory.visible);
     }
 

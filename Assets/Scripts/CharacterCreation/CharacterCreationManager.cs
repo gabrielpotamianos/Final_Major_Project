@@ -6,48 +6,59 @@ using UnityEngine.EventSystems;
 
 public class CharacterCreationManager : MonoBehaviour
 {
-
+    //Variable to load all saved characters
     public CharacterToCreate[] characters;
 
+    //The selected information about the character
     public CharacterInfo currCharacterInfo;
+
+    //Character selected - GameObject
     CharacterToCreate currCharacter;
+
+    //Button Links for Button Pressed Feature
     Button buttonRace;
     Button buttonBreed;
 
-    #region Singleton
+    //Singleton
     public static CharacterCreationManager characterCreationManager;
-    public void Awake()
-    {
-        currCharacterInfo = new CharacterInfo();
-        ChooseCharacter();
 
+
+    private void Awake()
+    {
+
+        //Check Singleton
         if (characterCreationManager != null)
             throw new System.Exception("Character Creation Manager has MORE THAN ONE INSTANCES!");
         characterCreationManager = this;
 
+        currCharacterInfo = new CharacterInfo();
+
+        //Gather Character
+        ChooseCharacter();
+
+
     }
-    #endregion
 
 
     private void Start()
     {
         if (SaveSystem.MaximumCharactersReached())
-            MessageManager.instance.DisplayMessage(Constants.MAXIMUM_CHARACTERS_MESSAGE, 10);
-
+            MessageManager.instance.DisplayMessage(Constants.CHARACTER_CREATION_MAX_CHAR_MSG, Constants.CHARACTER_CREATION_MAX_CHAR_TIME);
     }
 
 
     public void ChooseCharacter()
     {
-        foreach (CharacterToCreate sl in characters)
+        //Iterate though all characters and find the matching one
+        foreach (CharacterToCreate character in characters)
         {
-            if (sl.info.race == currCharacterInfo.race && sl.info.breed == currCharacterInfo.breed)
+            if (character.info.race == currCharacterInfo.race && character.info.breed == currCharacterInfo.breed)
             {
-                sl.ResetRotation();
-                sl.gameObject.SetActive(true);
-                currCharacter = sl;
+                character.ResetRotation();
+                character.gameObject.SetActive(true);
+                currCharacter = character;
             }
-            else sl.gameObject.SetActive(false);
+            else character.gameObject.SetActive(false);
 
         }
     }
@@ -67,17 +78,31 @@ public class CharacterCreationManager : MonoBehaviour
 
     public void SetClass(int BREED)
     {
+        //Take the last button pressed and make it usable
         if (buttonBreed) buttonBreed.interactable = true;
+
+        //Get the new button pressed
         buttonBreed = EventSystem.current.currentSelectedGameObject.GetComponent<Button>();
+        
+        //Set the character breed based on integers
         currCharacterInfo.breed = (CharacterInfo.Breed)BREED;
+        
+        //Disable button ( for pressed effect )
         buttonBreed.interactable = false;
     }
 
     public void SetRace(int RACE)
     {
+        //Take the last button pressed and make it usable
         if (buttonRace) buttonRace.interactable = true;
+
+        //get the new button pressed
         buttonRace = EventSystem.current.currentSelectedGameObject.GetComponent<Button>();
+        
+        //Set the character raece based on integers
         currCharacterInfo.race = (CharacterInfo.Race)RACE;
+        
+        //Disable button ( for pressed effect )
         buttonRace.interactable = false;
 
     }

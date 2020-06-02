@@ -34,7 +34,7 @@ public class PlayerCombat : Combat
 
     protected override void Update()
     {
-        if (playerData.IsItAlive(playerData.statistics.CurrentHealth, playerData.statistics.MaxHealth))
+        if (playerData.IsItAlive(playerData.statistics.CurrentHealth))
         {
 
             playerData.IsHealthRegenNeeded(ref IsRegenHealth, playerData.statistics.CurrentHealth, playerData.statistics.MaxHealth);

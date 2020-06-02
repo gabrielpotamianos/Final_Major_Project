@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7543738511149697263}
   - component: {fileID: 7543738511149697261}
-  - component: {fileID: 7543738511149697262}
+  - component: {fileID: 7053127624213356261}
   m_Layer: 9
   m_Name: MinimapCamera
   m_TagString: Untagged
@@ -75,7 +75,7 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
---- !u!114 &7543738511149697262
+--- !u!114 &7053127624213356261
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -84,9 +84,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 7543738511149697264}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6f4fcfd1796840c45b94f0dde1149e74, type: 3}
+  m_Script: {fileID: 11500000, guid: 0a4b32b0aa042b9459bde84f65013d0b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   MinOrtographicSize: 10
-  MaxOrtographicSize: 50
+  MaxOrtographicSize: 60
   AmoutToZoomBy: 10
