@@ -56,17 +56,17 @@ public class WarriorCombatSystem : PlayerCombat
     // Start is called before the first frame update
     protected override void Start()
     {
-        ChargeDescription = ChargeDescription.Replace("AmountOfDamage", ((int)ChargeDamageMultiplier).ToString());
-        ChargeDescription = ChargeDescription.Replace("AmountOfCost", "0");
-        ChargeDescription = ChargeDescription.Replace("AmountOfRage", AddUpRage.ToString());
+        ChargeDescription = ChargeDescription.Replace(Constants.DAMAGE_DESCRIP_KEYWORD, ((int)ChargeDamageMultiplier).ToString());
+        ChargeDescription = ChargeDescription.Replace(Constants.COST_DESCRIP_KEYWORD, "0");
+        ChargeDescription = ChargeDescription.Replace(Constants.RAGE_DESCRIPT_KEYWOROD, AddUpRage.ToString());
 
 
-        MortalStrikeDescription = MortalStrikeDescription.Replace("AmountOfDamage", ((int)MortalStrikeDamageMultiplier).ToString());
-        MortalStrikeDescription = MortalStrikeDescription.Replace("AmountOfCost", MortalStrikeAbilityCost.ToString());
+        MortalStrikeDescription = MortalStrikeDescription.Replace(Constants.DAMAGE_DESCRIP_KEYWORD, ((int)MortalStrikeDamageMultiplier).ToString());
+        MortalStrikeDescription = MortalStrikeDescription.Replace(Constants.COST_DESCRIP_KEYWORD, MortalStrikeAbilityCost.ToString());
 
-        BladestormDescription = BladestormDescription.Replace("AmountOfDamage", ((int)BladestormDamageMultiplier).ToString());
-        BladestormDescription = BladestormDescription.Replace("AmountOfSeconds", BladestormAbilityTime.ToString());
-        BladestormDescription = BladestormDescription.Replace("AmountOfCost", BladestormAbilityCost.ToString());
+        BladestormDescription = BladestormDescription.Replace(Constants.DAMAGE_DESCRIP_KEYWORD, ((int)BladestormDamageMultiplier).ToString());
+        BladestormDescription = BladestormDescription.Replace(Constants.SECONDS_DESCRIP_KEYWORD, BladestormAbilityTime.ToString());
+        BladestormDescription = BladestormDescription.Replace(Constants.COST_DESCRIP_KEYWORD, BladestormAbilityCost.ToString());
 
 
 

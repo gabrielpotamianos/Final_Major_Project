@@ -1,5 +1,4 @@
 using UnityEngine;
-using System.Collections.Generic;
 using System.Collections;
 using UnityEngine.AI;
 
@@ -31,7 +30,7 @@ public class FiniteStateMachine
         public override void Begin(EnemyData enemy)
         {
             name = "Wander";
-            enemy.agent.stoppingDistance = 0.5f;
+            enemy.agent.stoppingDistance = Constants.FSM_WANDER_STOPPING_DISTANCE;
             GetRandomPoint(enemy);
         }
 
@@ -76,8 +75,9 @@ public class FiniteStateMachine
         {
             if (!enemy.playerCombat.playerData.Alive)
                 enemy.FSMMachine.ChangeState(Wander.Instance);
+                
             name = "Chase";
-            enemy.agent.stoppingDistance = 1.5f;
+            enemy.agent.stoppingDistance = Constants.FSM_CHASE_STOPPING_DISTANCE;
             ChasePlayer(enemy);
         }
 
@@ -243,7 +243,7 @@ public class FiniteStateMachine
         public override void Begin(EnemyData enemy)
         {
             name = "ReturnOrigin";
-            enemy.agent.stoppingDistance = 0.5f;
+            enemy.agent.stoppingDistance = Constants.FSM_WANDER_STOPPING_DISTANCE;
             Return(enemy);
             enemy.GetComponent<Combat>().InCombat = false;
         }

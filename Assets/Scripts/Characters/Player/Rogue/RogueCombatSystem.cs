@@ -82,17 +82,17 @@ public class RogueCombatSystem : PlayerCombat
         base.Start();
         playerData.SetSpellsUI(SinisterStrikeSprite, EviscerateSprite, VanishSprite, BackstabSprite);
 
-        SinisterStrikeDescription = SinisterStrikeDescription.Replace("AmountOfDamage", ((int)SinisterStrikeDamageMultiplier).ToString());
-        SinisterStrikeDescription = SinisterStrikeDescription.Replace("AmountOfCost", SinisterStrikeEnergyCost.ToString());
+        SinisterStrikeDescription = SinisterStrikeDescription.Replace(Constants.DAMAGE_DESCRIP_KEYWORD, ((int)SinisterStrikeDamageMultiplier).ToString());
+        SinisterStrikeDescription = SinisterStrikeDescription.Replace(Constants.COST_DESCRIP_KEYWORD, SinisterStrikeEnergyCost.ToString());
 
-        EviscerateDescription = EviscerateDescription.Replace("AmountOfDamage", ((int)EviscerateDamageMultiplier).ToString());
-        EviscerateDescription = EviscerateDescription.Replace("AmountOfCost", EviscerateEnergyCost.ToString());
+        EviscerateDescription = EviscerateDescription.Replace(Constants.DAMAGE_DESCRIP_KEYWORD, ((int)EviscerateDamageMultiplier).ToString());
+        EviscerateDescription = EviscerateDescription.Replace(Constants.COST_DESCRIP_KEYWORD, EviscerateEnergyCost.ToString());
 
-        VanishDescription = VanishDescription.Replace("AmountOfDamage", ((int)VanishDamageMultiplier).ToString());
-        VanishDescription = VanishDescription.Replace("AmountOfSeconds", VanishTime.ToString());
+        VanishDescription = VanishDescription.Replace(Constants.DAMAGE_DESCRIP_KEYWORD, ((int)VanishDamageMultiplier).ToString());
+        VanishDescription = VanishDescription.Replace(Constants.SECONDS_DESCRIP_KEYWORD, VanishTime.ToString());
 
-        BackstabDescription = BackstabDescription.Replace("AmountOfDamage", ((int)BackstabDamageMultiplier).ToString());
-        BackstabDescription = BackstabDescription.Replace("AmountOfCost", BackstabEnergyCost.ToString());
+        BackstabDescription = BackstabDescription.Replace(Constants.DAMAGE_DESCRIP_KEYWORD, ((int)BackstabDamageMultiplier).ToString());
+        BackstabDescription = BackstabDescription.Replace(Constants.COST_DESCRIP_KEYWORD, BackstabEnergyCost.ToString());
 
 
         AssignSpellsOnButtons(SinisterStrike, SinisterStrikeDescription, Eviscerate, EviscerateDescription, Vanish, VanishDescription, Backstab, BackstabDescription);
@@ -130,10 +130,10 @@ public class RogueCombatSystem : PlayerCombat
 
     void Vanish()
     {
-        if (SpellChecks.CheckSpell(VanishOnCooldown, "Spell on cooldown!")
-        && SpellChecks.CheckSpell(stealth, "You are invisible already!")
-        && SpellChecks.CheckSpell(SpellCheckAssigned, "You cannot use that now!")
-        && SpellChecks.CheckSpell(!PlayerMovement.instance.OnGround, "You cannot do that now!"))
+        if (SpellChecks.CheckSpell(VanishOnCooldown, Constants.COOLDOWN_MSG)
+        && SpellChecks.CheckSpell(stealth, Constants.ROGUE_VANISH_ERROR)
+        && SpellChecks.CheckSpell(SpellCheckAssigned, Constants.CANNOT_DO_THAT)
+        && SpellChecks.CheckSpell(!PlayerMovement.instance.OnGround, Constants.CANNOT_DO_THAT))
         {
             StartCoroutine(VanishStart());
             StartCoroutine(SpellCooldown(playerData.Spell3, VanishCooldownTime, (x) => { VanishOnCooldown = x; }));

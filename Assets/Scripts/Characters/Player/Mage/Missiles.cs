@@ -22,7 +22,7 @@ public class Missiles : MonoBehaviour
     bool collided = false;
 
 
-    private void OnEnable()
+    void OnEnable()
     {
         //test=0;
         if (IceMissiles)
@@ -49,7 +49,7 @@ public class Missiles : MonoBehaviour
         }
     }
 
-    private void OnCollisionEnter(Collision collision)
+    void OnCollisionEnter(Collision collision)
     {
         if (IceMissiles && collision.gameObject.layer.Equals(LayerMask.NameToLayer("Ground")) && !collided)
         {
@@ -91,7 +91,7 @@ public class Missiles : MonoBehaviour
     }
 
 
-    private Vector3 CalculateBezierPoint(float t, Vector3 startPosition, Vector3 endPosition, Vector3 controlPoint)
+    Vector3 CalculateBezierPoint(float t, Vector3 startPosition, Vector3 endPosition, Vector3 controlPoint)
     {
         float u = 1 - t;
         float tt = t * t;

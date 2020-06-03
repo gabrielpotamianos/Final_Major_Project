@@ -15,7 +15,7 @@ public class PlayerCombat : Combat
     public float CombatAngle;
 
     bool ReviveButtonReleaseCoroutine;
-    float Rage = 15;
+    float Rage = Constants.ATTACK_RAGE;
     Button BasicAttackButton;
     Button Spell1Button;
     Button Spell2Button;
@@ -133,8 +133,7 @@ public class PlayerCombat : Combat
                     ResetCombatCoroutine();
                     DisplayDamageText(damage);
                     playerData.UpdateCurrentHealth(-damage);
-                    playerData.statistics.CurrentSpellResource += Rage / 2
-                    ;
+                    playerData.statistics.CurrentSpellResource += Rage / 2;
                 }
                 else DisplayDamageText("Blocked");
             else DisplayDamageText("Dodged");
@@ -351,7 +350,7 @@ public class PlayerCombat : Combat
     private IEnumerator ReleaseReviveButton()
     {
         ReviveButtonReleaseCoroutine = true;
-        yield return new WaitForSeconds(3);
+        yield return new WaitForSeconds(Constants.REVIVE_TIME);
         playerData.ReviveButton.gameObject.SetActive(true);
     }
 

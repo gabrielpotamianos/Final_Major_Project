@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System;
 using System.Linq;
 
 public class Looting : InventoryBaseClass
@@ -12,7 +11,7 @@ public class Looting : InventoryBaseClass
     {
         if (instance != null)
         {
-            Debug.LogError("You have MORE than ONE LOOTING inventories!");
+            Debug.LogError(Constants.LOOTING_SINGLETON);
             return;
         }
         instance = this;

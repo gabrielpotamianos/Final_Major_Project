@@ -5,9 +5,9 @@ using UnityEngine;
 public class Vendor : NPC
 {
     public List<Item> items;
+
     bool InsideTrigger = false;
     VendorInventory inventory;
-
     GameObject player;
 
     void Start()
@@ -42,7 +42,7 @@ public class Vendor : NPC
         if (other.gameObject.layer == LayerMask.NameToLayer("Player"))
         {
             player = other.gameObject;
-            MessageManager.instance.DisplayMessage("Press E to Open Shop");
+            MessageManager.instance.DisplayMessage(Constants.VENDOR_OPEN_SHOP_MSG);
             InsideTrigger = true;
         }
     }
@@ -51,13 +51,26 @@ public class Vendor : NPC
     {
         if (other.gameObject.layer == LayerMask.NameToLayer("Player"))
         {
+            //Force to close the message
             MessageManager.instance.KillMessage();
+            
+            //Disable Interaction Box
             InsideTrigger = false;
+
+            //Hide inventories
             inventory.HideInventory();
             PlayerInventory.instance.HideInventory();
+
+            //Empty all slots
             inventory.EmptyAllSlots();
+
+            //Reset the occupied slots
             inventory.occupiedSlots = 0;
+
+            //null the reference
             player = null;
+
+            //Close any panels that might have been left opened
             ConfirmationPanel.instance.Cancel();
         }
     }

@@ -5,13 +5,12 @@ using UnityEngine;
 public class VendorInventory : InventoryBaseClass
 {
     public int occupiedSlots;
-    // Start is called before the first frame update
+
     public override void Start()
     {
         base.Start();
         occupiedSlots=0;
     }
-
 
     protected override void AddInSlot(Item item)
     {
